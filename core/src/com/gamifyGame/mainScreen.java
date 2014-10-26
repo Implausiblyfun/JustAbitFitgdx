@@ -18,6 +18,7 @@ public class mainScreen implements Screen{
     Texture quad3;
     Texture quad4;
     Texture background;
+    Texture itemBar;
     static int scrWidth = 720;
     static int scrHeight = 1184;
 
@@ -25,10 +26,14 @@ public class mainScreen implements Screen{
 
     public mainScreen(gamifyGame game){
         this.game = game;
+
         batch = new SpriteBatch();
-        midbox = new Texture("MidBox64x64DRAFT.png");
-        quad1 = new Texture("Quad1Box48x48DRAFT.png");
+        midbox = new Texture("MidBox64x64.png");
+        quad1 = new Texture("Quad1Box48x48.png");
+        quad2 = new Texture("Quad2Box48x48.png");
         quad3 = new Texture("Quad3Box48x48.png");
+        quad4 = new Texture("Quad4Box48x48.png");
+        //itemBar = new Texture("ItemBar.png");
         background = new Texture("Background180x296.png");
     }
 
@@ -52,10 +57,11 @@ public class mainScreen implements Screen{
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(background, 0, 0, scrWidth, scrHeight);
-        drawCenter(quad1, 150, 200);
-        drawCenter(quad1,-150,200);
-        drawCenter(quad1,150,-100);
+        batch.draw(background,0,0, scrWidth, scrHeight);
+        //batch.draw(itemBar,0,scrHeight-(itemBar.getHeight()*4), scrWidth,itemBar.getHeight()*4);
+        drawCenter(quad1,150,200);
+        drawCenter(quad2,-150,200);
+        drawCenter(quad4,150,-100);
         drawCenter(quad3,-150,-100);
         drawCenter(midbox,0,50);
         batch.end();

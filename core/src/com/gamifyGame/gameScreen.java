@@ -18,6 +18,7 @@ public class gameScreen implements Screen{
     Texture quad3;
     Texture quad4;
     Texture background;
+    Texture itemBar;
     static int scrWidth = 720;
     static int scrHeight = 1184;
 
@@ -26,10 +27,9 @@ public class gameScreen implements Screen{
     public gameScreen(gamifyGame game){
         this.game = game;
         batch = new SpriteBatch();
-        midbox = new Texture("MidBox64x64DRAFT.png");
-        quad1 = new Texture("Quad1Box48x48DRAFT.png");
-        quad3 = new Texture("Quad3Box48x48.png");
         background = new Texture("Background180x296.png");
+        itemBar = new Texture("ItemBar.png");
+
     }
 
 
@@ -51,8 +51,11 @@ public class gameScreen implements Screen{
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(background, 0, 0, scrWidth, scrHeight);
+        batch.draw(background,0,0, scrWidth, scrHeight);
+        batch.draw(itemBar,0,scrHeight-(itemBar.getHeight()*4), scrWidth,itemBar.getHeight()*4);
         batch.end();
+        if (Gdx.input.justTouched()) // http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/Input.html
+            game.setScreen(game.mainS);
     }
 
     @Override
