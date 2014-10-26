@@ -8,21 +8,34 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class gamifyGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	Texture midbox;
+    Texture quad1;
+    Texture quad2;
+    Texture quad3;
+    Texture quad4;
     Texture background;
     static int scrWidth = 720;
 	static int scrHeight = 1184;
 
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		midbox = new Texture("MidBox64x64DRAFT.png");
+        quad1 = new Texture("Quad1Box48x48DRAFT.png");
+        quad3 = new Texture("Quad3Box48x48.png");
         background = new Texture("Background180x296.png");
 	}
 
     public void drawCenter(Texture img, int hOffset, int vOffset){
+        // Default WMult and HMult are 4 because we are rendering everything
+        // at x4 their default dimensions.
+        drawCenter(img,hOffset,vOffset,4,4);
+    }
+
+    public void drawCenter(Texture img, int hOffset, int vOffset, int wMult, int hMult){
         int iWidth = img.getWidth();
         int iHeight = img.getHeight();
-        batch.draw(img, (scrWidth/2)-(iWidth/2)+hOffset, (scrHeight/2)-(iHeight/2)+vOffset);
+        batch.draw(img, (scrWidth/2)-(iWidth*wMult/2)+hOffset,
+                (scrHeight/2)-(iHeight*hMult/2)+vOffset,iWidth*wMult, iHeight*hMult);
     }
 
 
@@ -31,11 +44,11 @@ public class gamifyGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
         batch.draw(background,0,0, scrWidth, scrHeight);
-        drawCenter(img,150,200);
-        drawCenter(img,-150,200);
-        drawCenter(img,150,-100);
-        drawCenter(img,-150,-100);
-		drawCenter(img,0,50);
+        drawCenter(quad1,150,200);
+        drawCenter(quad1,-150,200);
+        drawCenter(quad1,150,-100);
+        drawCenter(quad3,-150,-100);
+		drawCenter(midbox,0,50);
 		batch.end();
 	}
 }
