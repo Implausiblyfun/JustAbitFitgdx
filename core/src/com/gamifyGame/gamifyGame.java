@@ -11,12 +11,12 @@ public class gamifyGame extends ApplicationAdapter {
 	Texture img;
     Texture background;
     static int scrWidth = 720;
-	static int scrHeight = 1200;
+	static int scrHeight = 1184;
 
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-        background = new Texture("Gamify Mockup B.png");
+        background = new Texture("Background180x296.png");
 	}
 
     public void drawCenter(Texture img, int hOffset, int vOffset){
