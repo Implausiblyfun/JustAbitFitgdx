@@ -15,8 +15,9 @@ public class gamifyGame extends ApplicationAdapter {
     Texture quad4;
     Texture itemBar;
     Texture background;
-    static int scrWidth = 720;
-	static int scrHeight = 1184;
+
+    static int scrWidth;
+	static int scrHeight;
 
 	public void create () {
 		batch = new SpriteBatch();
@@ -27,7 +28,19 @@ public class gamifyGame extends ApplicationAdapter {
         quad4 = new Texture("Quad4Box48x48.png");
         itemBar = new Texture("ItemBar.png");
         background = new Texture("Background180x296.png");
+
+        scrWidth = Gdx.graphics.getWidth();
+        scrHeight = Gdx.graphics.getHeight();
 	}
+
+    //Setters
+    public void setScrWidth(int width){
+
+    }
+
+    public void setScrHeight(int height) {
+
+    }
 
     public void drawCenter(Texture img, int hOffset, int vOffset){
         // Default WMult and HMult are 4 because we are rendering everything
