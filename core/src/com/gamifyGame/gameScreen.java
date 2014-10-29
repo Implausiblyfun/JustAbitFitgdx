@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.Screen;
@@ -19,17 +20,20 @@ public class gameScreen implements Screen{
     Texture quad4;
     Texture background;
     Texture itemBar;
-    static int scrWidth = 720;
-    static int scrHeight = 1184;
+    static int scrWidth;
+    static int scrHeight;
+    BitmapFont font;
 
     gamifyGame game;
 
     public gameScreen(gamifyGame game){
         this.game = game;
+        scrWidth = Gdx.graphics.getWidth();
+        scrHeight = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
         background = new Texture("Background180x296.png");
         itemBar = new Texture("ItemBar.png");
-
+        font = new BitmapFont();
     }
 
 
@@ -53,7 +57,23 @@ public class gameScreen implements Screen{
         batch.begin();
         batch.draw(background,0,0, scrWidth, scrHeight);
         batch.draw(itemBar,0,scrHeight-(itemBar.getHeight()*4), scrWidth,itemBar.getHeight()*4);
+        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        // ***** DEBUG PRINTING ***** //
+
+        float Ax = Gdx.input.getAccelerometerX();
+        //float DAx = Ax * Gdx.input.getDeltaX();
+        float Ay = Gdx.input.getAccelerometerY();
+        //float DAy = Ay * Gdx.input.getDeltaY();
+        float Az = Gdx.input.getAccelerometerZ();
+        //font.draw(batch, String.valueOf(DAx), 50, 100);
+        //font.draw(batch, String.valueOf(DAy), 50, 80);
+        font.draw(batch, String.valueOf(Ax),50,60);
+        font.draw(batch, String.valueOf(Ay),50,40);
+        font.draw(batch, String.valueOf(Az),50,20);
+
         batch.end();
+
         if (Gdx.input.justTouched()) // http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/Input.html
             game.setScreen(game.mainS);
     }

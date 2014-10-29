@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import com.badlogic.gdx.Screen;
 
@@ -21,6 +23,7 @@ public class mainScreen implements Screen{
     Texture itemBar;
     static int scrWidth;
     static int scrHeight;
+    BitmapFont font;
 
     gamifyGame game;
 
@@ -36,6 +39,7 @@ public class mainScreen implements Screen{
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
         background = new Texture("Background180x296.png");
+        font = new BitmapFont();
     }
 
 
@@ -65,12 +69,18 @@ public class mainScreen implements Screen{
         drawCenter(quad4,150,-100);
         drawCenter(quad3,-150,-100);
         drawCenter(midbox,0,50);
+        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        float Ax = Gdx.input.getAccelerometerX();
+        font.draw(batch, String.valueOf(Ax),50,60);
+        float Ay = Gdx.input.getAccelerometerY();
+        font.draw(batch, String.valueOf(Ay),50,40);
+        float Az = Gdx.input.getAccelerometerZ();
+        font.draw(batch, String.valueOf(Az),50,20);
         batch.end();
         if (Gdx.input.justTouched()) // use your own criterion here
               game.setScreen(game.gameS);
         if (Gdx.input.getAccelerometerX() > 2 || Gdx.input.getAccelerometerX() < -2)
-              //do the barcode scanner
-                ;
+              game.setScreen(game.gameS);
 
     }
 
