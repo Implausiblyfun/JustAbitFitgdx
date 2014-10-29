@@ -19,8 +19,8 @@ public class mainScreen implements Screen{
     Texture quad4;
     Texture background;
     Texture itemBar;
-    static int scrWidth = 720;
-    static int scrHeight = 1184;
+    static int scrWidth;
+    static int scrHeight;
 
     gamifyGame game;
 
@@ -33,7 +33,8 @@ public class mainScreen implements Screen{
         quad2 = new Texture("Quad2Box48x48.png");
         quad3 = new Texture("Quad3Box48x48.png");
         quad4 = new Texture("Quad4Box48x48.png");
-        //itemBar = new Texture("ItemBar.png");
+        scrWidth = Gdx.graphics.getWidth();
+        scrHeight = Gdx.graphics.getHeight();
         background = new Texture("Background180x296.png");
     }
 
@@ -67,6 +68,9 @@ public class mainScreen implements Screen{
         batch.end();
         if (Gdx.input.justTouched()) // use your own criterion here
               game.setScreen(game.gameS);
+        if (Gdx.input.getAccelerometerX() > 2 || Gdx.input.getAccelerometerX() < -2)
+              //do the barcode scanner
+                ;
 
     }
 
