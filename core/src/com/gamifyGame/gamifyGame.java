@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class gamifyGame extends Game{
-    mainScreen mainS;
     gameScreen gameS;
-    dummyScreen dummyS;
 
 
     //READ THIS
@@ -23,11 +21,8 @@ public class gamifyGame extends Game{
 
     @Override
     public void create() {
-        mainS = new mainScreen(this);
         gameS = new gameScreen(this);
-        dummyS = new dummyScreen(this);
-
-        setScreen(mainS);
+        setScreen(gameS);
     }
 }
 

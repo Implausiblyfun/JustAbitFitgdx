@@ -1,21 +1,20 @@
 package com.gamifyGame;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.lang.Math;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
-
-public class gameScreen implements Screen{
+public class gameScreen implements Screen {
     SpriteBatch batch;
     Image background;
     Image itemBar;
@@ -23,61 +22,156 @@ public class gameScreen implements Screen{
     static int scrHeight;
     BitmapFont font;
 
+    Image midbox;
+    Image quad1;
+    Image quad2;
+    Image quad3;
+    Image quad4;
+
     gamifyGame game;
-
     Stage layer1;
+    Stage layer2;
+    Stage layer3;
+    Stage layer4;
+    Stage layer5;
+    Stage layer6;
+    Stage layer7;
 
-    float Ax,A2x,A5x,Ay,A2y,A5y,Az,A2z,A5z;
+    float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
 
-    int framecount;
+    int frameCount;
+    int activeStage;
 
-    public gameScreen(gamifyGame game){
+    String drawstring;
+
+    public gameScreen(gamifyGame game) {
         this.game = game;
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
 
         ScalingViewport view = new ScalingViewport(Scaling.stretch, 180, 296);
-
         layer1 = new Stage(view);
+        layer2 = new Stage(view);
+        layer3 = new Stage(view);
+        layer4 = new Stage(view);
+        layer5 = new Stage(view);
+        layer6 = new Stage(view);
+        layer7 = new Stage(view);
 
         batch = new SpriteBatch();
-        background = imageSetup("Background180x296.png", layer1, 0, 0);
-        itemBar = imageSetup("ItemBar.png",layer1,0,254);
-        font = new BitmapFont();
-        framecount = 0;
+        background = renderHelp.imageSetup("Background180x296.png", layer1, 0, 0);
 
-        Ax = Gdx.input.getAccelerometerX();
-        Ay = Gdx.input.getAccelerometerY();
-        Az = Gdx.input.getAccelerometerZ();
+        itemBar = renderHelp.imageSetup("ItemBar.png", layer2, 0, 254);
+
+        quad1 = renderHelp.imageSetupCenter("Quad1Box48x48.png", layer3, 37, 50);
+        quad2 = renderHelp.imageSetupCenter("Quad2Box48x48.png", layer3, -37, 50);
+        quad3 = renderHelp.imageSetupCenter("Quad3Box48x48.png", layer3, -37, -25);
+        quad4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer3, 37, -25);
+        midbox = renderHelp.imageSetupCenter("MidBox64x64.png", layer3, 0, 12);
+
+        Image screen1 = renderHelp.imageSetup("Quad1Box48x48.png", layer4, 0,0);
+        Image screen2 = renderHelp.imageSetup("Quad2Box48x48.png", layer5, 132,0);
+        Image screen3 = renderHelp.imageSetup("Quad3Box48x48.png", layer6, 132,248);
+        Image screen4 = renderHelp.imageSetup("Quad4Box48x48.png", layer7, 0,248);
+
+        drawstring = "NO";
+        ClickListener returnListener = new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                activeStage = 3;
+                Gdx.input.setInputProcessor(layer3);
+                return true;
+            }
+        };
+        screen1.addListener(returnListener);
+        screen2.addListener(returnListener);
+        screen3.addListener(returnListener);
+        screen4.addListener(returnListener);
+
+        quad1.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                activeStage = 4;
+                Gdx.input.setInputProcessor(layer4);
+                return true;
+            }
+        });
+        quad2.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                activeStage = 5;
+                Gdx.input.setInputProcessor(layer5);
+                return true;
+            }
+        });
+        quad3.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                activeStage = 6;
+                Gdx.input.setInputProcessor(layer6);
+                return true;
+            }
+        });
+        quad4.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                activeStage = 7;
+                Gdx.input.setInputProcessor(layer7);
+                return true;
+            }
+        });
+        midbox.addListener(new ClickListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                activeStage = 2;
+                Gdx.input.setInputProcessor(layer2);
+                return true;
+            }
+        });
+        itemBar.addListener(new ClickListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                activeStage = 3;
+                Gdx.input.setInputProcessor(layer3);
+                return true;
+            }
+        });
+
+        font=new
+
+        BitmapFont();
+
+        frameCount=0;
+
+        Ax=Gdx.input.getAccelerometerX();
+        Ay=Gdx.input.getAccelerometerY();
+        Az=Gdx.input.getAccelerometerZ();
+
+        activeStage=3;
+        Gdx.input.setInputProcessor(layer3);
+
+        //debug lines
+        layer1.setDebugAll(true);
+        layer2.setDebugAll(true);
+        layer3.setDebugAll(true);
     }
 
-    /*
-     **********Image Setup functions***********
-                                              */
-
-    public Image imageSetupCenter(String file, Stage stage, int hOffset, int vOffset){
-        return imageSetup(file,stage,(scrWidth/2)+hOffset,(scrHeight)/2+vOffset);
-    }
-
-    public Image imageSetup(String file, Stage stage, int hOrigin, int vOrigin){
-        Texture texture = new Texture(file);
-        Image image = new Image(texture);
-        image.setPosition(hOrigin,vOrigin);
-        image.setSize(texture.getWidth(),texture.getHeight());
-        stage.addActor(image);
-        return image;
-    }
-
-    public void render (float delta) {
+    public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         layer1.draw();
+        if (activeStage == 2) layer2.draw();
+        else if (activeStage == 3) layer3.draw();
+        else if (activeStage == 4) layer4.draw();
+        else if (activeStage == 5) layer5.draw();
+        else if (activeStage == 6) layer6.draw();
+        else if (activeStage == 7) layer7.draw();
+
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         batch.begin();
+
         // ***** DEBUG PRINTING ***** //
-        if (framecount % 5 == 0) {
+        if (frameCount % 5 == 0) {
             A5x = A2x;
             A5y = A2y;
             A5z = A2z;
@@ -94,14 +188,13 @@ public class gameScreen implements Screen{
         font.draw(batch, String.valueOf(Ax), 50, 60);
         font.draw(batch, String.valueOf(Ay), 50, 40);
         font.draw(batch, String.valueOf(Az), 50, 20);
+        font.draw(batch, drawstring,200,200);
 
         batch.end();
-        if (framecount == 30){
-            framecount = 0;
+        if (frameCount == 30) {
+            frameCount = 0;
         }
-        framecount += 1;
-        if (Gdx.input.justTouched()) // http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/Input.html
-            game.setScreen(game.mainS);
+        frameCount += 1;
     }
 
     @Override
@@ -135,6 +228,5 @@ public class gameScreen implements Screen{
     public void dispose() {
         // never called automatically
     }
-
-
 }
+
