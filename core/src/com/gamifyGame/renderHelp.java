@@ -15,8 +15,7 @@ public class renderHelp {
     public static Image imageSetupCenter(String file, Stage stage, int hOffset, int vOffset){
         Texture texture = new Texture(file);
         Image image = new Image(texture);
-        image.setPosition((stage.getWidth()/2 - texture.getWidth() /2)+hOffset,
-                          (stage.getHeight()/2 - texture.getHeight() /2)+vOffset);
+        setPositionCenter(stage,image,hOffset,vOffset);
         image.setSize(texture.getWidth(),texture.getHeight());
         image.setName(file);
         stage.addActor(image);
@@ -31,5 +30,10 @@ public class renderHelp {
         image.setName(file);
         stage.addActor(image);
         return image;
+    }
+
+    public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
+        image.setPosition((stage.getWidth()/2) - (image.getWidth() /2)+hOffset,
+                          ((stage.getHeight()/2) - (image.getHeight() /2))+vOffset);
     }
 }

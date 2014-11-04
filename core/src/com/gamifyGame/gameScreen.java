@@ -28,6 +28,11 @@ public class gameScreen implements Screen {
     Image quad3;
     Image quad4;
 
+    Image screen1;
+    Image screen2;
+    Image screen3;
+    Image screen4;
+
     gamifyGame game;
     Stage layer1;
     Stage layer2;
@@ -62,6 +67,7 @@ public class gameScreen implements Screen {
         background = renderHelp.imageSetup("Background180x296.png", layer1, 0, 0);
 
         itemBar = renderHelp.imageSetup("ItemBar.png", layer2, 0, 254);
+        Image placeholderbar = renderHelp.imageSetup("placeholder128x24.png",layer2,26,8);
 
         quad1 = renderHelp.imageSetupCenter("Quad1Box48x48.png", layer3, 37, 50);
         quad2 = renderHelp.imageSetupCenter("Quad2Box48x48.png", layer3, -37, 50);
@@ -70,14 +76,22 @@ public class gameScreen implements Screen {
         midbox = renderHelp.imageSetupCenter("MidBox64x64.png", layer3, 0, 12);
 
         Image screen1 = renderHelp.imageSetup("Quad1Box48x48.png", layer4, 0,0);
+        Image placeholder4 = renderHelp.imageSetupCenter("placeholder140x140.png",layer4,0,0);
         Image screen2 = renderHelp.imageSetup("Quad2Box48x48.png", layer5, 132,0);
+        Image placeholder5 = renderHelp.imageSetupCenter("placeholder140x140.png",layer5,0,0);
         Image screen3 = renderHelp.imageSetup("Quad3Box48x48.png", layer6, 132,248);
-        Image screen4 = renderHelp.imageSetup("Quad4Box48x48.png", layer7, 0,248);
+        Image placeholder6 = renderHelp.imageSetupCenter("placeholder140x140.png",layer6,0,0);
+        Image placeholder62 = renderHelp.imageSetup("placeholder64x64.png",layer6,0,0);
+        Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
+        screen4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer7, 37,-25);
 
         drawstring = "NO";
         ClickListener returnListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                if (activeStage == 7){
+                    renderHelp.setPositionCenter(layer7,screen4,37,-25);
+                }
                 activeStage = 3;
                 Gdx.input.setInputProcessor(layer3);
                 return true;
@@ -159,12 +173,22 @@ public class gameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         layer1.draw();
-        if (activeStage == 2) layer2.draw();
-        else if (activeStage == 3) layer3.draw();
-        else if (activeStage == 4) layer4.draw();
-        else if (activeStage == 5) layer5.draw();
-        else if (activeStage == 6) layer6.draw();
-        else if (activeStage == 7) layer7.draw();
+        if (activeStage == 2) {layer2.draw();}
+        else if (activeStage == 3) {layer3.draw();}
+        else if (activeStage == 4) {
+            layer4.draw();
+        }
+        else if (activeStage == 5) {layer5.draw();}
+        else if (activeStage == 6) {layer6.draw();}
+        else if (activeStage == 7) {
+            layer7.draw();
+            if (screen4.getX() > 0){
+                screen4.moveBy(-3,0);
+            }
+            if (screen4.getY() < 248){
+                screen4.moveBy(0,5);
+            }
+        }
 
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
