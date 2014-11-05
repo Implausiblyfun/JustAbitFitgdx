@@ -16,6 +16,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         gameProcess = new gamifyGame();
+        gameProcess.setPreferences(this.getPreferences("Bitfitpref"));
         initialize(gameProcess, config);
 
 	}

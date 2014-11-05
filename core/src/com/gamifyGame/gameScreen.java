@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,38 +17,18 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 public class gameScreen implements Screen {
     SpriteBatch batch;
-    Image background;
-    Image itemBar;
-    static int scrWidth;
-    static int scrHeight;
+    static int scrWidth,scrHeight;
     BitmapFont font;
+    Preferences pref;
 
-    Image midbox;
-    Image quad1;
-    Image quad2;
-    Image quad3;
-    Image quad4;
-
-    Image screen1;
-    Image screen2;
-    Image screen3;
-    Image screen4;
+    Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar;
 
     gamifyGame game;
-    Stage layer1;
-    Stage layer2;
-    Stage layer3;
-    Stage layer4;
-    Stage layer5;
-    Stage layer6;
-    Stage layer7;
+    Stage layer1,layer2,layer3,layer4,layer5,layer6,layer7;
 
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
 
-    int frameCount;
-    int activeStage;
-
-    String drawstring;
+    int frameCount,activeStage;
 
     public gameScreen(gamifyGame game) {
         this.game = game;
@@ -85,7 +66,6 @@ public class gameScreen implements Screen {
         Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
         screen4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer7, 37,-25);
 
-        drawstring = "NO";
         ClickListener returnListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -101,6 +81,15 @@ public class gameScreen implements Screen {
         screen2.addListener(returnListener);
         screen3.addListener(returnListener);
         screen4.addListener(returnListener);
+        placeholder62.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                int accumulator = pref.getInteger("TestValue");
+                if (accumulator == 0) accumulator = 1;
+                pref.putInteger("TestValue",accumulator + accumulator);
+                return true;
+            }
+        });
 
         quad1.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -168,6 +157,10 @@ public class gameScreen implements Screen {
         layer3.setDebugAll(true);
     }
 
+    public void setPref(Preferences preferences){
+        pref = preferences;
+    }
+
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -196,6 +189,7 @@ public class gameScreen implements Screen {
 
         // ***** DEBUG PRINTING ***** //
         if (frameCount % 5 == 0) {
+            pref.flush();
             A5x = A2x;
             A5y = A2y;
             A5z = A2z;
@@ -212,7 +206,7 @@ public class gameScreen implements Screen {
         font.draw(batch, String.valueOf(Ax), 50, 60);
         font.draw(batch, String.valueOf(Ay), 50, 40);
         font.draw(batch, String.valueOf(Az), 50, 20);
-        font.draw(batch, drawstring,200,200);
+        font.draw(batch, String.valueOf(pref.getInteger("TestValue")),50,200);
 
         batch.end();
         if (frameCount == 30) {
