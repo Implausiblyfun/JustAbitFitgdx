@@ -30,7 +30,8 @@ public class gamifyGame extends Game{
         setScreen(gameS);
     }
 
-    public void setPreferences(Preferences preferences){
+    // Setter(s)
+    public void setPref(Preferences preferences){
         pref = preferences;
     }
 }

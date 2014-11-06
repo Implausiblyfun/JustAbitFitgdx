@@ -32,6 +32,8 @@ public class renderHelp {
         return image;
     }
 
+    // This acts like the inherent Image.setPosition, but at center to pair with
+    // ImageSetupCenter
     public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
         image.setPosition((stage.getWidth()/2) - (image.getWidth() /2)+hOffset,
                           ((stage.getHeight()/2) - (image.getHeight() /2))+vOffset);

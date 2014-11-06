@@ -20,9 +20,7 @@ public class gameScreen implements Screen {
     static int scrWidth,scrHeight;
     BitmapFont font;
     Preferences pref;
-
     Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar;
-
     gamifyGame game;
     Stage layer1,layer2,layer3,layer4,layer5,layer6,layer7;
 
@@ -32,9 +30,12 @@ public class gameScreen implements Screen {
 
     public gameScreen(gamifyGame game) {
         this.game = game;
+        // settings for stages
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
 
+        // Stage setup
+        // Could have multiple viewports for rendering at different resolutions
         ScalingViewport view = new ScalingViewport(Scaling.stretch, 180, 296);
         layer1 = new Stage(view);
         layer2 = new Stage(view);
@@ -43,8 +44,9 @@ public class gameScreen implements Screen {
         layer5 = new Stage(view);
         layer6 = new Stage(view);
         layer7 = new Stage(view);
-
         batch = new SpriteBatch();
+
+        // Layer assignments
         background = renderHelp.imageSetup("Background180x296.png", layer1, 0, 0);
 
         itemBar = renderHelp.imageSetup("ItemBar.png", layer2, 0, 254);
@@ -66,6 +68,8 @@ public class gameScreen implements Screen {
         Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
         screen4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer7, 37,-25);
 
+        // *********** LISTENERS *******
+        // SHOULD EVENTUALLY MOVE THESE THINGS SOMEWHERE ELSE
         ClickListener returnListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -81,6 +85,8 @@ public class gameScreen implements Screen {
         screen2.addListener(returnListener);
         screen3.addListener(returnListener);
         screen4.addListener(returnListener);
+
+        // This listener tests storing and retrieving data
         placeholder62.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -138,43 +144,46 @@ public class gameScreen implements Screen {
             }
         });
 
-        font=new
-
-        BitmapFont();
-
+        // More settings
+        font=new BitmapFont();
         frameCount=0;
-
         Ax=Gdx.input.getAccelerometerX();
         Ay=Gdx.input.getAccelerometerY();
         Az=Gdx.input.getAccelerometerZ();
-
         activeStage=3;
         Gdx.input.setInputProcessor(layer3);
 
-        //debug lines
+        //debug lines (is there a way to do this like with an array that is less dumb?)
+        // not high priority considering not in final make of app
         layer1.setDebugAll(true);
         layer2.setDebugAll(true);
         layer3.setDebugAll(true);
+        layer4.setDebugAll(true);
+        layer5.setDebugAll(true);
+        layer6.setDebugAll(true);
+        layer7.setDebugAll(true);
     }
-
+    // Setter(s)
     public void setPref(Preferences preferences){
         pref = preferences;
     }
 
     public void render(float delta) {
+        // Undraw the last screen
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        layer1.draw();
+        // Stage drawing
+        // REPLACE THIS WITH A SWITCH
+        // CONSIDER USING SOMETHING EVEN LESS DUMB
+        layer1.draw(); // currently background, always drawn
         if (activeStage == 2) {layer2.draw();}
         else if (activeStage == 3) {layer3.draw();}
-        else if (activeStage == 4) {
-            layer4.draw();
-        }
+        else if (activeStage == 4) {layer4.draw();}
         else if (activeStage == 5) {layer5.draw();}
         else if (activeStage == 6) {layer6.draw();}
         else if (activeStage == 7) {
             layer7.draw();
+            // Dummy quad transition code, not effective
             if (screen4.getX() > 0){
                 screen4.moveBy(-3,0);
             }
@@ -182,9 +191,8 @@ public class gameScreen implements Screen {
                 screen4.moveBy(0,5);
             }
         }
-
+        // Do we need to do this every frame? Probably not?
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
         batch.begin();
 
         // ***** DEBUG PRINTING ***** //
@@ -209,6 +217,7 @@ public class gameScreen implements Screen {
         font.draw(batch, String.valueOf(pref.getInteger("TestValue")),50,200);
 
         batch.end();
+        // If we want to do more things with frame counting in groups of 30
         if (frameCount == 30) {
             frameCount = 0;
         }
