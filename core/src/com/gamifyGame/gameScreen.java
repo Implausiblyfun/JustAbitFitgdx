@@ -208,6 +208,14 @@ public class gameScreen implements Screen {
             Ay = Gdx.input.getAccelerometerY();
             Az = Gdx.input.getAccelerometerZ();
         }
+        if (Ax < 5 && Ax > 3 && Ay > 1 && Ay < 4 && Az > 6 && Az < 9){
+            font.draw(batch, "Sitting",50,260);
+        }
+        else if (Ax < 0 && Ax > -4 && Ay > 7 && Ay < 10 && Az > -1 && Az < 4){
+            font.draw(batch, "Standing",50,260);
+        }
+        else font.draw(batch, "Neithering",50,260);
+
         font.draw(batch, String.valueOf(Math.abs(A5x - Ax)), 50, 180);
         font.draw(batch, String.valueOf(Math.abs(A5y - Ay)), 50, 160);
         font.draw(batch, String.valueOf(Math.abs(A5z - Az)), 50, 140);
