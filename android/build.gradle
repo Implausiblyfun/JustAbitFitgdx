@@ -1,10 +1,6 @@
 android {
     signingConfigs {
         config {
-            keyAlias 'androidKey'
-            keyPassword 'justabitfit22'
-            storeFile file('C:/Users/Stephen/.android/android.jks')
-            storePassword 'justabitfit22'
         }
     }
     buildToolsVersion "20.0.0"
