@@ -14,18 +14,23 @@ import java.util.Map;
 public class gamifyGame extends Game{
     gameScreen gameS;
     Preferences pref;
+    ActionResolver actionResolver;
 
     //READ THIS
     //READDDD
 
     //http://www.gamefromscratch.com/post/2013/11/27/LibGDX-Tutorial-9-Scene2D-Part-1.aspx
 
-    //READDDD
-    //READ
 
-    @Override
+    public gamifyGame(ActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
+    }
+
+
+
     public void create() {
-        gameS = new gameScreen(this);
+
+        gameS = new gameScreen(this, actionResolver);
         gameS.setPref(pref);
         setScreen(gameS);
     }

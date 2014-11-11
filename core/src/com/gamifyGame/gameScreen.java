@@ -15,7 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
+
 public class gameScreen implements Screen {
+    ActionResolver actionResolver;
     SpriteBatch batch;
     static int scrWidth,scrHeight;
     BitmapFont font;
@@ -28,8 +30,9 @@ public class gameScreen implements Screen {
 
     int frameCount,activeStage;
 
-    public gameScreen(gamifyGame game) {
+    public gameScreen(gamifyGame game, ActionResolver actionResolver) {
         this.game = game;
+        this.actionResolver = actionResolver;
         // settings for stages
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
@@ -186,6 +189,7 @@ public class gameScreen implements Screen {
             // Dummy quad transition code, not effective
             if (screen4.getX() > 0){
                 screen4.moveBy(-3,0);
+                actionResolver.scanAct("HI");
             }
             if (screen4.getY() < 248){
                 screen4.moveBy(0,5);

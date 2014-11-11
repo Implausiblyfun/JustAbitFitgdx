@@ -7,7 +7,7 @@ android {
             storePassword 'justabitfit22'
         }
     }
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
     compileSdkVersion 20
     sourceSets {
         main {
@@ -20,6 +20,11 @@ android {
         }
 
         instrumentTest.setRoot('tests')
+    }
+    defaultConfig {}
+    productFlavors {
+    }
+    buildTypes {
     }
 }
 // needed to add JNI shared libraries to APK when compiling on CLI
@@ -122,5 +127,9 @@ idea {
         }
     }
 }
+
 dependencies {
+    compile files('libs/android-core-3.1.0.jar')
+    compile files('libs/android-integration-3.1.0.jar')
+    compile files('libs/core-3.1.0.jar')
 }
