@@ -1,8 +1,10 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Created by Stephen on 11/2/2014.
@@ -30,6 +32,10 @@ public class renderHelp {
         image.setName(file);
         stage.addActor(image);
         return image;
+    }
+
+    public static void setImageTexture(Image image, String file){
+        image.setDrawable(new TextureRegionDrawable( new TextureRegion(new Texture(file))));
     }
 
     // This acts like the inherent Image.setPosition, but at center to pair with

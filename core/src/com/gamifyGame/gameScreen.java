@@ -21,12 +21,15 @@ public class gameScreen implements Screen {
     BitmapFont font;
     Preferences pref;
     Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar;
+    ChangeImage tempImage;
     gamifyGame game;
-    Stage layer1,layer2,layer3,layer4,layer5,layer6,layer7;
+    Stage layer1,layer2,layer3,layer4,layer5,layer6,layer6_2,layer7;
 
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
 
     int frameCount,activeStage;
+    Boolean showChallengeHours;
+    ClickListener hourListener;
 
     public gameScreen(gamifyGame game) {
         this.game = game;
@@ -43,6 +46,7 @@ public class gameScreen implements Screen {
         layer4 = new Stage(view);
         layer5 = new Stage(view);
         layer6 = new Stage(view);
+        layer6_2 = new Stage(view);
         layer7 = new Stage(view);
         batch = new SpriteBatch();
 
@@ -68,6 +72,8 @@ public class gameScreen implements Screen {
         Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
         screen4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer7, 37,-25);
 
+        showChallengeHours = false;
+
         // *********** LISTENERS *******
         // SHOULD EVENTUALLY MOVE THESE THINGS SOMEWHERE ELSE
         ClickListener returnListener = new ClickListener(){
@@ -92,7 +98,14 @@ public class gameScreen implements Screen {
             {
                 int accumulator = pref.getInteger("TestValue");
                 if (accumulator == 0) accumulator = 1;
+                else accumulator = accumulator + accumulator;
                 pref.putInteger("TestValue",accumulator + accumulator);
+                if (showChallengeHours == true){
+                    Gdx.input.setInputProcessor(layer6);
+                    showChallengeHours = false;
+                }
+                else showChallengeHours = true;
+                Gdx.input.setInputProcessor(layer6_2);
                 return true;
             }
         });
@@ -153,6 +166,26 @@ public class gameScreen implements Screen {
         activeStage=3;
         Gdx.input.setInputProcessor(layer3);
 
+        int borderX = 19;
+        int borderY = 20;
+        Image border = renderHelp.imageSetup("LargeScreenBox.png",layer6_2,borderX,borderY);
+
+        ChangeImage[][] Week = new ChangeImage[7][24];
+        for (int i = 0; i < 7; i++ ){
+            int newX = borderX + 2 + (i*20);
+            for (int j = 0; j < 24; j++){
+                int newY = borderY + 230 - (j*10);
+                ChangeImage tempImage = new ChangeImage("InactiveHour.png","ActiveHour.png",layer6_2,newX,newY);
+                tempImage.addListener(new ClickListener(){
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        ChangeImage eventImage = (ChangeImage) event.getListenerActor();
+                        eventImage.swapTexture();
+                        return true;
+                    }
+                });
+                Week[i][j] = tempImage;
+            }
+        }
         //debug lines (is there a way to do this like with an array that is less dumb?)
         // not high priority considering not in final make of app
         layer1.setDebugAll(true);
@@ -161,6 +194,7 @@ public class gameScreen implements Screen {
         layer4.setDebugAll(true);
         layer5.setDebugAll(true);
         layer6.setDebugAll(true);
+        layer6_2.setDebugAll(true);
         layer7.setDebugAll(true);
     }
     // Setter(s)
@@ -180,7 +214,12 @@ public class gameScreen implements Screen {
         else if (activeStage == 3) {layer3.draw();}
         else if (activeStage == 4) {layer4.draw();}
         else if (activeStage == 5) {layer5.draw();}
-        else if (activeStage == 6) {layer6.draw();}
+        else if (activeStage == 6) {
+            layer6.draw();
+            if (showChallengeHours == true){
+                layer6_2.draw();
+            }
+        }
         else if (activeStage == 7) {
             layer7.draw();
             // Dummy quad transition code, not effective
