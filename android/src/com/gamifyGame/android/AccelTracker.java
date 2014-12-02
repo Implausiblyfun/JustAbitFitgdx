@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
@@ -47,18 +48,26 @@ public class AccelTracker extends IntentService {
             Az = Gdx.input.getAccelerometerZ();
             timestamp = System.currentTimeMillis();
             writeData = writeData + String.valueOf(Ax) + ',' + String.valueOf(Ay) + ',' +
-                    String.valueOf(Az) + ',' + timestamp + "\n";
+                    String.valueOf(Az) + ',' + String.valueOf(timestamp) + "\n";
             SystemClock.sleep(2000);
         }
         try {
-            accelData = openFileOutput("accelData" + timestamp + ".txt", Context.MODE_PRIVATE);
-            accelData.write(writeData.getBytes());
-            File dir = getFilesDir();
-            sendNotification("WE WROTE OUR DATA" + dir.getAbsolutePath());
-            accelData.close();
-            writeData = "";
-            linecount = 0;
+            if (isExternalStorageWritable()) {
+                File f = getAlbumStorageDir("Gamify/accelData");
+                String dir = f.getAbsolutePath();
+                String newfile = dir + File.pathSeparator + String.valueOf(timestamp) + ".txt";
+                accelData = new FileOutputStream(newfile);
+                accelData.write(writeData.getBytes());
+                sendNotification("WE WROTE OUR DATA");
+                accelData.close();
+                writeData = "";
+                linecount = 0;
+            }
+            else {
+                sendNotification("Storage not available!");
+            }
         } catch (Exception e) {
+            sendNotification(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -80,5 +89,23 @@ public class AccelTracker extends IntentService {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(1, mBuilder.build());
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+            sendNotification("No directory!");
+        }
+        return file;
     }
 }
