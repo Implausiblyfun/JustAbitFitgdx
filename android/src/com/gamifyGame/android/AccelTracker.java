@@ -6,6 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -22,7 +26,7 @@ import java.io.FileOutputStream;
 /**
  * Created by Stephen on 11/21/2014.
  */
-public class AccelTracker extends IntentService {
+public class AccelTracker extends IntentService implements SensorEventListener {
 
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     long timestamp;
@@ -30,6 +34,8 @@ public class AccelTracker extends IntentService {
     int linecount;
     FileOutputStream accelData;
     SharedPreferences pref;
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
 
     private AndroidApplicationConfiguration config;
 
@@ -41,16 +47,10 @@ public class AccelTracker extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        for (int i = 0; i < 15; i++) {
-            //sendNotification("WE'RE GETTING ACCELEROMETER DATA");
-            Ax = Gdx.input.getAccelerometerX();
-            Ay = Gdx.input.getAccelerometerY();
-            Az = Gdx.input.getAccelerometerZ();
-            timestamp = System.currentTimeMillis();
-            writeData = writeData + String.valueOf(Ax) + ',' + String.valueOf(Ay) + ',' +
-                    String.valueOf(Az) + ',' + String.valueOf(timestamp) + "\n";
-            SystemClock.sleep(2000);
-        }
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
+        SystemClock.sleep(32000);
         try {
             if (isExternalStorageWritable()) {
                 File f = getAlbumStorageDir("Gamify/accelData");
@@ -70,6 +70,7 @@ public class AccelTracker extends IntentService {
             sendNotification(e.getMessage());
             e.printStackTrace();
         }
+        System.exit(0);
     }
 
     private void sendNotification(String msg) {
@@ -107,5 +108,20 @@ public class AccelTracker extends IntentService {
             sendNotification("No directory!");
         }
         return file;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float axisX = event.values[0];
+        float axisY = event.values[1];
+        float axisZ = event.values[2];
+        timestamp = System.currentTimeMillis();
+        writeData = writeData + String.valueOf(axisX) + ',' + String.valueOf(axisY) + ',' +
+                String.valueOf(axisZ) + ',' + String.valueOf(timestamp) + "\n";
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
