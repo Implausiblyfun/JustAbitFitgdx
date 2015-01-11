@@ -22,8 +22,7 @@ public class gameScreen implements Screen {
     static int scrWidth,scrHeight;
     BitmapFont font;
     Preferences pref;
-    Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar;
-    ChangeImage tempImage;
+    Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar, sky;
     gamifyGame game;
     Stage layer1,layer2,layer3,layer4,layer5,layer6,layer6_2,layer7;
 
@@ -31,7 +30,6 @@ public class gameScreen implements Screen {
 
     int frameCount,activeStage;
     Boolean showChallengeHours;
-    ClickListener hourListener;
 
     public gameScreen(gamifyGame game, ActionResolver actionResolver) {
         this.game = game;
@@ -54,26 +52,27 @@ public class gameScreen implements Screen {
         batch = new SpriteBatch();
 
         // Layer assignments
-        background = renderHelp.imageSetup("Background180x296.png", layer1, 0, 0);
+        sky = renderHelp.imageSetup("day.png", layer1, 0, 0);
+        background = renderHelp.imageSetup("background.png", layer1, 0, 0);
 
         itemBar = renderHelp.imageSetup("ItemBar.png", layer2, 0, 254);
         Image placeholderbar = renderHelp.imageSetup("placeholder128x24.png",layer2,26,8);
 
-        quad1 = renderHelp.imageSetupCenter("Quad1Box48x48.png", layer3, 37, 50);
-        quad2 = renderHelp.imageSetupCenter("Quad2Box48x48.png", layer3, -37, 50);
-        quad3 = renderHelp.imageSetupCenter("Quad3Box48x48.png", layer3, -37, -25);
-        quad4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer3, 37, -25);
-        midbox = renderHelp.imageSetupCenter("MidBox64x64.png", layer3, 0, 12);
+        quad1 = renderHelp.imageSetupCenter("StepBox.png", layer3, 37, 50);
+        quad2 = renderHelp.imageSetupCenter("Streakbox.png", layer3, -37, 50);
+        quad3 = renderHelp.imageSetupCenter("Trophybox.png", layer3, -37, -25);
+        quad4 = renderHelp.imageSetupCenter("48box.png", layer3, 37, -25);
+        midbox = renderHelp.imageSetupCenter("Midbox.png", layer3, 0, 12);
 
-        Image screen1 = renderHelp.imageSetup("Quad1Box48x48.png", layer4, 0,0);
+        Image screen1 = renderHelp.imageSetup("StepBox.png", layer4, 0,0);
         Image placeholder4 = renderHelp.imageSetupCenter("placeholder140x140.png",layer4,0,0);
-        Image screen2 = renderHelp.imageSetup("Quad2Box48x48.png", layer5, 132,0);
+        Image screen2 = renderHelp.imageSetup("Streakbox.png", layer5, 132,0);
         Image placeholder5 = renderHelp.imageSetupCenter("placeholder140x140.png",layer5,0,0);
-        Image screen3 = renderHelp.imageSetup("Quad3Box48x48.png", layer6, 132,248);
+        Image screen3 = renderHelp.imageSetup("Trophybox.png", layer6, 132,248);
         Image placeholder6 = renderHelp.imageSetupCenter("placeholder140x140.png",layer6,0,0);
         Image placeholder62 = renderHelp.imageSetup("placeholder64x64.png",layer6,0,0);
         Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
-        screen4 = renderHelp.imageSetupCenter("Quad4Box48x48.png", layer7, 37,-25);
+        screen4 = renderHelp.imageSetupCenter("48box.png", layer7, 37,-25);
 
         showChallengeHours = false;
 

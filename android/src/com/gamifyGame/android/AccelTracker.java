@@ -51,14 +51,22 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
         SystemClock.sleep(32000);
+        String completeData = writeData.substring(0);
+        int activity = Classify(completeData);
         try {
             if (isExternalStorageWritable()) {
-                File f = getAlbumStorageDir("Gamify/accelData");
+                File f = getAlbumStorageDir("Gamify2/accelData");
                 String dir = f.getAbsolutePath();
                 String newfile = dir + File.pathSeparator + String.valueOf(timestamp) + ".txt";
                 accelData = new FileOutputStream(newfile);
                 accelData.write(writeData.getBytes());
-                sendNotification("WE WROTE OUR DATA");
+                accelData.close();
+                f = getAlbumStorageDir("GamifyActivity/accelData");
+                dir = f.getAbsolutePath();
+                newfile = dir + File.pathSeparator + String.valueOf(timestamp) + ".txt";
+                accelData = new FileOutputStream(newfile);
+                accelData.write(String.valueOf(activity).getBytes());
+                //sendNotification("WE WROTE OUR DATA");
                 accelData.close();
                 writeData = "";
                 linecount = 0;
@@ -71,6 +79,87 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             e.printStackTrace();
         }
         System.exit(0);
+    }
+
+    protected int Classify(String completeData){
+        float xthreshold = (float)0.0;
+        float ythreshold = (float)0.0;
+        float zthreshold = (float)0.0;
+        int xthresholdTotal = 0;
+        int ythresholdTotal = 0;
+        int zthresholdTotal = 0;
+        int xbypass = 1;
+        int ybypass = 1;
+        int zbypass = 1;
+        int timer = 3000;
+        long timestamp = 0;
+        int inactiveTime = 0;
+        int length;
+        String[] coords;
+        String line;
+        String[] lines = completeData.split(System.getProperty("line.separator"));
+        for(int i = 0; i < lines.length; i++) {
+            line = lines[i];
+            coords = line.split(",");
+            if (timestamp != 0){
+                timer -= Long.valueOf(coords[3]) - timestamp;
+            }
+            timestamp = Long.valueOf(coords[3]);
+            if (timer < 0){
+                inactiveTime -= timer;
+                timer = 0;
+            }
+            xthreshold = thresholdCheck(xthreshold,Float.valueOf(coords[0]));
+            if (xthreshold < -4000) {
+                xthreshold += 5000;
+                xbypass = 1;
+            }
+            else xbypass = 0;
+            xthresholdTotal += xthreshold;
+            ythreshold = thresholdCheck(ythreshold,Float.valueOf(coords[1]));
+            if (ythreshold < -4000) {
+                ythreshold += 5000;
+                ybypass = 1;
+            }
+            else ybypass = 0;
+            ythresholdTotal += ythreshold;
+            zthreshold = thresholdCheck(zthreshold,Float.valueOf(coords[2]));
+            if (zthreshold < -4000) {
+                zthreshold += 5000;
+                zbypass = 1;
+            }
+            else zbypass = 0;
+            zthresholdTotal += zthreshold;
+            if (0 == xbypass || 0 == ybypass || 0 == zbypass){
+                timer = 3000;
+            }
+        }
+        float xaverage = xthresholdTotal / lines.length;
+        float yaverage = ythresholdTotal / lines.length;
+        float zaverage = zthresholdTotal / lines.length;
+        return activityAnalysis(xaverage,yaverage,zaverage,inactiveTime);
+    }
+
+    protected int activityAnalysis(float x, float y, float z, int t){
+        if ((x < 0) && (y < -10) && (z < -5) && t < 5000){
+            // "active", or walking
+            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            return 1;
+        }
+        sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
+        // 0 currently means in-active
+        return 0;
+    }
+
+    protected float thresholdCheck(float threshold,float curValue){
+        float delta = (float)2.0;
+        if (Math.abs(curValue - threshold) < delta){
+            return curValue;
+        }
+        else if (threshold > curValue){
+            return curValue - 5000;
+        }
+        return threshold - 5000;
     }
 
     private void sendNotification(String msg) {
@@ -105,7 +194,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
-            sendNotification("No directory!");
+            //sendNotification("No directory!");
         }
         return file;
     }
