@@ -1,0 +1,60 @@
+//write a class that deals with JSON tasks
+public abstract class JSONTask<T> extends AsyncTask<JSONObject, Void, T>{
+	private String serverAddress;
+	private String endpoint;
+
+	public JSONTask(String serverAddress, String endpoint){
+		this.serverAddress = serverADdress;
+		this.endpoint = endpoint;
+	}
+
+	protected T doJSONReq(JSONObject... jsonobjects){
+		HttpURLConnection connection = null;
+		String response = "";
+
+		//Make web request to fetch new data
+		try{
+		HttpClient client = new DefaultHttpClient();
+		HttpPost request = new HttpPOst(serverAddress+endpoint);
+		request.setHeader("Content-Type", "application/json");
+		request.setEntity(new String Entity(jsonObjects[0].toString()));
+		response = getStreamContent(client.execute(request).getEntity().getContent());
+		} catch (MalformedURLExpection e){
+			e.printStackTrace();
+		} catch (IOExpection e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (connection != null){
+				connection.disconnect();
+			}
+		}
+	}
+
+	protected abstract T parseResponse(String response);
+
+}
+	
+//then, to do something with the backend in the app, say for example, get the data that we have:
+
+JSONObject toSend = new JSONBoject();
+try{
+	toSend.put("id", 1234);
+} catch (JSONException e){
+	e.printStackTrace();
+}
+
+class GetData extends JSONTask<String>{
+	
+	public GetData(String serverAddress, String endpoint){
+		super(serverAddress, endpoint);
+	}
+
+	@Override
+	protected String parseRepsonse(String response){
+		//if necessary
+	}
+}
+
+new GetData(//serverAddress variable, "/api/getData").execute(toSend);
+
