@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Entity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -24,6 +25,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,6 +100,50 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         }
     }
 
+    protected  void getBackendResponse(JSONObject jsonObject1){
+        HttpURLConnection connection = null;
+        int output = -999999;
+
+        //Make web request to fetch new data
+        try{
+            HttpClient client = new DefaultHttpClient();
+            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/getData");
+            request.setHeader("Content-Type", "application/json");
+
+            request.setEntity(new StringEntity(jsonObject1.toString()));
+
+            HttpResponse response = client.execute(request);
+
+
+            String res = EntityUtils.toString(response.getEntity());
+
+            JSONObject result = new JSONObject(res);
+
+
+            output = result.getInt("id");
+
+            String strOut = Integer.toString(output);
+            sendNotification("x="+String.valueOf(output));
+
+
+
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+
+
+
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -116,6 +162,15 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         connectTry(Coords, actThing);
+
+        JSONObject toSend = new JSONObject();
+        try {
+            toSend.put("userID", 1234);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        getBackendResponse(toSend);
+
         System.exit(0);
         try {
             if (isExternalStorageWritable()) {
