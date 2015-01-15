@@ -12,15 +12,27 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 
 
 /**
@@ -45,14 +57,66 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         writeData = "";
     }
 
+    protected void connectTry(String[][] coord, String[] actId){
+        JSONObject toSend = new JSONObject();
+        try {
+            toSend.put("userID", 1234);
+            toSend.put("xyz", coord);
+            toSend.put("activity", actId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        doJSONReq(toSend);
+    }
+
+    protected void doJSONReq(JSONObject jsonObject1){
+        HttpURLConnection connection = null;
+        String output = "";
+
+        //Make web request to fetch new data
+        try{
+            HttpClient client = new DefaultHttpClient();
+            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeData");
+            request.setHeader("Content-Type", "application/json");
+
+            request.setEntity(new StringEntity(jsonObject1.toString()));
+
+            HttpResponse response = client.execute(request);
+
+
+
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
-        SystemClock.sleep(32000);
+        SystemClock.sleep(5000);
         String completeData = writeData.substring(0);
         int activity = Classify(completeData);
+
+        String[] preCoords = writeData.split(System.getProperty("line.separator"));
+        String[][] Coords = new String[preCoords.length][4];
+        for(int i=0; i < preCoords.length; i++){
+            Coords[i] = preCoords[i].split(",");
+        }
+        String[] actThing = new String [2];
+        actThing[0] = Integer.toString(activity);
+        actThing[1] = Coords[0][3];
+        connectTry(Coords, actThing);
+        System.exit(0);
         try {
             if (isExternalStorageWritable()) {
                 File f = getAlbumStorageDir("Gamify2/accelData");

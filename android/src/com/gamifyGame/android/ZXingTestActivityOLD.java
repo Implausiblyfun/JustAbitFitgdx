@@ -26,10 +26,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-public final class ZXingTestActivity extends Activity {
+public final class ZXingTestActivityOLD extends Activity {
 
-    private static final String TAG = ZXingTestActivity.class.getSimpleName();
-    private static final String PACKAGE_NAME = ZXingTestActivity.class.getPackage().getName();
+    private static final String TAG = ZXingTestActivityOLD.class.getSimpleName();
+    private static final String PACKAGE_NAME = ZXingTestActivityOLD.class.getPackage().getName();
 
 
     Context context;
@@ -114,7 +114,7 @@ public final class ZXingTestActivity extends Activity {
     private final View.OnClickListener scanProduct = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
+            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivityOLD.this);
             integrator.addExtra("SCAN_WIDTH", 800);
             integrator.addExtra("SCAN_HEIGHT", 200);
             integrator.addExtra("RESULT_DISPLAY_DURATION_MS", 3000L);
@@ -126,7 +126,7 @@ public final class ZXingTestActivity extends Activity {
     private final View.OnClickListener scanQRCode = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
+            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivityOLD.this);
             integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
         }
     };
@@ -134,7 +134,7 @@ public final class ZXingTestActivity extends Activity {
     private final View.OnClickListener scanAnything = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
+            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivityOLD.this);
             integrator.initiateScan();
         }
     };
@@ -202,7 +202,7 @@ public final class ZXingTestActivity extends Activity {
     private final View.OnClickListener encodeHiddenData = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
+            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivityOLD.this);
             integrator.addExtra("ENCODE_SHOW_CONTENTS", false);
             integrator.shareText("SURPRISE!");
         }
