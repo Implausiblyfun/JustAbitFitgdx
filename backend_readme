@@ -1,3 +1,15 @@
+//Two apis, one to store data one to retrieve data: 
+	//'/api/GetData' and '/api/StoreData'
+	//Server address: 104.131.171.125 Port: 3000
+	//to get the data, just send a json object with an an attribute name "id" and the server will return a json object that looks like:
+		/**
+			{ 
+				id: data._id, 
+				xyz: data.xyz,
+				activity: data.activity
+			}
+		**/
+
 //write a class that deals with JSON tasks
 public abstract class JSONTask<T> extends AsyncTask<JSONObject, Void, T>{
 	private String serverAddress;
