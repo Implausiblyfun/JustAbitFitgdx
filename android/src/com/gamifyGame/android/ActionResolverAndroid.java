@@ -21,7 +21,7 @@ public class ActionResolverAndroid implements ActionResolver {
             @Override
             public void run() {
                 //Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, ZXingTestActivity.class);
+                Intent intent = new Intent(context, Zxing.class);
                 context.startActivity(intent);
             }
         });
