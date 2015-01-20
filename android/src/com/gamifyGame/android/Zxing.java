@@ -22,11 +22,14 @@ public final class Zxing extends Activity {
     Bundle thisBundle;
 
     public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+
         this.thisBundle = icicle;
         this.context = context;
         IntentIntegrator integrator;
         integrator = new IntentIntegrator(Zxing.this);
         integrator.initiateScan();
+        setContentView(R.layout.scaninter);
     }
 
 

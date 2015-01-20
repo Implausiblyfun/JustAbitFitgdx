@@ -33,7 +33,8 @@
             android:name=".AccelAlarm"/>
         <activity android:name="ZXingTestActivity"
             android:label="Scanner"></activity>
-
+        <activity android:name="Zxing"
+            android:label="Scanner"></activity>
 
     </application>
 
