@@ -149,7 +149,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
-        SystemClock.sleep(5000);
+        SystemClock.sleep(32000);
         String completeData = writeData.substring(0);
         int activity = Classify(completeData);
 

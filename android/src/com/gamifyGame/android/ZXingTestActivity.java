@@ -2,6 +2,7 @@ package com.gamifyGame.android;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -38,7 +40,12 @@ public final class ZXingTestActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         this.thisBundle = icicle;
-        //this.context = context;
+        this.context = context;
+        IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
+
+        setContentView(R.layout.scaninter);
+        findViewById(R.id.get_camera_parameters).setOnClickListener(getCameraParameters);
+        findViewById(R.id.restart_app).setOnClickListener(restartApp);
         findViewById(R.id.scan_anything).setOnClickListener(scanAnything);
 
     }
@@ -82,6 +89,7 @@ public final class ZXingTestActivity extends Activity {
             String contents = result.getContents();
             if (contents != null) {
                 showDialog(R.string.result_succeeded, result.toString());
+                //showDialog(R.string.result_succeeded, "WHERE IS THIS");
             } else {
                 showDialog(R.string.result_failed, getString(R.string.result_failed_why));
             }
@@ -111,25 +119,7 @@ public final class ZXingTestActivity extends Activity {
         }
     };
 
-    private final View.OnClickListener scanProduct = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
-            integrator.addExtra("SCAN_WIDTH", 800);
-            integrator.addExtra("SCAN_HEIGHT", 200);
-            integrator.addExtra("RESULT_DISPLAY_DURATION_MS", 3000L);
-            integrator.addExtra("PROMPT_MESSAGE", "Custom prompt to scan a product");
-            integrator.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
-        }
-    };
 
-    private final View.OnClickListener scanQRCode = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
-            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
-        }
-    };
 
     private final View.OnClickListener scanAnything = new View.OnClickListener() {
         @Override
@@ -139,106 +129,23 @@ public final class ZXingTestActivity extends Activity {
         }
     };
 
-    private final View.OnClickListener searchBookContents = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent("com.google.zxing.client.android.SEARCH_BOOK_CONTENTS");
-            intent.putExtra("ISBN", "9780441014989");
-            intent.putExtra("QUERY", "future");
-            startActivity(intent);
-        }
-    };
-
-    private final View.OnClickListener encodeURL = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            encodeBarcode("TEXT_TYPE", "http://www.nytimes.com");
-        }
-    };
-
-    private final View.OnClickListener encodeEmail = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            encodeBarcode("EMAIL_TYPE", "foo@example.com");
-        }
-    };
-
-    private final View.OnClickListener encodePhone = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            encodeBarcode("PHONE_TYPE", "2125551212");
-        }
-    };
-
-    private final View.OnClickListener encodeSMS = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            encodeBarcode("SMS_TYPE", "2125551212");
-        }
-    };
-
-    private final View.OnClickListener encodeContact = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ContactsContract.Intents.Insert.NAME, "Jenny");
-            bundle.putString(ContactsContract.Intents.Insert.PHONE, "8675309");
-            bundle.putString(ContactsContract.Intents.Insert.EMAIL, "jenny@the80s.com");
-            bundle.putString(ContactsContract.Intents.Insert.POSTAL, "123 Fake St. San Francisco, CA 94102");
-            encodeBarcode("CONTACT_TYPE", bundle);
-        }
-    };
-
-    private final View.OnClickListener encodeLocation = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Bundle bundle = new Bundle();
-            bundle.putFloat("LAT", 40.829208f);
-            bundle.putFloat("LONG", -74.191279f);
-            encodeBarcode("LOCATION_TYPE", bundle);
-        }
-    };
-
-    private final View.OnClickListener encodeHiddenData = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
-            integrator.addExtra("ENCODE_SHOW_CONTENTS", false);
-            integrator.shareText("SURPRISE!");
-        }
-    };
-
-    private final View.OnClickListener encodeBadData = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            encodeBarcode(null, "bar");
-        }
-    };
-
-    private final View.OnClickListener shareViaBarcode = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startActivity(new Intent("com.google.zxing.client.android.SHARE"));
-        }
-    };
-
     private void showDialog(int title, CharSequence message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton(R.string.ok_button, null);
+        final CharSequence tmpMessage = message;
+        //builder.setMessage("HI HERE I AM!");
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), tmpMessage,Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), AndroidLauncher.class);
+                intent.putExtra("Message", tmpMessage);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Rescan", null);
         builder.show();
-    }
-
-    private void encodeBarcode(CharSequence type, CharSequence data) {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.shareText(data, type);
-    }
-
-    private void encodeBarcode(CharSequence type, Bundle data) {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.addExtra("ENCODE_DATA", data);
-        integrator.shareText(data.toString(), type); // data.toString() isn't used
     }
 
     private static CharSequence getFlattenedParams() {
