@@ -59,7 +59,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         writeData = "";
     }
 
-    protected void connectTry(String[][] coord, String[] actId){
+    protected void connectTry(String coord, String actId){
         JSONObject toSend = new JSONObject();
         try {
             toSend.put("userID", 1234);
@@ -153,15 +153,14 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         String completeData = writeData.substring(0);
         int activity = Classify(completeData);
 
+        writeData.replace("\n",")(");
+        writeData = "(" + writeData.substring(0,writeData.length()-1);
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
-        String[][] Coords = new String[preCoords.length][4];
-        for(int i=0; i < preCoords.length; i++){
-            Coords[i] = preCoords[i].split(",");
-        }
-        String[] actThing = new String [2];
-        actThing[0] = Integer.toString(activity);
-        actThing[1] = Coords[0][3];
-        connectTry(Coords, actThing);
+        String[] Coords = preCoords[0].split(",");
+        String acttimestamp = Coords[3];
+        String actThing = Integer.toString(activity);
+        actThing = "(" + actThing + "," + acttimestamp + ")";
+        connectTry(writeData, actThing);
 
         JSONObject toSend = new JSONObject();
         try {
