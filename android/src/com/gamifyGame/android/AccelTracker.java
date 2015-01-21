@@ -60,16 +60,27 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     }
 
     protected void connectTry(String[][] coord, String[] actId){
-        JSONObject toSend = new JSONObject();
-        try {
-            toSend.put("userID", 1234);
-            toSend.put("xyz", coord);
-            toSend.put("activity", actId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        doJSONReq(toSend);
+        for(int i=0; i< coord.length; i++) {
+            JSONObject toSend = new JSONObject();
+            try {
+                toSend.put("userID", 1234);
+                toSend.put("xyz", coord[i]);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            doJSONReq(toSend);
+        }
+        try {
+
+
+            JSONObject toSend = new JSONObject();
+            toSend.put("userID", 1234);
+            toSend.put("activity", actId);
+            doJSONReq(toSend);
+        }catch(JSONException e){e.printStackTrace();}
     }
 
     protected void doJSONReq(JSONObject jsonObject1){
