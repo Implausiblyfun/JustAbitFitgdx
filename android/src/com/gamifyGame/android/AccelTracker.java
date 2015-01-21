@@ -79,7 +79,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             JSONObject toSend = new JSONObject();
             toSend.put("userID", 1234);
             toSend.put("activity", actId);
-            doJSONReq(toSend);
+            doJSONACT(toSend);
         }catch(JSONException e){e.printStackTrace();}
     }
 
@@ -90,7 +90,35 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         //Make web request to fetch new data
         try{
             HttpClient client = new DefaultHttpClient();
-            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeData");
+            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
+            request.setHeader("Content-Type", "application/json");
+
+            request.setEntity(new StringEntity(jsonObject1.toString()));
+
+            HttpResponse response = client.execute(request);
+
+
+
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+
+    protected void doJSONACT(JSONObject jsonObject1){
+        HttpURLConnection connection = null;
+        String output = "";
+
+        //Make web request to fetch new data
+        try{
+            HttpClient client = new DefaultHttpClient();
+            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeACT");
             request.setHeader("Content-Type", "application/json");
 
             request.setEntity(new StringEntity(jsonObject1.toString()));
