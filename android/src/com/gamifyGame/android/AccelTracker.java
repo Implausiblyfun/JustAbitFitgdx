@@ -84,7 +84,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
             JSONObject toSend = new JSONObject();
             toSend.put("userID", 1234);
-            toSend.put("activity", actId);
+            toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
             doJSONACT(toSend);
         }catch(JSONException e){e.printStackTrace();}
     }
