@@ -53,6 +53,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     private AndroidApplicationConfiguration config;
 
+    private final String GAMIFY_VERSION = "1";
+
+
+
     public AccelTracker() {
         super("Tracker");
         linecount = 0;
@@ -197,9 +201,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         for(int i=0; i < preCoords.length; i++){
             Coords[i] = preCoords[i].split(",");
         }
-        String[] actThing = new String [2];
+        String[] actThing = new String [3];
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
+        actThing[2] = GAMIFY_VERSION;
         connectTry(Coords, actThing);
 
         JSONObject toSend = new JSONObject();
