@@ -15,10 +15,13 @@ import java.util.Calendar;
  */
 public class AccelAlarm extends WakefulBroadcastReceiver {
 
+    String GAMIFY_VERSION;
+
     Preferences pref;
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent service = new Intent(context, AccelTracker.class);
+        service.putExtra("VERSION", GAMIFY_VERSION);
         startWakefulService(context, service);
 }
 
@@ -35,4 +38,5 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
     }
 
     public void setPref(Preferences pref){this.pref = pref;}
+    public void setVersion(String version){this.GAMIFY_VERSION = version;}
 }

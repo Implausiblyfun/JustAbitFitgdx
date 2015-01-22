@@ -7,9 +7,12 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.gamifyGame.gamifyGame;
 
+import java.io.File;
+
 
 public class AndroidLauncher extends AndroidApplication {
 
+    final String GAMIFY_VERSION = "0.0.01a";
     private gamifyGame gameProcess;
     AccelAlarm alarm = new AccelAlarm();
     ActionResolverAndroid actionResolverAndroid;
@@ -22,9 +25,11 @@ public class AndroidLauncher extends AndroidApplication {
         actionResolverAndroid = new ActionResolverAndroid(this);
         gameProcess = new gamifyGame(actionResolverAndroid);
 
+        File directory = getFilesDir();
         // Start Accel tracking in background
         pref = this.getPreferences("Bitfitpref");
         alarm.setPref(pref);
+        alarm.setVersion(GAMIFY_VERSION);
         alarm.setAlarm(this);
 
         // Preferences file stores data for later running of app

@@ -13,6 +13,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 
@@ -53,7 +54,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     private AndroidApplicationConfiguration config;
 
-    private final String GAMIFY_VERSION = "1";
+    private String GAMIFY_VERSION;
 
 
 
@@ -191,6 +192,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        GAMIFY_VERSION = intent.getStringExtra("GAMIFY_VERSION");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
