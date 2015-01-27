@@ -196,6 +196,16 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
+
+
+        JSONObject result = new JSONObject();
+        try {
+            result.put("userID", 1234);
+            result.put("startTime", "1421812247091");
+            result.put("endTime", "1421812252091");
+            getBackendResponse(result);
+        }catch(Exception e){e.printStackTrace();}
+
         SystemClock.sleep(32000);
         String completeData = writeData.substring(0);
         int activity = Classify(completeData);
@@ -209,7 +219,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
-        connectTry(Coords, actThing);
+        //connectTry(Coords, actThing);
 
         JSONObject toSend = new JSONObject();
         try {

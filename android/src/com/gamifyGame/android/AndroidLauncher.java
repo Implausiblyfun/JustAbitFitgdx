@@ -1,6 +1,7 @@
 package com.gamifyGame.android;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -18,10 +19,11 @@ public class AndroidLauncher extends AndroidApplication {
     ActionResolverAndroid actionResolverAndroid;
     Preferences pref;
 
+
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         actionResolverAndroid = new ActionResolverAndroid(this);
         gameProcess = new gamifyGame(actionResolverAndroid);
 
@@ -31,6 +33,10 @@ public class AndroidLauncher extends AndroidApplication {
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
         alarm.setAlarm(this);
+
+        setContentView(R.layout.loginscreen);
+
+
 
         // Preferences file stores data for later running of app
         gameProcess.setPref(pref);
