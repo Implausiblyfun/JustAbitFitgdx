@@ -34,7 +34,7 @@ public class AndroidLauncher extends AndroidApplication {
         alarm.setVersion(GAMIFY_VERSION);
         alarm.setAlarm(this);
 
-        setContentView(R.layout.loginscreen);
+        setContentView(R.layout.loginscreenres);
 
 
 
