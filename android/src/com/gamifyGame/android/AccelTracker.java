@@ -76,6 +76,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                sendNotification(e.getMessage());
             }
 
             doJSONReq(toSend);
@@ -87,7 +88,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             toSend.put("userID", 1234);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
             doJSONACT(toSend);
-        }catch(JSONException e){e.printStackTrace();}
+        }catch(JSONException e){
+            e.printStackTrace();
+            sendNotification(e.getMessage());
+        }
     }
 
     protected void doJSONReq(JSONObject jsonObject1){
@@ -108,12 +112,15 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
+            sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
                 connection.disconnect();
+                sendNotification("Connection not available");
             }
         }
     }
@@ -136,11 +143,14 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
+            sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
+                sendNotification("Connection not found");
                 connection.disconnect();
             }
         }
@@ -175,13 +185,17 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
+            sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            sendNotification(e.getMessage());
         }catch(JSONException e){
             e.printStackTrace();
+            sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
+                sendNotification("No connection");
                 connection.disconnect();
             }
         }
@@ -192,7 +206,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        GAMIFY_VERSION = intent.getStringExtra("GAMIFY_VERSION");
+        GAMIFY_VERSION = intent.getStringExtra("VERSION");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
@@ -203,7 +217,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             result.put("userID", 1234);
             result.put("startTime", "1421812247091");
             result.put("endTime", "1421812252091");
-            getBackendResponse(result);
+            //getBackendResponse(result);
         }catch(Exception e){e.printStackTrace();}
 
         SystemClock.sleep(32000);
@@ -219,7 +233,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
-        //connectTry(Coords, actThing);
+        connectTry(Coords, actThing);
 
         JSONObject toSend = new JSONObject();
         try {
@@ -227,7 +241,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        getBackendResponse(toSend);
+        //getBackendResponse(toSend);
 
         System.exit(0);
         try {

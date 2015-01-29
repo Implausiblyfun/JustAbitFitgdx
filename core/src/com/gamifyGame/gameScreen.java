@@ -2,12 +2,14 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.lang.Math;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,12 +26,16 @@ public class gameScreen implements Screen {
     Preferences pref;
     Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar, sky;
     gamifyGame game;
-    Stage layer1,layer2,layer3,layer4,layer5,layer6,layer6_2,layer7;
+    Stage layer1,layer2,layer3,layer4,layer5,layer6,layer6_2,layer7, layer8;
+    final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
+    ShapeRenderer shapes;
+
 
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
 
     int frameCount,activeStage;
     Boolean showChallengeHours;
+    renderHelp renderer;
 
     public gameScreen(gamifyGame game, ActionResolver actionResolver) {
         this.game = game;
@@ -37,6 +43,10 @@ public class gameScreen implements Screen {
         // settings for stages
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
+
+        // for rendering shapes
+        shapes = new ShapeRenderer();
+        renderer = new renderHelp();
 
         // Stage setup
         // Could have multiple viewports for rendering at different resolutions
@@ -49,6 +59,7 @@ public class gameScreen implements Screen {
         layer6 = new Stage(view);
         layer6_2 = new Stage(view);
         layer7 = new Stage(view);
+        layer8 = new Stage(view);
         batch = new SpriteBatch();
 
         // Layer assignments
@@ -236,6 +247,9 @@ public class gameScreen implements Screen {
         // Do we need to do this every frame? Probably not?
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         batch.begin();
+        shapes.begin(ShapeRenderer.ShapeType.Filled);
+        shapes.setColor(boxColor);
+        renderer.makeBox(shapes,layer8,20,20,24,24);
 
         // ***** DEBUG PRINTING ***** //
         if (frameCount % 5 == 0) {
@@ -266,7 +280,9 @@ public class gameScreen implements Screen {
         font.draw(batch, String.valueOf(Az), 50, 20);
         font.draw(batch, String.valueOf(pref.getInteger("TestValue")),50,200);
 
+        shapes.end();
         batch.end();
+        layer8.draw();
         // If we want to do more things with frame counting in groups of 30
         if (frameCount == 30) {
             frameCount = 0;
