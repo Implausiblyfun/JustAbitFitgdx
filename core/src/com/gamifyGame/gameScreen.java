@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.lang.Math;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,6 +24,7 @@ public class gameScreen implements Screen {
     SpriteBatch batch;
     static int scrWidth,scrHeight;
     BitmapFont font;
+    BitmapFont font2;
     Preferences pref;
     Image midbox, quad1,quad2,quad3,quad4,screen1,screen2,screen3,screen4,background,itemBar, sky;
     gamifyGame game;
@@ -171,7 +173,12 @@ public class gameScreen implements Screen {
         });
 
         // More settings
-        font=new BitmapFont();
+        font2=new BitmapFont(Gdx.files.internal("subway.fnt"), Gdx.files.internal("subway.png"), false);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 12;
+        font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose();
         frameCount=0;
         Ax=Gdx.input.getAccelerometerX();
         Ay=Gdx.input.getAccelerometerY();
