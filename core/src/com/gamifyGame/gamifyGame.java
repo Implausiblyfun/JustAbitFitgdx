@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,9 +13,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Map;
 
 public class gamifyGame extends Game{
-    gameScreen gameS;
     Preferences pref;
     ActionResolver actionResolver;
+    mainScreen mainS;
+    quad1Screen quad1S;
+    quad2Screen quad2S;
+    quad3Screen quad3S;
+    quad4Screen quad4S;
+    buyScreen buyS;
 
     //READ THIS
     //READDDD
@@ -30,9 +36,15 @@ public class gamifyGame extends Game{
 
     public void create() {
 
-        gameS = new gameScreen(this, actionResolver);
-        gameS.setPref(pref);
-        setScreen(gameS);
+        renderHelper renderer = new renderHelper();
+        listenerHelper listenerHelper = new listenerHelper(this, pref);
+        mainS = new mainScreen(this, actionResolver, renderer, listenerHelper, pref);
+        quad1S = new quad1Screen(this, actionResolver, renderer, listenerHelper, pref);
+        quad2S = new quad2Screen(this, actionResolver, renderer, listenerHelper, pref);
+        quad3S = new quad3Screen(this, actionResolver, renderer, listenerHelper, pref);
+        quad4S = new quad4Screen(this, actionResolver, renderer, listenerHelper, pref);
+        buyS = new buyScreen(this, actionResolver, renderer, listenerHelper, pref);
+        setScreen(mainS);
     }
 
     // Setter(s)
