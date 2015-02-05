@@ -77,9 +77,9 @@ public class buyScreen implements Screen {
     @Override
     public void hide() {
         // called when current screen changes from this to a different screen
-        try {renderer.getLayer(0).dispose();}catch (IllegalArgumentException e){};
-        try {renderer.getLayer(1).dispose();}catch (IllegalArgumentException e){};
-        try {renderer.getLayer(2).dispose();}catch (IllegalArgumentException e){};
+        renderer.getLayer(0).clear();
+        renderer.getLayer(1).clear();
+        renderer.getLayer(2).clear();
     }
 
     @Override

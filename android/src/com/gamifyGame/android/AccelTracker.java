@@ -56,6 +56,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     private String GAMIFY_VERSION;
 
+    int activity;
+
 
 
     public AccelTracker() {
@@ -222,7 +224,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         SystemClock.sleep(32000);
         String completeData = writeData.substring(0);
-        int activity = Classify(completeData);
+        activity = Classify(completeData);
 
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
         String[][] Coords = new String[preCoords.length][4];
@@ -356,9 +358,26 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     private void sendNotification(String msg) {
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this, AndroidLauncher.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        String curActivity = "inactive";
+        switch (activity){
+            case 0: curActivity = "inactive";
+                break;
+            case 1: curActivity = "active";
+                break;
+            case 2: curActivity = "running";
+                break;
+            case 3: curActivity = "cycling";
+                break;
+            case 4: curActivity = "dancing";
+                break;
+        }
+        intent.putExtra("curActivity", curActivity);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AndroidLauncher.class), 0);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

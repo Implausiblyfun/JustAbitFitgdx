@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by Stephen on 2/1/2015.
+ * Created by Patrick Stephen on 2/1/2015.
  */
 public class mainScreen implements Screen {
 
@@ -111,7 +111,7 @@ public class mainScreen implements Screen {
             Stage layer1 = renderer.getLayer(1);
             Stage layer2 = renderer.getLayer(2);
 
-            // Only items that need listeners should be maintained I.E
+            // Only items that need listeners should be maintained as Images I.E
             // These two don't need listeners--
             renderer.imageSetup("day.png", layer0, 0, 0);
             renderer.imageSetup("background.png", layer0, 0, 0);
@@ -124,13 +124,13 @@ public class mainScreen implements Screen {
 
             // Assign items their listeners
             quad1.addListener(listenerH.goScreen(1));
-            quad1.addListener(listenerH.setInt("toScreen",1));
+            //quad1.addListener(listenerH.setInt("toScreen",1));
             quad2.addListener(listenerH.goScreen(2));
             quad3.addListener(listenerH.goScreen(3));
             quad4.addListener(listenerH.goScreen(4));
             midbox.addListener(listenerH.goScreen(5));
             frameCount = 0;
-            pref.putInteger("toScreen",0);
+            //pref.putInteger("toScreen",0);
         }
 
         @Override

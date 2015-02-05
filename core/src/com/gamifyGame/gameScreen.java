@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.lang.Math;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+//import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,8 +19,8 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 
-public class gameScreen implements Screen {
-    ActionResolver actionResolver;
+public class gameScreen {//implements Screen {
+    /*ActionResolver actionResolver;
     SpriteBatch batch;
     static int scrWidth,scrHeight;
     BitmapFont font;
@@ -65,27 +65,27 @@ public class gameScreen implements Screen {
         batch = new SpriteBatch();
 
         // Layer assignments
-        sky = renderHelp.imageSetup("day.png", layer1, 0, 0);
-        background = renderHelp.imageSetup("background.png", layer1, 0, 0);
+        sky = renderHelper.imageSetup("day.png", layer1, 0, 0);
+        background = renderHelper.imageSetup("background.png", layer1, 0, 0);
 
-        itemBar = renderHelp.imageSetup("ItemBar.png", layer2, 0, 254);
-        Image placeholderbar = renderHelp.imageSetup("placeholder128x24.png",layer2,26,8);
+        itemBar = renderHelper.imageSetup("ItemBar.png", layer2, 0, 254);
+        Image placeholderbar = renderHelper.imageSetup("placeholder128x24.png",layer2,26,8);
 
-        quad1 = renderHelp.imageSetupCenter("StepBox.png", layer3, 37, 50);
-        quad2 = renderHelp.imageSetupCenter("Streakbox.png", layer3, -37, 50);
-        quad3 = renderHelp.imageSetupCenter("Trophybox.png", layer3, -37, -25);
-        quad4 = renderHelp.imageSetupCenter("48box.png", layer3, 37, -25);
-        midbox = renderHelp.imageSetupCenter("Midbox.png", layer3, 0, 12);
+        quad1 = renderHelper.imageSetupCenter("StepBox.png", layer3, 37, 50);
+        quad2 = renderHelper.imageSetupCenter("Streakbox.png", layer3, -37, 50);
+        quad3 = renderHelper.imageSetupCenter("Trophybox.png", layer3, -37, -25);
+        quad4 = renderHelper.imageSetupCenter("48box.png", layer3, 37, -25);
+        midbox = renderHelper.imageSetupCenter("Midbox.png", layer3, 0, 12);
 
-        Image screen1 = renderHelp.imageSetup("StepBox.png", layer4, 0,0);
-        Image placeholder4 = renderHelp.imageSetupCenter("placeholder140x140.png",layer4,0,0);
-        Image screen2 = renderHelp.imageSetup("Streakbox.png", layer5, 132,0);
-        Image placeholder5 = renderHelp.imageSetupCenter("placeholder140x140.png",layer5,0,0);
-        Image screen3 = renderHelp.imageSetup("Trophybox.png", layer6, 132,248);
-        Image placeholder6 = renderHelp.imageSetupCenter("placeholder140x140.png",layer6,0,0);
-        Image placeholder62 = renderHelp.imageSetup("placeholder64x64.png",layer6,0,0);
-        Image placeholder7 = renderHelp.imageSetupCenter("placeholder140x140.png",layer7,0,0);
-        screen4 = renderHelp.imageSetupCenter("48box.png", layer7, 37,-25);
+        Image screen1 = renderHelper.imageSetup("StepBox.png", layer4, 0,0);
+        Image placeholder4 = renderHelper.imageSetupCenter("placeholder140x140.png",layer4,0,0);
+        Image screen2 = renderHelper.imageSetup("Streakbox.png", layer5, 132,0);
+        Image placeholder5 = renderHelper.imageSetupCenter("placeholder140x140.png",layer5,0,0);
+        Image screen3 = renderHelper.imageSetup("Trophybox.png", layer6, 132,248);
+        Image placeholder6 = renderHelper.imageSetupCenter("placeholder140x140.png",layer6,0,0);
+        Image placeholder62 = renderHelper.imageSetup("placeholder64x64.png",layer6,0,0);
+        Image placeholder7 = renderHelper.imageSetupCenter("placeholder140x140.png",layer7,0,0);
+        screen4 = renderHelper.imageSetupCenter("48box.png", layer7, 37,-25);
 
         showChallengeHours = false;
 
@@ -95,7 +95,7 @@ public class gameScreen implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 if (activeStage == 7){
-                    renderHelp.setPositionCenter(layer7,screen4,37,-25);
+                    renderHelper.setPositionCenter(layer7,screen4,37,-25);
                 }
                 activeStage = 3;
                 Gdx.input.setInputProcessor(layer3);
@@ -173,12 +173,12 @@ public class gameScreen implements Screen {
         });
 
         // More settings
-        font2=new BitmapFont(Gdx.files.internal("subway.fnt"), Gdx.files.internal("subway.png"), false);
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 12;
-        font = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose();
+        //font2=new BitmapFont(Gdx.files.internal("subway.fnt"), Gdx.files.internal("subway.png"), false);
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
+        //FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        //parameter.size = 12;
+        //font = generator.generateFont(parameter); // font size 12 pixels
+        //generator.dispose();
         frameCount=0;
         Ax=Gdx.input.getAccelerometerX();
         Ay=Gdx.input.getAccelerometerY();
@@ -188,7 +188,7 @@ public class gameScreen implements Screen {
 
         int borderX = 19;
         int borderY = 20;
-        Image border = renderHelp.imageSetup("LargeScreenBox.png",layer6_2,borderX,borderY);
+        Image border = renderHelper.imageSetup("LargeScreenBox.png",layer6_2,borderX,borderY);
 
         ChangeImage[][] Week = new ChangeImage[7][24];
         for (int i = 0; i < 7; i++ ){
@@ -327,6 +327,6 @@ public class gameScreen implements Screen {
     @Override
     public void dispose() {
         // never called automatically
-    }
+    }*/
 }
 

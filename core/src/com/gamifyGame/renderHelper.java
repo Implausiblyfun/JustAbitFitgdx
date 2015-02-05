@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -30,7 +31,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, topLayer;
     SpriteBatch batch;
-    BitmapFont font;
+    BitmapFont font, font2;
 
     final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
 
@@ -89,6 +90,13 @@ public class renderHelper {
         textureHash.put("placeholder140x140.png",imageLoad("placeholder140x140.png"));
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
 
+        //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 32;
+        font2 = generator.generateFont(parameter); // font size 12 pixels
+        font2.setColor(1.0f,1.0f,1.0f,1.0f);
+        generator.dispose();
         font=new BitmapFont();
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.input.setInputProcessor(activeLayer);
@@ -105,6 +113,15 @@ public class renderHelper {
         image.setName(key);
         stage.addActor(image);
         return image;
+    }
+
+    public void textSet(String text, int x, int y){
+        font2.draw(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
+    }
+    public void textSetCenter(String text, int offsetx, int offsety){
+        BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
+        font2.draw(batch, text, (scrWidth/2) + ((offsetx*scrWidth)/180),
+                                (scrHeight/2) + (offsety*scrHeight)/296);
     }
 
     public static Texture imageLoad(String file){ return new Texture(file);}
@@ -145,7 +162,7 @@ public class renderHelper {
     public ScalingViewport getView(){return view;}
     public SpriteBatch getBatch(){return batch;}
     public Color getBoxColor(){return boxColor;}
-    public BitmapFont getFont(){return font;}
+    public BitmapFont getFont(){return font2;}
     public Stage getLayer(int level){
         if (level == 0){return backgroundLayer;}
         else if (level == 1){return activeLayer;}
