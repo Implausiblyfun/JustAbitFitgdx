@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Preferences;
 
@@ -20,6 +21,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
     Preferences pref;
     @Override
     public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context,"Starting new Tracker!",Toast.LENGTH_SHORT).show();
         Intent service = new Intent(context, AccelTracker.class);
         service.putExtra("VERSION", GAMIFY_VERSION);
         startWakefulService(context, service);
@@ -33,7 +35,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()-1,
-                              1000 * 32, alarmIntent);
+                              1000 * 16, alarmIntent);
 
     }
 

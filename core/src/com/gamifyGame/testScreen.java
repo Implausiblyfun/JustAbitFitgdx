@@ -27,6 +27,7 @@ public class testScreen implements Screen {
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
+    int resetCount;
     String activity = "dummyvalue";
 
     public testScreen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
@@ -37,6 +38,9 @@ public class testScreen implements Screen {
         renderer = rendererPassed;
         listenerH = listenerHPassed;
 
+        frameCount = 60;
+        resetCount = 60*30;
+
         shapes = renderer.getShapeRenderer();
         batch = renderer.getBatch();
         font = renderer.getFont();
@@ -44,6 +48,13 @@ public class testScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        resetCount--;
+        if (resetCount == 0){
+            this.hide();
+            this.show();
+            resetCount = 60*30;
+        }
         Stage layer0 = renderer.getLayer(0);
         Stage layer1 = renderer.getLayer(1);
         Stage layer2 = renderer.getLayer(2);
@@ -63,12 +74,31 @@ public class testScreen implements Screen {
         shapes.end();
 
         activity = pref.getString("curActivity");
+        int confirmed = pref.getInteger("confirmed", 0);
 
         batch.begin();
         renderer.textSetCenter("Yes", -40, 6);
         renderer.textSetCenter("No", 26, 6);
         renderer.textSetCenter("Have you been " + activity + " recently?", -80, -40);
+        renderer.textSet(String.valueOf(frameCount),10,20);
+        renderer.textSet(String.valueOf(resetCount),10,40);
+        boolean textOnScreen = false;
+        if (confirmed == 1){
+            renderer.textSetCenter("Confirmation sent!",0,-100);
+            frameCount--;
+        }
+        else if (confirmed == -1) {
+            renderer.textSetCenter("Denial sent!",0,-100);
+            frameCount--;
+        }
+        if (frameCount < 0){
+            textOnScreen = false;
+            pref.putInteger("confirmed",0);
+            pref.flush();
+            frameCount = 60;
+        }
         batch.end();
+
     }
 
     @Override
@@ -93,6 +123,9 @@ public class testScreen implements Screen {
         Image No = renderer.imageSetupCenter("48Box.png", layer1, 32,0);
 
         // MAKE SOME LISTENERS THAT SEND DATA TO THE SERVER?!?!?!?
+        Yes.addListener(listenerH.testYes);
+        No.addListener(listenerH.testNo);
+
     }
 
     @Override
@@ -104,12 +137,12 @@ public class testScreen implements Screen {
 
     @Override
     public void pause() {
-
+        this.hide();
     }
 
     @Override
     public void resume() {
-
+        this.show();
     }
 
     @Override

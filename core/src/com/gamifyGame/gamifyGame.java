@@ -37,12 +37,10 @@ public class gamifyGame extends Game{
         this.actionResolver = actionResolver;
     }
 
-
-
     public void create() {
 
         renderHelper renderer = new renderHelper();
-        listenerHelper listenerHelper = new listenerHelper(this, pref);
+        listenerHelper listenerHelper = new listenerHelper(this, renderer, pref);
         mainS = new mainScreen(this, actionResolver, renderer, listenerHelper, pref);
         testS = new testScreen(this, actionResolver, renderer, listenerHelper, pref);
         quad1S = new quad1Screen(this, actionResolver, renderer, listenerHelper, pref);

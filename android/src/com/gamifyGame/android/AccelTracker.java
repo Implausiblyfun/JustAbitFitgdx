@@ -3,6 +3,7 @@ package com.gamifyGame.android;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Entity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -80,7 +82,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
                 e.printStackTrace();
                 sendNotification(e.getMessage());
             }
-
+            sendNotification("Gonna send it: " + String.valueOf(i));
             doJSONReq(toSend);
         }
         try {
@@ -107,10 +109,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             request.setHeader("Content-Type", "application/json");
 
             request.setEntity(new StringEntity(jsonObject1.toString()));
-
+            sendNotification("Waiting on response ... !");
             HttpResponse response = client.execute(request);
-
-
+            sendNotification("Response received!");
 
         } catch (MalformedURLException e){
             e.printStackTrace();
@@ -208,21 +209,23 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        sendNotification("Starting!");
         GAMIFY_VERSION = intent.getStringExtra("VERSION");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
 
 
-        JSONObject result = new JSONObject();
+        /*JSONObject result = new JSONObject();
         try {
             result.put("userID", 1234);
             result.put("startTime", "1421812247091");
             result.put("endTime", "1421812252091");
             //getBackendResponse(result);
         }catch(Exception e){e.printStackTrace();}
-
-        SystemClock.sleep(32000);
+        */
+        SystemClock.sleep(16000);
+        long t = System.currentTimeMillis();
         String completeData = writeData.substring(0);
         activity = Classify(completeData);
 
@@ -235,16 +238,25 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
-        connectTry(Coords, actThing);
+        Intent newIntent = new Intent(this, AccelSender.class);
+        newIntent.putExtra("writeData", writeData);
+        newIntent.putExtra("activity", actThing);
+        sendNotification("Starting to send... !");
+        ComponentName c = this.startService(newIntent);
 
-        JSONObject toSend = new JSONObject();
+        /*JSONObject toSend = new JSONObject();
         try {
             toSend.put("userID", 1234);
         } catch (JSONException e) {
+            sendNotification("JSON!");
             e.printStackTrace();
         }
+        */
+        //sendNotification("Finished! Took " + String.valueOf(System.currentTimeMillis()- t));
+        //this.onDestroy();
+        System.exit(0);
         //getBackendResponse(toSend);
-
+        /*
         System.exit(0);
         try {
             if (isExternalStorageWritable()) {
@@ -272,6 +284,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             e.printStackTrace();
         }
         System.exit(0);
+        */
     }
 
     protected int Classify(String completeData){
@@ -359,7 +372,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(this, AndroidLauncher.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String curActivity = "inactive";
         switch (activity){
