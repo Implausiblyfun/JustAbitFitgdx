@@ -241,7 +241,6 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         Intent newIntent = new Intent(this, AccelSender.class);
         newIntent.putExtra("writeData", writeData);
         newIntent.putExtra("activity", actThing);
-        sendNotification("Starting to send... !");
         ComponentName c = this.startService(newIntent);
 
         /*JSONObject toSend = new JSONObject();
