@@ -252,8 +252,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         }
         */
         //sendNotification("Finished! Took " + String.valueOf(System.currentTimeMillis()- t));
-        //this.onDestroy();
-        System.exit(0);
+        this.onDestroy();
         //getBackendResponse(toSend);
         /*
         System.exit(0);
