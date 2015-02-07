@@ -89,6 +89,7 @@ public class renderHelper {
         textureHash.put("placeholder128x24.png",imageLoad("placeholder128x24.png"));
         textureHash.put("placeholder140x140.png",imageLoad("placeholder140x140.png"));
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
+        textureHash.put("largeScreenBox.png",imageLoad("LargeScreenBox.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
@@ -116,7 +117,7 @@ public class renderHelper {
     }
 
     public void textSet(String text, int x, int y){
-        font2.draw(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
+        font2.drawMultiLine(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
