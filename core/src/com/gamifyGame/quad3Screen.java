@@ -3,14 +3,13 @@ package com.gamifyGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  * Created by Stephen on 2/1/2015.
@@ -27,7 +26,7 @@ public class quad3Screen implements Screen {
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
-    ChangeImage[][] Week;
+    ChangingImage[][] Week;
     boolean shown = false;
 
     Image retBox, border;
@@ -61,19 +60,33 @@ public class quad3Screen implements Screen {
 
         renderer.moveCorner(retBox,Corner.UPPER_RIGHT,30);
 
+        int challengeProgress = pref.getInteger("challengeProgress",50);
+
         shapes.begin(ShapeRenderer.ShapeType.Filled);
+        if (challengeProgress == 100){shapes.setColor(new Color(0.99f,0.99f,0.0f,1.0f));}
+        else shapes.setColor(new Color(0.30f,1.0f,0.0f,1.0f));
+        shapes.box(retBox.getX()+4,retBox.getY()+4,0,(float)(challengeProgress/2.5),3,0);
         shapes.end();
 
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
         String showText;
-        if (showChallengeHours){
+        if (!showChallengeHours){
             showText = "Hours for\nChallenges";
         }
-        else showText = "Close \n Window";
+        else showText = "Close \nWindow";
+        if (frameCount % 5 == 0) {
+            challengeProgress--;
+            if (challengeProgress < 0) {
+                challengeProgress = 100;
+            }
+            pref.putInteger("challengeProgress", challengeProgress);
+            pref.flush();
+        }
         batch.begin();
         renderer.textSet(showText,2,16);
         bringChallengeScreen();
         batch.end();
+        frameCount = (frameCount + 1) % 30;
     }
 
     private void bringChallengeScreen(){
@@ -81,10 +94,10 @@ public class quad3Screen implements Screen {
         Stage layer1 = renderer.getLayer(1);
         if (showChallengeHours && !shown) {
 
-            border.moveBy(-300,0);
+            border.moveBy(-300, 0);
             for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 24; j++) {
-                    Week[i][j].moveBy(-300,0);
+                    Week[i][j].moveBy(-300, 0);
                 }
             }
 
@@ -124,12 +137,12 @@ public class quad3Screen implements Screen {
         int hour = 0;
 
         border = renderer.imageSetup("largeScreenBox.png", layer1, borderX, borderY);
-        Week = new ChangeImage[7][24];
+        Week = new ChangingImage[7][24];
         for (int i = 0; i < 7; i++) {
             int newX = borderX + 2 + (i * 20);
             for (int j = 0; j < 24; j++) {
                 int newY = borderY + 232 - (j * 10);
-                ChangeImage tempImage = new ChangeImage("InactiveHour.png", "ActiveHour.png", layer1, newX, newY);
+                ChangingImage tempImage = new ChangingImage("InactiveHour.png", "ActiveHour.png", layer1, newX, newY);
                 tempImage.putExtra("time", String.valueOf(day) + ',' + String.valueOf(hour));
                 tempImage.addListener(listenerH.challengeListener);
                 Week[i][j] = tempImage;

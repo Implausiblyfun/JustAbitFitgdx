@@ -30,6 +30,7 @@ public class mainScreen implements Screen {
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
+    Image quad3;
 
     public mainScreen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
                        listenerHelper listenerHPassed, Preferences pref) {
@@ -66,7 +67,7 @@ public class mainScreen implements Screen {
             shapes.begin(ShapeRenderer.ShapeType.Filled);
             if (challengeProgress == 100){shapes.setColor(new Color(0.99f,0.99f,0.0f,1.0f));}
             else shapes.setColor(new Color(0.30f,1.0f,0.0f,1.0f));
-            shapes.box(33,103,0,(float)(challengeProgress/2.5),3,0);
+            shapes.box(quad3.getX()+4,quad3.getY()+4,0,(float)(challengeProgress/2.5),3,0);
             shapes.end();
             batch.begin();
 
@@ -130,7 +131,7 @@ public class mainScreen implements Screen {
             // These five do.
             Image quad1 = renderer.imageSetupCenter("stepBox.png", layer1, 37, 50);
             Image quad2 = renderer.imageSetupCenter("streakBox.png", layer1, -37, 50);
-            Image quad3 = renderer.imageSetupCenter("trophyBox.png", layer1, -37, -25);
+            quad3 = renderer.imageSetupCenter("trophyBox.png", layer1, -37, -25);
             Image quad4 = renderer.imageSetupCenter("48Box.png", layer1, 37, -25);
             Image midbox = renderer.imageSetupCenter("midBox.png", layer1, 0, 12);
 

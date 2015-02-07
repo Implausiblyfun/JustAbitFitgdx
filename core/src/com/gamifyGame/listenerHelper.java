@@ -47,7 +47,7 @@ public class listenerHelper {
             {pref.putInteger("confirmed",-1); pref.flush(); game.sendInt("userConfirm",0); return true;}};
         challengeListener = new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ChangeImage eventImage = (ChangeImage) event.getListenerActor();
+                ChangingImage eventImage = (ChangingImage) event.getListenerActor();
                 eventImage.swapTexture();
                 pref.putBoolean(eventImage.getString("time"),eventImage.getName().equals(eventImage.name2));
                 pref.flush();

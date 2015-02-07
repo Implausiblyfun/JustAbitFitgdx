@@ -14,14 +14,14 @@ import java.util.HashMap;
 /**
  * Created by Stephen on 11/11/2014.
  */
-public class ChangeImage extends Image {
+public class ChangingImage extends Image {
 
         TextureRegionDrawable textured1, textured2;
         String name1,name2;
         HashMap<String,String> Strings;
         HashMap<String,Integer> Integers;
 
-        public ChangeImage(String file, String file2, Stage stage, int hOrigin, int vOrigin){
+        public ChangingImage(String file, String file2, Stage stage, int hOrigin, int vOrigin){
             name1 = file;
             name2 = file2;
             Texture text1 = new Texture(file);
