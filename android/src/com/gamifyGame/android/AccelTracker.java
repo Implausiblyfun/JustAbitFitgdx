@@ -216,7 +216,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             //getBackendResponse(result);
         }catch(Exception e){e.printStackTrace();}
         */
-        SystemClock.sleep(16000);
+        SystemClock.sleep(32000);
         long t = System.currentTimeMillis();
         String completeData = writeData.substring(0);
         activity = Classify(completeData);

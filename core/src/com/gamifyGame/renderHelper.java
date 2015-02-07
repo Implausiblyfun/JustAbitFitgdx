@@ -85,7 +85,7 @@ public class renderHelper {
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
 
-        textureHash.put("ItemBar.png",imageLoad("ItemBar.png"));
+        textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("placeholder128x24.png",imageLoad("placeholder128x24.png"));
         textureHash.put("placeholder140x140.png",imageLoad("placeholder140x140.png"));
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
@@ -154,6 +154,71 @@ public class renderHelper {
     public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
         image.setPosition((stage.getWidth()/2) - (image.getWidth() /2)+hOffset,
                           ((stage.getHeight()/2) - (image.getHeight() /2))+vOffset);
+    }
+
+    // Moves an image to a corner;
+    // quad = corner (1,2,3 or 4, quadrant definition)
+    // frames = estimated # of frames to complete action
+    public void moveCorner(Image toMove, int quad, int frames){
+        float x = toMove.getX();
+        float y = toMove.getY();
+        float a,b;
+        if (quad == 1){
+            if (x + toMove.getImageWidth() == 180 && y + toMove.getImageHeight() == 296){return;}
+            if (x + toMove.getImageWidth() > 179){
+                toMove.setPosition(180-toMove.getImageWidth(),toMove.getY());
+                a = 0;
+            }
+            else { a = Math.abs(x - 180) / frames;}
+            if (y + toMove.getImageHeight() > 295){
+                toMove.setPosition(toMove.getX(),296-toMove.getImageHeight());
+                b = 0;
+            }
+            else{b = Math.abs(y - 296) / frames;}
+            toMove.moveBy(a,b);
+        }
+        else if (quad == 2){
+            if (x == 0 && y + toMove.getImageHeight() == 296){return;}
+            if (x < 1){
+                toMove.setPosition(0,toMove.getY());
+                a = 0;
+            }
+            else { a = Math.max(Math.abs(x - 0) / frames,2);}
+            if (y + toMove.getImageHeight() > 295){
+                toMove.setPosition(toMove.getX(),296-toMove.getImageHeight());
+                b = 0;
+            }
+            else{b = Math.max(Math.abs(y - 296) / frames,2);}
+            toMove.moveBy(a*-1,b);
+        }
+        else if (quad == 3){
+            if (x == 0 && y == 0){return;}
+            if (x < 1){
+                toMove.setPosition(0,toMove.getY());
+                a = 0;
+            }
+            else { a = Math.max(Math.abs(x - 0) / frames,2);}
+            if (y < 1){
+                toMove.setPosition(toMove.getX(),0);
+                b = 0;
+            }
+            else{b = Math.max(Math.abs(y - 0) / frames,2);}
+            toMove.moveBy(a*-1,b*-1);
+        }
+        else {
+            if (x + toMove.getImageWidth() == 180 && y == 0){return;}
+            if (x + toMove.getImageWidth() > 179){
+                toMove.setPosition(180-toMove.getImageWidth(),toMove.getY());
+                a = 0;
+            }
+            else { a = Math.abs(x - 180) / frames;}
+            if (y < 1){
+                toMove.setPosition(toMove.getX(),0);
+                b = 0;
+            }
+            else{b = Math.max(Math.abs(y - 0) / frames,2);}
+            toMove.moveBy(a,b*-1);
+        }
     }
 
     public int getWidth(){return scrWidth;}

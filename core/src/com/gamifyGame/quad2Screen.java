@@ -25,12 +25,14 @@ public class quad2Screen implements Screen {
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
+    Image retBox;
 
     public quad2Screen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
         renderer = rendererPassed;
+        this.pref = pref;
         listenerH = listenerHPassed;
 
         shapes = renderer.getShapeRenderer();
@@ -51,6 +53,8 @@ public class quad2Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
+        renderer.moveCorner(retBox,4,30);
+
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
     }
@@ -67,7 +71,7 @@ public class quad2Screen implements Screen {
         Stage layer1 = renderer.getLayer(1);
         Stage layer2 = renderer.getLayer(2);
 
-        Image retBox = renderer.imageSetup("streakBox.png", layer1, 132, 0);
+        retBox = renderer.imageSetupCenter("streakBox.png", layer1, -37, 50);
 
         retBox.addListener(listenerH.goScreen(0));
 

@@ -48,7 +48,7 @@ public class gamifyGame extends Game{
         quad3S = new quad3Screen(this, actionResolver, renderer, listenerHelper, pref);
         quad4S = new quad4Screen(this, actionResolver, renderer, listenerHelper, pref);
         buyS = new buyScreen(this, actionResolver, renderer, listenerHelper, pref);
-        setScreen(testS);
+        setScreen(mainS);
     }
 
     public void sendInt(String key, int val){

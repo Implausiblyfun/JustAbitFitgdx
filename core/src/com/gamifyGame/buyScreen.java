@@ -31,6 +31,7 @@ public class buyScreen implements Screen {
         this.game = game;
         this.actionResolver = actionResolver;
         renderer = rendererPassed;
+        this.pref = pref;
         listenerH = listenerHPassed;
 
         shapes = renderer.getShapeRenderer();
@@ -67,7 +68,7 @@ public class buyScreen implements Screen {
         Stage layer1 = renderer.getLayer(1);
         Stage layer2 = renderer.getLayer(2);
 
-        Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
+        Image itemBar = renderer.imageSetup("itemBar.png", layer1, 0, 254);
         renderer.imageSetup("placeholder128x24.png", layer1, 26, 8);
 
         itemBar.addListener(listenerH.goScreen(0));

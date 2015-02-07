@@ -17,7 +17,6 @@ public class AndroidLauncher extends AndroidApplication {
 
     final String GAMIFY_VERSION = "0.0.02a";
     private gamifyGame gameProcess;
-    AccelAlarm alarm = new AccelAlarm();
     ActionResolverAndroid actionResolverAndroid;
     Preferences pref;
 
@@ -44,6 +43,7 @@ public class AndroidLauncher extends AndroidApplication {
             pref.flush();
             Toast.makeText(this, pref.getString("curActivity"), Toast.LENGTH_LONG).show();
         }
+        AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
         alarm.setAlarm(this);

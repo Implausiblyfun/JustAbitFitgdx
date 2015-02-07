@@ -24,7 +24,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         Toast.makeText(context,"Starting new Tracker!",Toast.LENGTH_SHORT).show();
         Intent service = new Intent(context, AccelTracker.class);
         service.putExtra("VERSION", GAMIFY_VERSION);
-        startWakefulService(context, service);
+        //startWakefulService(context, service);
 }
 
     public void setAlarm(Context context){

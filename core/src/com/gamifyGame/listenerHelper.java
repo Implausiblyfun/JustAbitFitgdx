@@ -57,7 +57,29 @@ public class listenerHelper {
     public ClickListener setInt(final String key,final int val){
         return new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {pref.putInteger(key,val); return true;}};
+            {pref.putInteger(key,val); pref.flush(); return true;}};
     }
 
+    public ClickListener setBoolean(final String key, final boolean val){
+        return new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {pref.putBoolean(key,val); pref.flush(); return true;}};
+    }
+
+    public ClickListener setBoolean(final String key, final char inp){
+        boolean val = true;
+        switch (inp){
+            case 't': val = true; break;
+            case 'f': val = false; break;
+            case 'a':
+                return new ClickListener(){
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+                    {
+                        if (!(pref.getBoolean(key,false))){pref.putBoolean(key,true);}
+                        else pref.putBoolean(key,false);
+                        pref.flush();
+                        return true;}};
+        }
+        return setBoolean(key,val);
+    }
 }

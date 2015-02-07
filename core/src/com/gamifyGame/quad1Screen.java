@@ -25,11 +25,13 @@ public class quad1Screen implements Screen {
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
+    Image retBox;
 
     public quad1Screen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
+        this.pref = pref;
         renderer = rendererPassed;
         listenerH = listenerHPassed;
 
@@ -51,6 +53,8 @@ public class quad1Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
+        renderer.moveCorner(retBox,3,30);
+
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
 
@@ -70,9 +74,9 @@ public class quad1Screen implements Screen {
         Stage layer1 = renderer.getLayer(1);
         Stage layer2 = renderer.getLayer(2);
 
-        Image screen1 = renderer.imageSetup("stepBox.png", layer1, 0, 0);
+        retBox = renderer.imageSetupCenter("stepBox.png", layer1, 37, 50);
 
-        screen1.addListener(listenerH.goScreen(0));
+        retBox.addListener(listenerH.goScreen(0));
 
     }
 

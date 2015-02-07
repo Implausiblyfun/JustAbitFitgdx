@@ -3,6 +3,7 @@ package com.gamifyGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import java.util.Calendar;
 
 /**
  * Created by Patrick Stephen on 2/1/2015.
@@ -58,12 +61,24 @@ public class mainScreen implements Screen {
             layer1.draw();
             layer2.draw();
 
+            int challengeProgress = pref.getInteger("challengeProgress",50);
+
             shapes.begin(ShapeRenderer.ShapeType.Filled);
+            if (challengeProgress == 100){shapes.setColor(new Color(0.99f,0.99f,0.0f,1.0f));}
+            else shapes.setColor(new Color(0.30f,1.0f,0.0f,1.0f));
+            shapes.box(33,103,0,(float)(challengeProgress/2.5),3,0);
             shapes.end();
             batch.begin();
 
+
+
             // ***** DEBUG PRINTING ***** //
             if (frameCount % 5 == 0) {
+                challengeProgress--;
+                if (challengeProgress < 0){
+                    challengeProgress = 100;
+                }
+                pref.putInteger("challengeProgress", challengeProgress);
                 pref.flush();
                 A5x = A2x;
                 A5y = A2y;
@@ -92,10 +107,7 @@ public class mainScreen implements Screen {
             font.draw(batch, String.valueOf(frameCount),50,200);
             batch.end();
             // If we want to do more things with frame counting in groups of 30
-            if (frameCount == 30) {
-                frameCount = 0;
-            }
-            frameCount += 1;
+            frameCount = (frameCount + 1) % 30;
         }
 
         @Override
@@ -113,7 +125,7 @@ public class mainScreen implements Screen {
 
             // Only items that need listeners should be maintained as Images I.E
             // These two don't need listeners--
-            renderer.imageSetup("day.png", layer0, 0, 0);
+            renderer.imageSetup(timeOfDay(), layer0, 0, 0);
             renderer.imageSetup("background.png", layer0, 0, 0);
             // These five do.
             Image quad1 = renderer.imageSetupCenter("stepBox.png", layer1, 37, 50);
@@ -153,5 +165,14 @@ public class mainScreen implements Screen {
         @Override
         public void dispose() {
 
+        }
+
+        private String timeOfDay(){
+            Calendar cal = Calendar.getInstance();
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            if (hour < 5){ return "midnight.png";}
+            else if (hour < 9){ return "sunrise.png";}
+            else if (hour < 17){ return "day.png";}
+            else return "night.png";
         }
     }
