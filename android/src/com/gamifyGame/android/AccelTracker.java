@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Entity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -14,13 +13,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.preference.PreferenceActivity;
-import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import org.apache.http.HttpResponse;
@@ -33,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -209,7 +202,6 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        sendNotification("Starting!");
         GAMIFY_VERSION = intent.getStringExtra("VERSION");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -238,10 +230,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
-        Intent newIntent = new Intent(this, AccelSender.class);
-        newIntent.putExtra("writeData", writeData);
-        newIntent.putExtra("activity", actThing);
-        ComponentName c = this.startService(newIntent);
+        linecount = 0;
+        writeData = "";
+        //Intent newIntent = new Intent(this, AccelSender.class);
+        //newIntent.putExtra("writeData", writeData);
+        //newIntent.putExtra("activity", actThing);
+        //ComponentName c = this.startService(newIntent); //TODO: STOP THIS FROM LEAKING MEMORY
 
         /*JSONObject toSend = new JSONObject();
         try {
@@ -252,7 +246,6 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         }
         */
         //sendNotification("Finished! Took " + String.valueOf(System.currentTimeMillis()- t));
-        this.onDestroy();
         //getBackendResponse(toSend);
         /*
         System.exit(0);
