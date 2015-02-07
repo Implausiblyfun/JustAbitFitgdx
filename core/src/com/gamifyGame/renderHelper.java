@@ -152,8 +152,8 @@ public class renderHelper {
     // This acts like the inherent Image.setPosition, but at center to pair with
     // ImageSetupCenter
     public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
-        image.setPosition((stage.getWidth()/2) - (image.getWidth() /2)+hOffset,
-                          ((stage.getHeight()/2) - (image.getHeight() /2))+vOffset);
+        image.setPosition((stage.getWidth() / 2) - (image.getWidth() / 2) + hOffset,
+                ((stage.getHeight() / 2) - (image.getHeight() / 2)) + vOffset);
     }
 
     // Moves an image to a corner;
@@ -219,6 +219,43 @@ public class renderHelper {
             else{b = Math.max(Math.abs(y - 0) / frames,2);}
             toMove.moveBy(a,b*-1);
         }
+    }
+
+    public void movePosition(Image toMove, Point desiredPoint, int frames, float minSpeed)
+    {
+        minSpeed=Math.abs(minSpeed);
+
+        Point location=new Point(toMove.getX(), toMove.getY());
+        Point distances=desiredPoint.getXYDistances(location);
+
+        if(Math.abs(distances.x)<1)
+        {
+            distances.x = 0;
+            toMove.setPosition(desiredPoint.x, location.y);
+        }
+        else
+        {
+            distances.scaleXBy((float) 1 / (float) frames);
+            if(Math.abs(distances.x)<minSpeed)
+            {
+                distances.x=Math.abs(distances.x)/distances.x*minSpeed;
+            }
+        }
+        if(Math.abs(distances.y)<1)
+        {
+           distances.y = 0;
+           toMove.setPosition(location.x, desiredPoint.y);
+        }
+        else
+        {
+            distances.scaleYBy((float) 1 / (float) frames);
+            if(Math.abs(distances.y)<minSpeed)
+            {
+                distances.y=Math.abs(distances.y)/distances.y*minSpeed;
+            }
+        }
+
+        toMove.moveBy(distances.x, distances.y);
     }
 
     public int getWidth(){return scrWidth;}
