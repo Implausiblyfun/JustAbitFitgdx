@@ -159,11 +159,11 @@ public class renderHelper {
     // Moves an image to a corner;
     // quad = corner (1,2,3 or 4, quadrant definition)
     // frames = estimated # of frames to complete action
-    public void moveCorner(Image toMove, int quad, int frames){
+    public void moveCorner(Image toMove, Corner quad, int frames){
         float x = toMove.getX();
         float y = toMove.getY();
         float a,b;
-        if (quad == 1){
+        if (quad == Corner.UPPER_RIGHT){
             if (x + toMove.getImageWidth() == 180 && y + toMove.getImageHeight() == 296){return;}
             if (x + toMove.getImageWidth() > 179){
                 toMove.setPosition(180-toMove.getImageWidth(),toMove.getY());
@@ -177,7 +177,7 @@ public class renderHelper {
             else{b = Math.abs(y - 296) / frames;}
             toMove.moveBy(a,b);
         }
-        else if (quad == 2){
+        else if (quad == Corner.UPPER_LEFT){
             if (x == 0 && y + toMove.getImageHeight() == 296){return;}
             if (x < 1){
                 toMove.setPosition(0,toMove.getY());
@@ -191,7 +191,7 @@ public class renderHelper {
             else{b = Math.max(Math.abs(y - 296) / frames,2);}
             toMove.moveBy(a*-1,b);
         }
-        else if (quad == 3){
+        else if (quad == Corner.LOWER_LEFT){
             if (x == 0 && y == 0){return;}
             if (x < 1){
                 toMove.setPosition(0,toMove.getY());

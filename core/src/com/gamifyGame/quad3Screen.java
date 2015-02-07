@@ -58,7 +58,7 @@ public class quad3Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
-        renderer.moveCorner(retBox,1,30);
+        renderer.moveCorner(retBox,Corner.UPPER_RIGHT,30);
 
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();

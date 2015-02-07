@@ -53,7 +53,7 @@ public class quad4Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
-        renderer.moveCorner(retBox,2,30);
+        renderer.moveCorner(retBox,Corner.UPPER_LEFT,30);
 
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
