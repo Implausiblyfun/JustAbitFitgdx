@@ -30,7 +30,7 @@ public class quad3Screen implements Screen {
     ChangeImage[][] Week;
     boolean shown = false;
 
-    Image retBox;
+    Image retBox, border;
 
     public quad3Screen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
                        listenerHelper listenerHPassed, Preferences pref) {
@@ -67,50 +67,38 @@ public class quad3Screen implements Screen {
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
         String showText;
         if (showChallengeHours){
-            showText = "Hours for\n Challenges";
+            showText = "Hours for\nChallenges";
         }
         else showText = "Close \n Window";
         batch.begin();
-        renderer.textSet(showText,16,16);
-        batch.end();
+        renderer.textSet(showText,2,16);
         bringChallengeScreen();
+        batch.end();
     }
 
     private void bringChallengeScreen(){
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
         Stage layer1 = renderer.getLayer(1);
         if (showChallengeHours && !shown) {
-            int borderX = 19;
-            int borderY = 20;
-            Image border = renderer.imageSetup("largeScreenBox.png", layer1, borderX, borderY);
 
-            Week = new ChangeImage[7][24];
+            border.moveBy(-300,0);
             for (int i = 0; i < 7; i++) {
-                int newX = borderX + 2 + (i * 20);
                 for (int j = 0; j < 24; j++) {
-                    int newY = borderY + 232 - (j * 10);
-                    ChangeImage tempImage = new ChangeImage("InactiveHour.png", "ActiveHour.png", layer1, newX, newY);
-                    tempImage.addListener(new ClickListener() {
-                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                            ChangeImage eventImage = (ChangeImage) event.getListenerActor();
-                            eventImage.swapTexture();
-                            return true;
-                        }
-                    });
-                    Week[i][j] = tempImage;
+                    Week[i][j].moveBy(-300,0);
                 }
             }
+
             shown = true;
 
         }
         else if (!showChallengeHours && shown){
 
-            renderer.getLayer(1).clear();
-            retBox = renderer.imageSetup("trophyBox.png", layer1, 180, 296);
-            Image placeholder62 = renderer.imageSetup("48Box.png", layer1, 0, 0);
-
-            retBox.addListener(listenerH.goScreen(0));
-            placeholder62.addListener(listenerH.setBoolean("showChallengeHours",'a'));
+            border.moveBy(300,0);
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 24; j++) {
+                    Week[i][j].moveBy(300,0);
+                }
+            }
             shown = false;
         }
     }
@@ -130,6 +118,32 @@ public class quad3Screen implements Screen {
         retBox = renderer.imageSetupCenter("trophyBox.png", layer1, -37, -25);
         Image placeholder62 = renderer.imageSetup("48Box.png", layer1, 0, 0);
 
+        int borderX = 19;
+        int borderY = 20;
+        int day = 0;
+        int hour = 0;
+
+        border = renderer.imageSetup("largeScreenBox.png", layer1, borderX, borderY);
+        Week = new ChangeImage[7][24];
+        for (int i = 0; i < 7; i++) {
+            int newX = borderX + 2 + (i * 20);
+            for (int j = 0; j < 24; j++) {
+                int newY = borderY + 232 - (j * 10);
+                ChangeImage tempImage = new ChangeImage("InactiveHour.png", "ActiveHour.png", layer1, newX, newY);
+                tempImage.putExtra("time", String.valueOf(day) + ',' + String.valueOf(hour));
+                tempImage.addListener(listenerH.challengeListener);
+                Week[i][j] = tempImage;
+                hour = (hour + 1) % 24;
+            }
+            day++;
+        }
+        border.moveBy(300,0);
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                Week[i][j].moveBy(300,0);
+            }
+        }
+
         retBox.addListener(listenerH.goScreen(0));
         placeholder62.addListener(listenerH.setBoolean("showChallengeHours",'a'));
 
@@ -139,6 +153,12 @@ public class quad3Screen implements Screen {
     public void hide() {
         renderer.getLayer(1).clear();
         renderer.getLayer(2).clear();
+        border.moveBy(-300,0);
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                Week[i][j].moveBy(-300,0);
+            }
+        }
     }
 
     @Override

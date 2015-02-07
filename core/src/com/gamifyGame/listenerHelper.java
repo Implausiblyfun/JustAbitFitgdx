@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class listenerHelper {
     final gamifyGame game;
     final Preferences pref;
-    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
+    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, challengeListener;
 
     public listenerHelper(gamifyGame gamify, renderHelper renderer, Preferences preferences){
         this.pref = preferences;
@@ -40,6 +40,15 @@ public class listenerHelper {
         testNo = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {pref.putInteger("confirmed",-1); pref.flush(); game.sendInt("userConfirm",0); return true;}};
+        challengeListener = new ClickListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ChangeImage eventImage = (ChangeImage) event.getListenerActor();
+                eventImage.swapTexture();
+                pref.putBoolean(eventImage.getString("time"),eventImage.getName().equals(eventImage.name2));
+                pref.flush();
+                return true;
+            }
+        };
     }
 
     public ClickListener goScreen(int val){
