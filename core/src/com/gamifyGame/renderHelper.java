@@ -21,6 +21,9 @@ import java.util.HashMap;
  */
 public class renderHelper {
 
+    public static final float RENDERED_SCREEN_HEIGHT=296;
+    public static final float RENDERED_SCREEN_WIDTH=180;
+
     HashMap<String,Texture> textureHash;
     Texture boxBottomFace, boxBottomLeft, boxBottomLeftFace, boxBottomRight,
             boxBottomRightFace, boxRightFace, boxTopLeft, boxTopRight, boxLeftFace;
@@ -161,64 +164,21 @@ public class renderHelper {
     // quad = corner (1,2,3 or 4, quadrant definition)
     // frames = estimated # of frames to complete action
     public void moveCorner(Image toMove, Corner quad, int frames){
-        float x = toMove.getX();
-        float y = toMove.getY();
-        float a,b;
-        if (quad == Corner.UPPER_RIGHT){
-            if (x + toMove.getImageWidth() == 180 && y + toMove.getImageHeight() == 296){return;}
-            if (x + toMove.getImageWidth() > 179){
-                toMove.setPosition(180-toMove.getImageWidth(),toMove.getY());
-                a = 0;
-            }
-            else { a = Math.abs(x - 180) / frames;}
-            if (y + toMove.getImageHeight() > 295){
-                toMove.setPosition(toMove.getX(),296-toMove.getImageHeight());
-                b = 0;
-            }
-            else{b = Math.abs(y - 296) / frames;}
-            toMove.moveBy(a,b);
+        if (quad == Corner.UPPER_RIGHT)
+        {
+            movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH-toMove.getImageWidth(), RENDERED_SCREEN_HEIGHT-toMove.getImageHeight()), frames, 2);
         }
-        else if (quad == Corner.UPPER_LEFT){
-            if (x == 0 && y + toMove.getImageHeight() == 296){return;}
-            if (x < 1){
-                toMove.setPosition(0,toMove.getY());
-                a = 0;
-            }
-            else { a = Math.max(Math.abs(x - 0) / frames,2);}
-            if (y + toMove.getImageHeight() > 295){
-                toMove.setPosition(toMove.getX(),296-toMove.getImageHeight());
-                b = 0;
-            }
-            else{b = Math.max(Math.abs(y - 296) / frames,2);}
-            toMove.moveBy(a*-1,b);
+        else if (quad == Corner.UPPER_LEFT)
+        {
+            movePosition(toMove, new Point(0, RENDERED_SCREEN_HEIGHT-toMove.getImageHeight()), frames, 2);
         }
-        else if (quad == Corner.LOWER_LEFT){
-            if (x == 0 && y == 0){return;}
-            if (x < 1){
-                toMove.setPosition(0,toMove.getY());
-                a = 0;
-            }
-            else { a = Math.max(Math.abs(x - 0) / frames,2);}
-            if (y < 1){
-                toMove.setPosition(toMove.getX(),0);
-                b = 0;
-            }
-            else{b = Math.max(Math.abs(y - 0) / frames,2);}
-            toMove.moveBy(a*-1,b*-1);
+        else if (quad == Corner.LOWER_LEFT)
+        {
+            movePosition(toMove, new Point(0, 0), frames, 2);
         }
-        else {
-            if (x + toMove.getImageWidth() == 180 && y == 0){return;}
-            if (x + toMove.getImageWidth() > 179){
-                toMove.setPosition(180-toMove.getImageWidth(),toMove.getY());
-                a = 0;
-            }
-            else { a = Math.abs(x - 180) / frames;}
-            if (y < 1){
-                toMove.setPosition(toMove.getX(),0);
-                b = 0;
-            }
-            else{b = Math.max(Math.abs(y - 0) / frames,2);}
-            toMove.moveBy(a,b*-1);
+        else
+        {
+           movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH-toMove.getImageWidth(), 0), frames, 2);
         }
     }
 
@@ -255,7 +215,6 @@ public class renderHelper {
                 distances.y=Math.abs(distances.y)/distances.y*minSpeed;
             }
         }
-
         toMove.moveBy(distances.x, distances.y);
     }
 
