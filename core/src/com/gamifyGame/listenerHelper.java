@@ -2,7 +2,9 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 /**
  * Created by Patrick Stephen on 2/1/2015.
@@ -11,11 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class listenerHelper {
     final gamifyGame game;
     final Preferences pref;
-    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, challengeListener;
+    final renderHelper renderer;
+    ClickListener challengeListener;
+    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
 
     public listenerHelper(gamifyGame gamify, renderHelper renderer, Preferences preferences){
         this.pref = preferences;
         this.game = gamify;
+        this.renderer = renderer;
         returnS = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {game.setScreen(game.mainS); return true;}};
@@ -61,6 +66,22 @@ public class listenerHelper {
             case 5: return goS5;
             default: return null;
         }
+    }
+
+    public void dragListeners(Image[] imageHandles){
+        for(int i=0; i <= imageHandles.length-1; i++){
+            imageHandles[i].addListener(scroll(imageHandles));
+        }
+    }
+
+    public DragListener scroll(final Image[] imgHandles){
+        return new DragListener(){
+            float startX;
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                startX = x; return true;
+            }
+            public void touchDragged(InputEvent event, float x, float y, int pointer)
+            {renderer.moveScroll(imgHandles, (x-startX)/5, 0);}};
     }
 
     public ClickListener setInt(final String key,final int val){

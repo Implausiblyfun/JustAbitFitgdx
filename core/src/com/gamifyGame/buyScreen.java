@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+
+import java.util.EventListener;
 
 /**
  * Created by Stephen on 2/1/2015.
@@ -26,12 +31,13 @@ public class buyScreen implements Screen {
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
 
+    DragListener dragHandle;
+
     public buyScreen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
         renderer = rendererPassed;
-        this.pref = pref;
         listenerH = listenerHPassed;
 
         shapes = renderer.getShapeRenderer();
@@ -68,16 +74,32 @@ public class buyScreen implements Screen {
         Stage layer1 = renderer.getLayer(1);
         Stage layer2 = renderer.getLayer(2);
 
-        Image itemBar = renderer.imageSetup("itemBar.png", layer1, 0, 254);
+        //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
         renderer.imageSetup("placeholder128x24.png", layer1, 26, 8);
 
-        itemBar.addListener(listenerH.goScreen(0));
+        Image buyBar = renderer.imageSetup("buyBar.png", layer1, 0, 254);
+
+        //String[] imgs = {"48box.png", "Streakbox.png", "StepBox.png"};
+        String[] imgs = {"Armory1.png","Computer1.png", "Costume1.png", "Forgery1.png",
+                "Garage1.png", "Generator1.png", "HQ1.png", "Lab1.png", "Smuggler1.png"};
+
+
+
+        Image[] imageHandles = renderer.makeScroll(layer1, imgs, 0, 254);
+
+
+        dragHandle = listenerH.scroll(imageHandles);
+
+        listenerH.dragListeners(imageHandles);
+
+        buyBar.addListener(dragHandle);
 
     }
 
     @Override
     public void hide() {
         // called when current screen changes from this to a different screen
+        //renderer.getLayer(1).removeListener(dragHandle);
         renderer.getLayer(0).clear();
         renderer.getLayer(1).clear();
         renderer.getLayer(2).clear();

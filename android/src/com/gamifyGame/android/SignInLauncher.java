@@ -22,7 +22,7 @@ public class SignInLauncher extends Activity{
         super.onCreate(savedStuff);
         this.thisBundle = savedStuff;
         this.context = getApplicationContext();
-
+    
 
 
 

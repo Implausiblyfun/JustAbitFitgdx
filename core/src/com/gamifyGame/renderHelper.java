@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -90,6 +93,20 @@ public class renderHelper {
         textureHash.put("placeholder140x140.png",imageLoad("placeholder140x140.png"));
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
         textureHash.put("largeScreenBox.png",imageLoad("LargeScreenBox.png"));
+        textureHash.put("buyBar.png", imageLoad("buyBar.png"));
+
+        textureHash.put("Armory1.png",imageLoad("Armory1.png"));
+        textureHash.put("Computer1.png",imageLoad("Computer1.png"));
+        textureHash.put("Costume1.png",imageLoad("Costume1.png"));
+        textureHash.put("Elevator1.png",imageLoad("Elevator1.png"));
+        textureHash.put("Empty1.png",imageLoad("Empty1.png"));
+        textureHash.put("Forgery1.png",imageLoad("Forgery1.png"));
+        textureHash.put("Garage1.png",imageLoad("Garage1.png"));
+        textureHash.put("Generator1.png",imageLoad("Generator1.png"));
+        textureHash.put("HQ1.png",imageLoad("HQ1.png"));
+        textureHash.put("Lab1.png",imageLoad("Lab1.png"));
+        textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
+
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
@@ -271,6 +288,54 @@ public class renderHelper {
         else if (level == 1){return activeLayer;}
         else return topLayer;
     }
+
+
+    public Image[] makeScroll(Stage stage, String[] images, float hOrigin, float vOrigin){
+        Image[] imgHandles = new Image[images.length];
+        for(int i=0; i <= images.length-1; i++){
+            int width = textureHash.get(images[i]).getWidth();
+            imgHandles[i] = imageSetup(images[i], stage, hOrigin+(i*textureHash.get(images[i]).getWidth()),vOrigin);
+        }
+        return imgHandles;
+    }
+
+    public void moveScroll(Image[] imageHandles, float xMove, float yMove){
+        int len = imageHandles.length-1;
+        // If no items make sure not to crash on scrolling
+        if(len == 0){return;}
+        // Does not scroll if already at the end of our things to be displayed
+        if(xMove > 0 && imageHandles[0].getX() > 0){return;}
+        if(xMove < 0 && imageHandles[len].getX()+imageHandles[len].getWidth() < 180 ){return;}
+        //Moves the images
+        for(int i=0; i <= imageHandles.length-1; i++){
+            imageHandles[i].moveBy(xMove, yMove);
+        }
+    }
+
+
+    public Image imageActor(String key, float hOrigin, float vOrigin){
+        Texture texture = textureHash.get(key);
+        Image image = new Image(texture);
+        image.setPosition(hOrigin,vOrigin);
+        image.setSize(texture.getWidth(),texture.getHeight());
+        image.setName(key);
+        return image;
+    }
+
+    public void makeScrollTable(Stage stage, String[] images, float hOrigin, float vOrigin){
+        Table imgTable = new Table();
+        imgTable.row();
+        for(int i=0; i <= images.length-1; i++){
+            Image tmpImage = imageActor(images[i],hOrigin, vOrigin);
+            imgTable.add(tmpImage);
+            int width = textureHash.get(images[i]).getWidth();
+        }
+        imgTable.setPosition(hOrigin, vOrigin);
+        stage.addActor(imgTable);
+
+
+    }
+
 
     public void makeBox(ShapeRenderer shapes, Stage stage, int x, int y, int w, int h){
         assert w > 4;

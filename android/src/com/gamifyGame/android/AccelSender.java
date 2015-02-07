@@ -102,14 +102,11 @@ public class AccelSender extends IntentService {
 
             request.setEntity(new StringEntity(jsonObject1.toString()));
 
-            HttpResponse response = client.execute(request);
+            //HttpResponse response = client.execute(request);
 
 
 
-        } catch (MalformedURLException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        } catch (IOException e) {
+        } catch (Exception e){
             e.printStackTrace();
             sendNotification(e.getMessage());
         }
