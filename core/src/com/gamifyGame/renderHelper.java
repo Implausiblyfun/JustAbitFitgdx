@@ -117,9 +117,11 @@ public class renderHelper {
         parameter.size = 32;
         font2 = generator.generateFont(parameter); // font size 12 pixels
         font2.setColor(1.0f,1.0f,1.0f,1.0f);
-        generator.dispose();
-        font=new BitmapFont();
+        parameter.size = 24;
+        font= generator.generateFont(parameter);
         font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        generator.dispose();
+
         Gdx.input.setInputProcessor(activeLayer);
     }
 
@@ -135,9 +137,19 @@ public class renderHelper {
         stage.addActor(image);
         return image;
     }
+    public void textSet(String text, int x, int y, String str){
+        BitmapFont curFont;
+        if (str.equals("small")){
+            curFont = font;
+        }
+        else {
+            curFont = font2;
+        }
+        curFont.drawMultiLine(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
+    }
 
     public void textSet(String text, int x, int y){
-        font2.drawMultiLine(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
+        textSet(text,x,y,"normal");
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text

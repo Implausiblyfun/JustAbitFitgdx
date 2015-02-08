@@ -39,6 +39,10 @@ public class gamifyGame extends Game{
 
     public void create() {
 
+        //Define session variables
+        pref.putBoolean("showChallengeHours",false);
+        pref.flush();
+
         renderHelper renderer = new renderHelper();
         listenerHelper listenerHelper = new listenerHelper(this, renderer, pref);
         mainS = new mainScreen(this, actionResolver, renderer, listenerHelper, pref);

@@ -45,7 +45,7 @@ public class listenerHelper {
         testNo = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {pref.putInteger("confirmed",-1); pref.flush(); game.sendInt("userConfirm",0); return true;}};
-        challengeListener = new ClickListener() {
+        challengeListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ChangingImage eventImage = (ChangingImage) event.getListenerActor();
                 eventImage.swapTexture();
