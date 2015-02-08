@@ -145,17 +145,29 @@ public class renderHelper {
         else {
             curFont = font2;
         }
-        curFont.drawMultiLine(batch, text, (x*scrWidth)/180,(y*scrHeight)/296);
+        curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 
     public void textSet(String text, int x, int y){
-        textSet(text,x,y,"normal");
+        textSet(text, x, y, "normal");
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
-        font2.draw(batch, text, (scrWidth/2) + ((offsetx*scrWidth)/180),
-                                (scrHeight/2) + (offsety*scrHeight)/296);
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
+        font2.draw(batch, text, (textLoc.x),
+                                (textLoc.y));
     }
+    public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
+    {
+        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
+        font2.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y );
+    }
+
+    public Point convertImageCoorsToTextCoors(Point point)
+    {
+        return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
+    }
+
 
     public static Texture imageLoad(String file){ return new Texture(file);}
 
