@@ -23,6 +23,11 @@ public class gamifyGame extends Game{
     quad4Screen quad4S;
     buyScreen buyS;
 
+
+    ChangingImage[] rooms;
+    int[] bridges;
+
+
     //READ THIS
     //READDDD
 
@@ -52,6 +57,8 @@ public class gamifyGame extends Game{
         quad3S = new quad3Screen(this, actionResolver, renderer, listenerHelper, pref);
         quad4S = new quad4Screen(this, actionResolver, renderer, listenerHelper, pref);
         buyS = new buyScreen(this, actionResolver, renderer, listenerHelper, pref);
+
+
         setScreen(mainS);
     }
 

@@ -128,6 +128,17 @@ public class mainScreen implements Screen {
             // These two don't need listeners--
             renderer.imageSetup(timeOfDay(), layer0, 0, 0);
             renderer.imageSetup("background.png", layer0, 0, 0);
+
+            // TODO: Change to in prefs
+            String[] imgs = {"Armory1.png","HQ1.png", "Computer1.png", "Costume1.png", "Forgery1.png",
+                    "Garage1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+
+            int[] bridges = {1, 1, 1, 1, 2, 2};
+
+            renderer.makeUnderground(layer0, imgs);
+            renderer.makeBridges(layer0, bridges);
+
+
             // These five do.
             Image quad1 = renderer.imageSetupCenter("stepBox.png", layer1, 37, 50);
             Image quad2 = renderer.imageSetupCenter("streakBox.png", layer1, -37, 50);

@@ -102,6 +102,7 @@ public class renderHelper {
         textureHash.put("Computer1.png",imageLoad("Computer1.png"));
         textureHash.put("Costume1.png",imageLoad("Costume1.png"));
         textureHash.put("Elevator1.png",imageLoad("Elevator1.png"));
+        textureHash.put("Bridge1.png",imageLoad("Bridge1.png"));
         textureHash.put("Empty1.png",imageLoad("Empty1.png"));
         textureHash.put("Forgery1.png",imageLoad("Forgery1.png"));
         textureHash.put("Garage1.png",imageLoad("Garage1.png"));
@@ -149,7 +150,7 @@ public class renderHelper {
     }
 
     public void textSet(String text, int x, int y){
-        textSet(text, x, y, "normal");
+        textSet(text,x,y,"normal");
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
@@ -207,11 +208,11 @@ public class renderHelper {
     public void moveCorner(Image toMove, Corner quad, int frames){
         if (quad == Corner.UPPER_RIGHT)
         {
-            movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH-toMove.getImageWidth(), RENDERED_SCREEN_HEIGHT-toMove.getImageHeight()), frames, 2);
+            movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH - toMove.getImageWidth(), RENDERED_SCREEN_HEIGHT - toMove.getImageHeight()), frames, 2);
         }
         else if (quad == Corner.UPPER_LEFT)
         {
-            movePosition(toMove, new Point(0, RENDERED_SCREEN_HEIGHT-toMove.getImageHeight()), frames, 2);
+            movePosition(toMove, new Point(0, RENDERED_SCREEN_HEIGHT - toMove.getImageHeight()), frames, 2);
         }
         else if (quad == Corner.LOWER_LEFT)
         {
@@ -219,7 +220,7 @@ public class renderHelper {
         }
         else
         {
-           movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH-toMove.getImageWidth(), 0), frames, 2);
+           movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH - toMove.getImageWidth(), 0), frames, 2);
         }
     }
 
@@ -273,6 +274,7 @@ public class renderHelper {
     }
 
 
+    //TODO: Change to scale down to appropriate size.
     public Image[] makeScroll(Stage stage, String[] images, float hOrigin, float vOrigin){
         Image[] imgHandles = new Image[images.length];
         for(int i=0; i <= images.length-1; i++){
@@ -305,20 +307,46 @@ public class renderHelper {
         return image;
     }
 
-    public void makeScrollTable(Stage stage, String[] images, float hOrigin, float vOrigin){
-        Table imgTable = new Table();
-        imgTable.row();
-        for(int i=0; i <= images.length-1; i++){
-            Image tmpImage = imageActor(images[i],hOrigin, vOrigin);
-            imgTable.add(tmpImage);
-            int width = textureHash.get(images[i]).getWidth();
+
+    public ChangingImage[] makeUnderground(Stage stage, String[] buildings){
+        ChangingImage[] imageList = new ChangingImage[buildings.length];
+        // Figure out the width and height from the HQ1
+        int bridgelen = 8; //TODO: change this
+        int width = textureHash.get(buildings[1]).getWidth() + bridgelen;
+        int height = textureHash.get(buildings[1]).getHeight() + 2;
+        int wOffset = 8; //TODO: Find the optimal lengths
+        int hOffset = (int) (height * 2.9);
+        int row = 0;
+        int column = 0;
+        for(int i=0; i <= buildings.length-1; i++){
+            column = i %3;
+            row = i/3;
+            imageList[i] = new ChangingImage(buildings[i], "Empty1.png", stage,wOffset + column*width, hOffset - row*height);
+//            imageSetup(buildings[i], stage, wOffset + column*width, hOffset - row*height);
         }
-        imgTable.setPosition(hOrigin, vOrigin);
-        stage.addActor(imgTable);
-
-
+        return imageList;
     }
 
+    public void makeBridges(Stage stage, int[] bridges){
+        // Figure out the width and height from the HQ1
+        int bridgelen = 8; //TODO: change this
+        int hqWidth = textureHash.get("HQ1.png").getWidth();
+        int width = textureHash.get("HQ1.png").getWidth()+bridgelen;
+        int height = textureHash.get("HQ1.png").getHeight() + 2;
+        int wOffset = 8; //TODO: Find the optimal lengths
+        int hOffset = (int) (height * 2.9);
+        int row = 0;
+        int column = 0;
+        for(int i=0; i <= bridges.length-1; i++){
+            column = i%2;
+            row = i/2;
+
+//            if(bridges[i] == 1){imageSetup("Bridge1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
+//            if(bridges[i] == 2){imageSetup("Elevator1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
+            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
+            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
+        }
+    }
 
     public void makeBox(ShapeRenderer shapes, Stage stage, int x, int y, int w, int h){
         assert w > 4;
