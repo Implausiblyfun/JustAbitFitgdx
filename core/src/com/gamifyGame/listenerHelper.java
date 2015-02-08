@@ -14,7 +14,7 @@ public class listenerHelper {
     final gamifyGame game;
     final Preferences pref;
     final renderHelper renderer;
-    ClickListener challengeListener;
+    ClickListener challengeListener, buildingListener;
     ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
 
     public listenerHelper(gamifyGame gamify, renderHelper renderer, Preferences preferences){
@@ -54,6 +54,15 @@ public class listenerHelper {
                 return true;
             }
         };
+        buildingListener = new ClickListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ChangingImage eventImage = (ChangingImage) event.getListenerActor();
+                eventImage.swapTexture();
+//                pref.putBoolean(eventImage.getString("time"),eventImage.getName().equals(eventImage.name2));
+//                pref.flush();
+                return true;
+            }
+        };
     }
 
     public ClickListener goScreen(int val){
@@ -83,6 +92,13 @@ public class listenerHelper {
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {renderer.moveScroll(imgHandles, (x-startX)/5, 0);}};
     }
+
+    public void buildingListeners(ChangingImage[] imageHandles){
+        for(int i=0; i <= imageHandles.length-1; i++){
+            imageHandles[i].addListener(buildingListener);
+        }
+    }
+
 
     public ClickListener setInt(final String key,final int val){
         return new ClickListener(){

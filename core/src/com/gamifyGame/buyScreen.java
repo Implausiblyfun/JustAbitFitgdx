@@ -75,25 +75,31 @@ public class buyScreen implements Screen {
         Stage layer2 = renderer.getLayer(2);
 
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
-        renderer.imageSetup("placeholder128x24.png", layer1, 26, 8);
+        Image placeHold = renderer.imageSetup("placeholder128x24.png", layer1, 26, 8);
+        placeHold.addListener(listenerH.goScreen(0));
+
 
         Image buyBar = renderer.imageSetup("buyBar.png", layer1, 0, 254);
 
-        //String[] imgs = {"48box.png", "Streakbox.png", "StepBox.png"};
-        String[] imgs = {"Armory1.png","Computer1.png", "Costume1.png", "Forgery1.png",
+        // TODO: generate this better and make them interactable.
+        String[] buyList = {"Armory1.png","Computer1.png", "Costume1.png", "Forgery1.png",
                 "Garage1.png", "Generator1.png", "HQ1.png", "Lab1.png", "Smuggler1.png"};
+        Image[] imageHandles = renderer.makeScroll(layer1, buyList, 0, 254);
 
-
-
-        Image[] imageHandles = renderer.makeScroll(layer1, imgs, 0, 254);
-
-
+        //Make the scroll bar actually scroll
         dragHandle = listenerH.scroll(imageHandles);
-
         listenerH.dragListeners(imageHandles);
-
         buyBar.addListener(dragHandle);
 
+        // Make a new instance of the buildings that is interactable
+        String[] imgs = {"Armory1.png","HQ1.png", "Computer1.png", "Costume1.png", "Forgery1.png",
+                "Garage1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+
+        int[] bridges = {1, 1, 2, 2};
+
+        ChangingImage[] undergroundBuild = renderer.makeUnderground(layer1, imgs);
+        renderer.makeBridges(layer1, bridges);
+        listenerH.buildingListeners(undergroundBuild);
     }
 
     @Override
