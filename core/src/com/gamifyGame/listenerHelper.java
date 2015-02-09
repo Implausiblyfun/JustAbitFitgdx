@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Json;
 
 /**
  * Created by Patrick Stephen on 2/1/2015.
@@ -55,8 +56,16 @@ public class listenerHelper {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ChangingImage eventImage = (ChangingImage) event.getListenerActor();
                 eventImage.swapTexture();
-//                pref.putBoolean(eventImage.getString("time"),eventImage.getName().equals(eventImage.name2));
-//                pref.flush();
+                String pic = eventImage.getName();
+                int index = eventImage.getInt("undergroundIndex");
+
+                Json json = new Json();
+                Preferences pref = game.getPrefs();
+                String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+                underground[index] = pic;
+                pref.putString("undergroundBuildings", json.toJson(underground));
+                pref.flush();
+
                 return true;
             }
         };
@@ -76,18 +85,28 @@ public class listenerHelper {
 
     public void dragListeners(Image[] imageHandles){
         for(int i=0; i <= imageHandles.length-1; i++){
-            imageHandles[i].addListener(scroll(imageHandles));
+            imageHandles[i].addListener(scroll(imageHandles,false));
         }
     }
 
-    public DragListener scroll(final Image[] imgHandles){
+    public DragListener scroll(final Image[] imgHandles, final boolean isLongBar){
         return new DragListener(){
-            float startX;
+            float startX, startY, sY;
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                startX = x; return true;
+                startX = x; startY = y; sY = event.getListenerActor().getY();
+
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                Image eventImage = (Image) event.getListenerActor();
+                if(isLongBar == false){eventImage.moveBy(0, sY-event.getListenerActor().getY());}
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
-            {renderHelper.getRenderHelper().moveScroll(imgHandles, (x-startX)/5, 0);}};
+            {
+                Image eventImage = (Image) event.getListenerActor();
+                renderHelper.getRenderHelper().moveScroll(imgHandles, (x-startX)/2, 0);
+                if(isLongBar==false){eventImage.moveBy(0, y-startY);}
+            }};
     }
 
     public void buildingListeners(ChangingImage[] imageHandles){

@@ -62,4 +62,5 @@ public class ChangingImage extends Image {
         public Integer getInt(String key){
             return Integers.get(key);
         }
+
 }

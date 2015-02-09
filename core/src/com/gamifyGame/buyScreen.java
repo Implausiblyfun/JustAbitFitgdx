@@ -23,11 +23,10 @@ import java.util.EventListener;
 public class buyScreen extends GamifyScreen implements Screen
 {
     DragListener dragHandle;
-    Preferences pref;
+
 
     public buyScreen(gamifyGame game) {
        super(game);
-       this.pref = game.getPrefs() ;
     }
 
     @Override
@@ -46,12 +45,13 @@ public class buyScreen extends GamifyScreen implements Screen
         Image[] imageHandles = renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), buyList, 0, 254);
 
         //Make the scroll bar actually scroll
-        dragHandle = game.getListener().scroll(imageHandles);
+        dragHandle = game.getListener().scroll(imageHandles, true);
         game.getListener().dragListeners(imageHandles);
         buyBar.addListener(dragHandle);
 
         // Make a new instance of the buildings that is interactable
         Json json = new Json();
+        Preferences pref = game.getPrefs();
         String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
         Integer[] bridges        = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
 

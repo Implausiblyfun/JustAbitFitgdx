@@ -349,7 +349,7 @@ public class renderHelper {
             column = i %3;
             row = i/3;
             imageList[i] = new ChangingImage(buildings[i], "Empty1.png", stage,wOffset + column*width, hOffset - row*height);
-//            imageSetup(buildings[i], stage, wOffset + column*width, hOffset - row*height);
+            imageList[i].putExtra("undergroundIndex", i);
         }
         return imageList;
     }

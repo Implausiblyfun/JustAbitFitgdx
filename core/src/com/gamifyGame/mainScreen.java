@@ -90,11 +90,17 @@ public class mainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().imageSetup(timeOfDay(), layer0, 0, 0);
             renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
+            //Testing purposes
+            //pref.clear();
+
             // Create now for put/get
             Json json = new Json();
-
-            // TODO: Change to in prefs
-            if(pref.getString("undergroundBuildings") == null){
+            String[] tmpImgs = null;
+            // ToDO: Change start conditions once buildings can be added
+            if(pref.getString("undergroundBuildings") != null) {
+               tmpImgs = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+            }
+            if(pref.getString("undergroundBuildings") == null || tmpImgs == null || tmpImgs.length < 1 ){
                 String[] imgs = {"Empty1.png","HQ1.png", "Empty1.png", "Empty1.png", "Empty1.png",
                         "Empty1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
                 pref.putString("undergroundBuildings", json.toJson(imgs));
