@@ -63,4 +63,17 @@ public class ChangingImage extends Image {
             return Integers.get(key);
         }
 
+        public void nameChange(String newName){
+            if (this.getName().equals(name1)){
+                this.name1 = newName;
+                this.textured1 = renderHelper.getRenderHelper().getTextureRegionDrawable(newName);
+                this.setDrawable(textured1);
+            }
+            else {
+                this.name2 = newName;
+                this.textured2 = renderHelper.getRenderHelper().getTextureRegionDrawable(newName);
+                this.setDrawable(textured2);
+            }
+        }
+
 }

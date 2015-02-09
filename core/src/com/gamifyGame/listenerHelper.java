@@ -56,16 +56,18 @@ public class listenerHelper {
         buildingListener = new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ChangingImage eventImage = (ChangingImage) event.getListenerActor();
-                eventImage.swapTexture();
-                String pic = eventImage.getName();
-                int index = eventImage.getInt("undergroundIndex");
 
-                Json json = new Json();
-                Preferences pref = game.getPrefs();
-                String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-                underground[index] = pic;
-                pref.putString("undergroundBuildings", json.toJson(underground));
-                pref.flush();
+
+//                eventImage.swapTexture();
+//                String pic = eventImage.getName();
+//                int index = eventImage.getInt("undergroundIndex");
+//
+//                Json json = new Json();
+//                Preferences pref = game.getPrefs();
+//                String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+//                underground[index] = pic;
+//                pref.putString("undergroundBuildings", json.toJson(underground));
+//                pref.flush();
 
                 return true;
             }
@@ -84,27 +86,33 @@ public class listenerHelper {
         }
     }
 
-    public void dragListeners(Image[] imageHandles){
+    public void dragListeners(Image[] imageHandles, ChangingImage[] underground){
         for(int i=0; i <= imageHandles.length-1; i++){
-            imageHandles[i].addListener(scroll(imageHandles,false));
+            imageHandles[i].addListener(scroll(imageHandles,underground, false));
         }
     }
 
-    public DragListener scroll(final Image[] imgHandles, final boolean isLongBar){
+    public DragListener scroll(final Image[] imgHandles, final ChangingImage[] underground, final boolean isLongBar){
         return new DragListener(){
             float startX, startY, sY;
             Color startColor;
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 startX = x; startY = y; sY = event.getListenerActor().getY();
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
-                if(isLongBar == false){event.getListenerActor().setColor(Color.GREEN);}
+                if(isLongBar == false){
+                    //event.getListenerActor().setColor(Color.GREEN);
+                    for(int i=0; i <underground.length; i++){underground[i].setColor(Color.GREEN);}
+                }
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 Image eventImage = (Image) event.getListenerActor();
                 if(isLongBar == false){
-                    eventImage.moveBy(0, sY-event.getListenerActor().getY());
+
                     eventImage.setColor(startColor);
+                    for(int i=0; i <underground.length; i++){underground[i].setColor(startColor);}
+                    renderHelper.getRenderHelper().buildCheck(underground,eventImage);
+                    eventImage.moveBy(0, sY-event.getListenerActor().getY());
                 }
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)

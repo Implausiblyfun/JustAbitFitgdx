@@ -14,10 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import java.util.HashMap;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Stephen on 11/2/2014.
@@ -352,6 +354,31 @@ public class renderHelper {
             imageList[i].putExtra("undergroundIndex", i);
         }
         return imageList;
+    }
+
+    public void buildCheck(ChangingImage[] possibleBuildingSites,Image toBuy ){
+        float minX = toBuy.getX();
+        float maxX = toBuy.getWidth();
+        float minY = toBuy.getY();
+        float maxY = toBuy.getTop();
+        for(int i=0; i<possibleBuildingSites.length; i ++){
+            ChangingImage tmp = possibleBuildingSites[i];
+            if (rectangleCollided(minX, maxX, minY, maxY, tmp.getX(), tmp.getRight(), tmp.getY(), tmp.getTop())){
+                //Here we change the value!
+                possibleBuildingSites[i].nameChange(toBuy.getName());
+            }
+            else{
+                possibleBuildingSites[i].setColor(Color.BLUE);
+            }
+        }
+    }
+
+
+
+    public boolean rectangleCollided(float minX1, float maxX1, float minY1, float maxY1,
+                                     float minX2, float maxX2, float minY2, float maxY2){
+        if(maxX1>minX2 && maxX2>minX1 && maxY1>minY2 && maxY2>minY1){return true;}
+        return false;
     }
 
     public void colorUnderground(Stage stage, ChangingImage[] undergroundHandles){

@@ -37,17 +37,6 @@ public class buyScreen extends GamifyScreen implements Screen
         placeHold.addListener(game.getListener().goScreen(0));
 
 
-        Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
-
-        // TODO: generate this better and make them interactable.
-        String[] buyList = {"Armory1.png","Computer1.png", "Costume1.png", "Forgery1.png",
-                "Garage1.png", "Generator1.png", "HQ1.png", "Lab1.png", "Smuggler1.png"};
-        Image[] imageHandles = renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), buyList, 0, 254);
-
-        //Make the scroll bar actually scroll
-        dragHandle = game.getListener().scroll(imageHandles, true);
-        game.getListener().dragListeners(imageHandles);
-        buyBar.addListener(dragHandle);
 
         // Make a new instance of the buildings that is interactable
         Json json = new Json();
@@ -58,6 +47,19 @@ public class buyScreen extends GamifyScreen implements Screen
         ChangingImage[] undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), underground);
         renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
         game.getListener().buildingListeners(undergroundBuild);
+
+
+        Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
+
+        // TODO: generate this better and make them interactable.
+        String[] buyList = {"Armory1.png","Computer1.png", "Costume1.png", "Forgery1.png",
+                "Garage1.png", "Generator1.png", "HQ1.png", "Lab1.png", "Smuggler1.png"};
+        Image[] imageHandles = renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), buyList, 0, 254);
+
+        //Make the scroll bar actually scroll
+        dragHandle = game.getListener().scroll(imageHandles,undergroundBuild, true);
+        game.getListener().dragListeners(imageHandles, undergroundBuild);
+        buyBar.addListener(dragHandle);
     }
 
     @Override
