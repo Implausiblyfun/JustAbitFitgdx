@@ -48,15 +48,14 @@ public class gamifyGame extends Game{
         pref.putBoolean("showChallengeHours",false);
         pref.flush();
 
-        renderHelper renderer = new renderHelper();
-        listenerHelper listenerHelper = new listenerHelper(this, renderer, pref);
-        mainS = new mainScreen(this, actionResolver, renderer, listenerHelper, pref);
-        testS = new testScreen(this, actionResolver, renderer, listenerHelper, pref);
-        quad1S = new quad1Screen(this, actionResolver, renderer, listenerHelper, pref);
-        quad2S = new quad2Screen(this, actionResolver, renderer, listenerHelper, pref);
-        quad3S = new quad3Screen(this, actionResolver, renderer, listenerHelper, pref);
-        quad4S = new quad4Screen(this, actionResolver, renderer, listenerHelper, pref);
-        buyS = new buyScreen(this, actionResolver, renderer, listenerHelper, pref);
+        listenerHelper listenerHelper = new listenerHelper(this, pref);
+        mainS = new mainScreen(this, actionResolver, listenerHelper, pref);
+        testS = new testScreen(this, actionResolver, listenerHelper, pref);
+        quad1S = new quad1Screen(this, actionResolver, listenerHelper, pref);
+        quad2S = new quad2Screen(this, actionResolver, listenerHelper, pref);
+        quad3S = new quad3Screen(this, actionResolver, listenerHelper, pref);
+        quad4S = new quad4Screen(this, actionResolver, listenerHelper, pref);
+        buyS = new buyScreen(this, actionResolver, listenerHelper, pref);
 
 
         setScreen(mainS);
