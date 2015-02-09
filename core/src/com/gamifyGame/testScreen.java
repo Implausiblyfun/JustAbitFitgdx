@@ -23,27 +23,25 @@ public class testScreen implements Screen {
     Preferences pref;
     ShapeRenderer shapes;
     gamifyGame game;
-    renderHelper renderer;
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
     int resetCount;
     String activity = "dummyvalue";
 
-    public testScreen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
+    public testScreen(gamifyGame game, ActionResolver actionResolver,
                       listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
         this.pref = pref;
-        renderer = rendererPassed;
         listenerH = listenerHPassed;
 
         frameCount = 60;
         resetCount = 60*30;
 
-        shapes = renderer.getShapeRenderer();
-        batch = renderer.getBatch();
-        font = renderer.getFont();
+        shapes = renderHelper.getRenderHelper().getShapeRenderer();
+        batch = renderHelper.getRenderHelper().getBatch();
+        font = renderHelper.getRenderHelper().getFont();
     }
 
     @Override
@@ -55,9 +53,9 @@ public class testScreen implements Screen {
             this.show();
             resetCount = 60*30;
         }
-        Stage layer0 = renderer.getLayer(0);
-        Stage layer1 = renderer.getLayer(1);
-        Stage layer2 = renderer.getLayer(2);
+        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
         // Undraw the last screen
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -77,18 +75,18 @@ public class testScreen implements Screen {
         int confirmed = pref.getInteger("confirmed", 0);
 
         batch.begin();
-        renderer.textSetCenter("Yes", -40, 6);
-        renderer.textSetCenter("No", 26, 6);
-        renderer.textSetCenter("Have you been " + activity + " recently?", -80, -40);
-        renderer.textSet(String.valueOf(frameCount),10,20);
-        renderer.textSet(String.valueOf(resetCount),10,40);
+        renderHelper.getRenderHelper().textSetCenter("Yes", -40, 6);
+        renderHelper.getRenderHelper().textSetCenter("No", 26, 6);
+        renderHelper.getRenderHelper().textSetCenter("Have you been " + activity + " recently?", -80, -40);
+        renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),10,20);
+        renderHelper.getRenderHelper().textSet(String.valueOf(resetCount),10,40);
         boolean textOnScreen = false;
         if (confirmed == 1){
-            renderer.textSetCenter("Confirmation sent!",0,-100);
+            renderHelper.getRenderHelper().textSetCenter("Confirmation sent!",0,-100);
             frameCount--;
         }
         else if (confirmed == -1) {
-            renderer.textSetCenter("Denial sent!",0,-100);
+            renderHelper.getRenderHelper().textSetCenter("Denial sent!",0,-100);
             frameCount--;
         }
         if (frameCount < 0){
@@ -110,17 +108,17 @@ public class testScreen implements Screen {
     public void show() {
         // called when this screen is set as the screen with game.setScreen();
 
-        Stage layer0 = renderer.getLayer(0);
-        Stage layer1 = renderer.getLayer(1);
-        Stage layer2 = renderer.getLayer(2);
+        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
         // Only items that need listeners should be maintained as Images I.E
         // These two don't need listeners--
-        renderer.imageSetup("day.png", layer0, 0, 0);
-        renderer.imageSetup("background.png", layer0, 0, 0);
+        renderHelper.getRenderHelper().imageSetup("day.png", layer0, 0, 0);
+        renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
-        Image Yes = renderer.imageSetupCenter("48Box.png", layer1, -32,0);
-        Image No = renderer.imageSetupCenter("48Box.png", layer1, 32,0);
+        Image Yes = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, -32,0);
+        Image No = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 32,0);
 
         // MAKE SOME LISTENERS THAT SEND DATA TO THE SERVER?!?!?!?
         Yes.addListener(listenerH.testYes);
@@ -131,8 +129,8 @@ public class testScreen implements Screen {
     @Override
     public void hide() {
         // called when current screen changes from this to a different screen
-        renderer.getLayer(1).clear();
-        renderer.getLayer(2).clear();
+        renderHelper.getRenderHelper().getLayer(1).clear();
+        renderHelper.getRenderHelper().getLayer(2).clear();
     }
 
     @Override

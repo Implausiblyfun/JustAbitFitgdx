@@ -26,30 +26,28 @@ public class mainScreen implements Screen {
     Preferences pref;
     ShapeRenderer shapes;
     gamifyGame game;
-    renderHelper renderer;
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
     Image quad3;
 
-    public mainScreen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
+    public mainScreen(gamifyGame game, ActionResolver actionResolver,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
         this.pref = pref;
-        renderer = rendererPassed;
         listenerH = listenerHPassed;
 
-        shapes = renderer.getShapeRenderer();
-        batch = renderer.getBatch();
-        font = renderer.getFont();
+        shapes = renderHelper.getRenderHelper().getShapeRenderer();
+        batch = renderHelper.getRenderHelper().getBatch();
+        font = renderHelper.getRenderHelper().getFont();
     }
 
         @Override
         public void render(float delta) {
-            Stage layer0 = renderer.getLayer(0);
-            Stage layer1 = renderer.getLayer(1);
-            Stage layer2 = renderer.getLayer(2);
+            Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+            Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+            Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
             // Undraw the last screen
             Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -120,14 +118,14 @@ public class mainScreen implements Screen {
         public void show() {
             // called when this screen is set as the screen with game.setScreen();
 
-            Stage layer0 = renderer.getLayer(0);
-            Stage layer1 = renderer.getLayer(1);
-            Stage layer2 = renderer.getLayer(2);
+            Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+            Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+            Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
             // Only items that need listeners should be maintained as Images I.E
             // These two don't need listeners--
-            renderer.imageSetup(timeOfDay(), layer0, 0, 0);
-            renderer.imageSetup("background.png", layer0, 0, 0);
+            renderHelper.getRenderHelper().imageSetup(timeOfDay(), layer0, 0, 0);
+            renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
             // TODO: Change to in prefs
             String[] imgs = {"Armory1.png","HQ1.png", "Computer1.png", "Costume1.png", "Forgery1.png",
@@ -135,16 +133,16 @@ public class mainScreen implements Screen {
 
             int[] bridges = {1, 1, 1, 1, 2, 2};
 
-            renderer.makeUnderground(layer0, imgs);
-            renderer.makeBridges(layer0, bridges);
+            renderHelper.getRenderHelper().makeUnderground(layer0, imgs);
+            renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
 
             // These five do.
-            Image quad1 = renderer.imageSetupCenter("stepBox.png", layer1, 37, 50);
-            Image quad2 = renderer.imageSetupCenter("streakBox.png", layer1, -37, 50);
-            quad3 = renderer.imageSetupCenter("trophyBox.png", layer1, -37, -25);
-            Image quad4 = renderer.imageSetupCenter("48Box.png", layer1, 37, -25);
-            Image midbox = renderer.imageSetupCenter("midBox.png", layer1, 0, 12);
+            Image quad1 = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
+            Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
+            quad3 = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
+            Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 37, -25);
+            Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
 
             // Assign items their listeners
             quad1.addListener(listenerH.goScreen(1));
@@ -160,8 +158,8 @@ public class mainScreen implements Screen {
         @Override
         public void hide() {
             // called when current screen changes from this to a different screen
-            renderer.getLayer(1).clear();
-            renderer.getLayer(2).clear();
+            renderHelper.getRenderHelper().getLayer(1).clear();
+            renderHelper.getRenderHelper().getLayer(2).clear();
         }
 
         @Override

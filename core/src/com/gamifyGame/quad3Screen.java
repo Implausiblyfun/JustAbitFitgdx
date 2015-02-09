@@ -22,7 +22,6 @@ public class quad3Screen implements Screen {
     Preferences pref;
     ShapeRenderer shapes;
     gamifyGame game;
-    renderHelper renderer;
     listenerHelper listenerH;
     int frameCount;
     ChangingImage[][] Week;
@@ -30,24 +29,23 @@ public class quad3Screen implements Screen {
 
     Image retBox, border;
 
-    public quad3Screen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
+    public quad3Screen(gamifyGame game, ActionResolver actionResolver,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
-        renderer = rendererPassed;
         this.pref = pref;
         listenerH = listenerHPassed;
 
-        shapes = renderer.getShapeRenderer();
-        font = renderer.getFont();
-        batch = renderer.getBatch();
+        shapes = renderHelper.getRenderHelper().getShapeRenderer();
+        font = renderHelper.getRenderHelper().getFont();
+        batch = renderHelper.getRenderHelper().getBatch();
     }
 
     @Override
     public void render(float delta) {
-        Stage layer0 = renderer.getLayer(0);
-        Stage layer1 = renderer.getLayer(1);
-        Stage layer2 = renderer.getLayer(2);
+        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
         // Undraw the last screen
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -57,7 +55,7 @@ public class quad3Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
-        renderer.moveCorner(retBox,Corner.UPPER_RIGHT,30);
+        renderHelper.getRenderHelper().moveCorner(retBox,Corner.UPPER_RIGHT,30);
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
 
 
@@ -83,7 +81,7 @@ public class quad3Screen implements Screen {
         else showText = "Close \nWindow";
 
         batch.begin();
-        renderer.textSet(showText,2,16);
+        renderHelper.getRenderHelper().textSet(showText,2,16);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
                 String text = Week[i][j].getString("time");
@@ -99,15 +97,15 @@ public class quad3Screen implements Screen {
                     showText = "12PM";
                 }
                 else showText = String.valueOf(showTextInt%12) + "PM";
-                renderer.textSet(showText,(int)Week[i][j].getX(),(int)Week[i][j].getY()+10, "small");
+                renderHelper.getRenderHelper().textSet(showText,(int)Week[i][j].getX(),(int)Week[i][j].getY()+10, "small");
                 if (j + i == 0){
-                    renderer.textSet("SUN",(int)Week[i][j].getX(),(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("MON",(int)Week[i][j].getX()+20,(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("TUE",(int)Week[i][j].getX()+40,(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("WED",(int)Week[i][j].getX()+60,(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("THU",(int)Week[i][j].getX()+80,(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("FRI",(int)Week[i][j].getX()+100,(int)Week[i][j].getY()+20, "small");
-                    renderer.textSet("SAT",(int)Week[i][j].getX()+120,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("SUN",(int)Week[i][j].getX(),(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("MON",(int)Week[i][j].getX()+20,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("TUE",(int)Week[i][j].getX()+40,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("WED",(int)Week[i][j].getX()+60,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("THU",(int)Week[i][j].getX()+80,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("FRI",(int)Week[i][j].getX()+100,(int)Week[i][j].getY()+20, "small");
+                    renderHelper.getRenderHelper().textSet("SAT",(int)Week[i][j].getX()+120,(int)Week[i][j].getY()+20, "small");
                 }
             }
         }
@@ -150,17 +148,17 @@ public class quad3Screen implements Screen {
     @Override
     public void show() {
 
-        Stage layer1 = renderer.getLayer(1);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
 
-        retBox = renderer.imageSetupCenter("trophyBox.png", layer1, -37, -25);
-        Image placeholder62 = renderer.imageSetup("48Box.png", layer1, 0, 0);
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
+        Image placeholder62 = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
 
         int borderX = 19;
         int borderY = 20;
         int day = 0;
         int hour = 0;
 
-        border = renderer.imageSetup("largeScreenBox.png", layer1, borderX+300, borderY);
+        border = renderHelper.getRenderHelper().imageSetup("largeScreenBox.png", layer1, borderX+300, borderY);
         Week = new ChangingImage[7][24];
         for (int i = 0; i < 7; i++) {
             int newX = borderX + 2 + (i * 20);
@@ -184,8 +182,8 @@ public class quad3Screen implements Screen {
 
     @Override
     public void hide() {
-        renderer.getLayer(1).clear();
-        renderer.getLayer(2).clear();
+        renderHelper.getRenderHelper().getLayer(1).clear();
+        renderHelper.getRenderHelper().getLayer(2).clear();
         border.moveBy(-300,0);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {

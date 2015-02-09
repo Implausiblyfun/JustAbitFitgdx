@@ -41,7 +41,17 @@ public class renderHelper {
 
     final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
 
-    public renderHelper(){
+
+    private static renderHelper renderer;
+    public static renderHelper getRenderHelper()
+    {
+        if(renderer==null)
+           renderer=new renderHelper();
+        return renderer;
+    }
+
+
+    private renderHelper(){
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
         shapes = new ShapeRenderer();

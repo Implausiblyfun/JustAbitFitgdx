@@ -13,14 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 public class listenerHelper {
     final gamifyGame game;
     final Preferences pref;
-    final renderHelper renderer;
     ClickListener challengeListener, buildingListener;
     ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
 
-    public listenerHelper(gamifyGame gamify, renderHelper renderer, Preferences preferences){
+    public listenerHelper(gamifyGame gamify, Preferences preferences){
         this.pref = preferences;
         this.game = gamify;
-        this.renderer = renderer;
         returnS = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {game.setScreen(game.mainS); return true;}};
@@ -90,7 +88,7 @@ public class listenerHelper {
                 startX = x; return true;
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
-            {renderer.moveScroll(imgHandles, (x-startX)/5, 0);}};
+            {renderHelper.getRenderHelper().moveScroll(imgHandles, (x-startX)/5, 0);}};
     }
 
     public void buildingListeners(ChangingImage[] imageHandles){

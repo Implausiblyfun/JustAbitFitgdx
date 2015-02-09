@@ -21,29 +21,27 @@ public class quad2Screen implements Screen {
     Preferences pref;
     ShapeRenderer shapes;
     gamifyGame game;
-    renderHelper renderer;
     listenerHelper listenerH;
     float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
     Image retBox;
 
-    public quad2Screen(gamifyGame game, ActionResolver actionResolver, renderHelper rendererPassed,
+    public quad2Screen(gamifyGame game, ActionResolver actionResolver,
                        listenerHelper listenerHPassed, Preferences pref) {
         this.game = game;
         this.actionResolver = actionResolver;
-        renderer = rendererPassed;
         this.pref = pref;
         listenerH = listenerHPassed;
 
-        shapes = renderer.getShapeRenderer();
-        font = renderer.getFont();
+        shapes = renderHelper.getRenderHelper().getShapeRenderer();
+        font = renderHelper.getRenderHelper().getFont();
     }
 
     @Override
     public void render(float delta) {
-        Stage layer0 = renderer.getLayer(0);
-        Stage layer1 = renderer.getLayer(1);
-        Stage layer2 = renderer.getLayer(2);
+        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
         // Undraw the last screen
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -53,7 +51,7 @@ public class quad2Screen implements Screen {
         layer1.draw();
         layer2.draw();
 
-        renderer.moveCorner(retBox,Corner.LOWER_RIGHT,30);
+        renderHelper.getRenderHelper().moveCorner(retBox,Corner.LOWER_RIGHT,30);
 
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
@@ -67,11 +65,11 @@ public class quad2Screen implements Screen {
     @Override
     public void show() {
 
-        Stage layer0 = renderer.getLayer(0);
-        Stage layer1 = renderer.getLayer(1);
-        Stage layer2 = renderer.getLayer(2);
+        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
+        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
-        retBox = renderer.imageSetupCenter("streakBox.png", layer1, -37, 50);
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
 
         retBox.addListener(listenerH.goScreen(0));
 
@@ -79,8 +77,8 @@ public class quad2Screen implements Screen {
 
     @Override
     public void hide() {
-        renderer.getLayer(1).clear();
-        renderer.getLayer(2).clear();
+        renderHelper.getRenderHelper().getLayer(1).clear();
+        renderHelper.getRenderHelper().getLayer(2).clear();
     }
 
     @Override
