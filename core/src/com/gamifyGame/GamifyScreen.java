@@ -16,22 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public abstract class GamifyScreen implements Screen {
     protected ActionResolver actionResolver;
     //protected BitmapFont font;
-    protected Preferences pref;
     //protected ShapeRenderer shapes;
     protected gamifyGame game;
-    protected listenerHelper listenerH;
     //protected float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     protected int frameCount;
     protected Image retBox;
 
-    public GamifyScreen(gamifyGame game, ActionResolver actionResolver,
-                        listenerHelper listenerHPassed, Preferences pref)
+    public GamifyScreen(gamifyGame game, ActionResolver actionResolver)
     {
         this.game = game;
         this.actionResolver = actionResolver;
-        this.pref = pref;
-        listenerH = listenerHPassed;
-
     }
 
     @Override

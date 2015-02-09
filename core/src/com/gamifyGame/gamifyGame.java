@@ -13,19 +13,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Map;
 
 public class gamifyGame extends Game{
-    Preferences pref;
-    ActionResolver actionResolver;
-    mainScreen mainS;
-    testScreen testS;
-    quad1Screen quad1S;
-    quad2Screen quad2S;
-    quad3Screen quad3S;
-    quad4Screen quad4S;
-    buyScreen buyS;
+    private Preferences pref;
+    private ActionResolver actionResolver;
+    public mainScreen mainS;
+    public testScreen testS;
+    public quad1Screen quad1S;
+    public quad2Screen quad2S;
+    public quad3Screen quad3S;
+    public quad4Screen quad4S;
+    public buyScreen buyS;
+    private listenerHelper helper;
 
 
-    ChangingImage[] rooms;
-    int[] bridges;
+    private ChangingImage[] rooms;
+    private int[] bridges;
 
 
     //READ THIS
@@ -48,17 +49,26 @@ public class gamifyGame extends Game{
         pref.putBoolean("showChallengeHours",false);
         pref.flush();
 
-        listenerHelper listenerHelper = new listenerHelper(this, pref);
-        mainS = new mainScreen(this, actionResolver, listenerHelper, pref);
-        testS = new testScreen(this, actionResolver, listenerHelper, pref);
-        quad1S = new quad1Screen(this, actionResolver, listenerHelper, pref);
-        quad2S = new quad2Screen(this, actionResolver, listenerHelper, pref);
-        quad3S = new quad3Screen(this, actionResolver, listenerHelper, pref);
-        quad4S = new quad4Screen(this, actionResolver, listenerHelper, pref);
-        buyS = new buyScreen(this, actionResolver, listenerHelper, pref);
+        helper = new listenerHelper(this);
+        mainS = new mainScreen(this, actionResolver, helper, pref);
+        testS = new testScreen(this, actionResolver, helper, pref);
+        quad1S = new quad1Screen(this, actionResolver);
+        quad2S = new quad2Screen(this, actionResolver);
+        quad3S = new quad3Screen(this, actionResolver);
+        quad4S = new quad4Screen(this, actionResolver);
+        buyS = new buyScreen(this, actionResolver, helper, pref);
 
 
         setScreen(mainS);
+    }
+
+    public Preferences getPrefs()
+    {
+        return pref;
+    }
+    public listenerHelper getListener()
+    {
+        return helper;
     }
 
     public void sendInt(String key, int val){

@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
  */
 public class listenerHelper {
     final gamifyGame game;
-    final Preferences pref;
     ClickListener challengeListener, buildingListener;
     ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
 
-    public listenerHelper(gamifyGame gamify, Preferences preferences){
-        this.pref = preferences;
+    public listenerHelper(gamifyGame gamify){
         this.game = gamify;
         returnS = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -37,6 +35,7 @@ public class listenerHelper {
         goS5 = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {game.setScreen(game.buyS); return true;}};
+        final Preferences pref=game.getPrefs();
         testYes = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {pref.putInteger("confirmed",1); pref.flush(); game.sendInt("userConfirm",1); return true;}};
@@ -101,13 +100,13 @@ public class listenerHelper {
     public ClickListener setInt(final String key,final int val){
         return new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {pref.putInteger(key,val); pref.flush(); return true;}};
+            {game.getPrefs().putInteger(key,val); game.getPrefs().flush(); return true;}};
     }
 
     public ClickListener setBoolean(final String key, final boolean val){
         return new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {pref.putBoolean(key,val); pref.flush(); return true;}};
+            {game.getPrefs().putBoolean(key,val); game.getPrefs().flush(); return true;}};
     }
 
     public ClickListener setBoolean(final String key, final char inp){
@@ -119,9 +118,9 @@ public class listenerHelper {
                 return new ClickListener(){
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
                     {
-                        if (!(pref.getBoolean(key,false))){pref.putBoolean(key,true);}
-                        else pref.putBoolean(key,false);
-                        pref.flush();
+                        if (!(game.getPrefs().getBoolean(key,false))){game.getPrefs().putBoolean(key,true);}
+                        else game.getPrefs().putBoolean(key,false);
+                        game.getPrefs().flush();
                         return true;}};
         }
         return setBoolean(key,val);

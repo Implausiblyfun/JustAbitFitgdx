@@ -15,9 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class quad2Screen extends GamifyScreen implements Screen {
 
-    public quad2Screen(gamifyGame game, ActionResolver actionResolver,
-                       listenerHelper listenerHPassed, Preferences pref) {
-        super(game, actionResolver, listenerHPassed, pref);
+    public quad2Screen(gamifyGame game, ActionResolver actionResolver) {
+        super(game, actionResolver);
     }
 
     @Override
@@ -29,6 +28,6 @@ public class quad2Screen extends GamifyScreen implements Screen {
     @Override
     public void show() {
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
-        retBox.addListener(listenerH.goScreen(0));
+        retBox.addListener(game.getListener().goScreen(0));
     }
 }

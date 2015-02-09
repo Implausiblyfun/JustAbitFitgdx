@@ -22,9 +22,8 @@ public class quad3Screen extends GamifyScreen implements Screen
 
     private Image border;
 
-    public quad3Screen(gamifyGame game, ActionResolver actionResolver,
-                       listenerHelper listenerHPassed, Preferences pref) {
-        super(game, actionResolver, listenerHPassed, pref);
+    public quad3Screen(gamifyGame game, ActionResolver actionResolver) {
+        super(game, actionResolver);
         batch = renderHelper.getRenderHelper().getBatch();
     }
 
@@ -32,6 +31,7 @@ public class quad3Screen extends GamifyScreen implements Screen
     public void render(float delta)
     {
         super.render(delta);
+        Preferences pref=game.getPrefs();
         renderHelper.getRenderHelper().moveCorner(retBox,Corner.UPPER_RIGHT,30);
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
 
@@ -93,7 +93,7 @@ public class quad3Screen extends GamifyScreen implements Screen
     }
 
     private void bringChallengeScreen(){
-        boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
+        boolean showChallengeHours = game.getPrefs().getBoolean("showChallengeHours",false);
         if (showChallengeHours && !shown) {
 
             border.moveBy(-300, 0);
@@ -140,16 +140,16 @@ public class quad3Screen extends GamifyScreen implements Screen
                 ChangingImage tempImage = new ChangingImage("InactiveHour.png", "ActiveHour.png", layer1, newX+300, newY);
                 String representation = String.valueOf(day) + ',' + String.valueOf(hour);
                 tempImage.putExtra("time", representation);
-                if (pref.getBoolean(representation,true)){tempImage.swapTexture();}
-                tempImage.addListener(listenerH.challengeListener);
+                if (game.getPrefs().getBoolean(representation,true)){tempImage.swapTexture();}
+                tempImage.addListener(game.getListener().challengeListener);
                 Week[i][j] = tempImage;
                 hour = (hour + 1) % 24;
             }
             day++;
         }
 
-        retBox.addListener(listenerH.goScreen(0));
-        placeholder62.addListener(listenerH.setBoolean("showChallengeHours",'a'));
+        retBox.addListener(game.getListener().goScreen(0));
+        placeholder62.addListener(game.getListener().setBoolean("showChallengeHours",'a'));
 
     }
 
