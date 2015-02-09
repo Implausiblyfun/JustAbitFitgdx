@@ -50,7 +50,7 @@ public class gamifyGame extends Game{
         pref.flush();
 
         helper = new listenerHelper(this);
-        mainS = new mainScreen(this, actionResolver, helper, pref);
+        mainS = new mainScreen(this);
         testS = new testScreen(this, actionResolver, helper, pref);
         quad1S = new quad1Screen(this);
         quad2S = new quad2Screen(this);
