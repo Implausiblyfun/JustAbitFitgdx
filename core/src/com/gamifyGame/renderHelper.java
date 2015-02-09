@@ -299,10 +299,14 @@ public class renderHelper {
 
     //TODO: Change to scale down to appropriate size.
     public Image[] makeScroll(Stage stage, String[] images, float hOrigin, float vOrigin){
+        // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
+        int width  = (int)(.8 *textureHash.get("HQ1.png").getWidth());
+        int height = (int) (.8* textureHash.get("HQ1.png").getHeight());
+
         Image[] imgHandles = new Image[images.length];
         for(int i=0; i <= images.length-1; i++){
-            int width = textureHash.get(images[i]).getWidth();
-            imgHandles[i] = imageSetup(images[i], stage, hOrigin+(i*textureHash.get(images[i]).getWidth()),vOrigin);
+            imgHandles[i] = imageSetup(images[i], stage, hOrigin+(i*width),vOrigin + textureHash.get("buyBar.png").getHeight()-height);
+            imgHandles[i].setSize(width, height);
         }
         return imgHandles;
     }
@@ -337,7 +341,7 @@ public class renderHelper {
         int bridgelen = 8; //TODO: change this
         int width = textureHash.get(buildings[1]).getWidth() + bridgelen;
         int height = textureHash.get(buildings[1]).getHeight() + 2;
-        int wOffset = 8; //TODO: Find the optimal lengths
+        int wOffset = 4; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
@@ -350,13 +354,13 @@ public class renderHelper {
         return imageList;
     }
 
-    public void makeBridges(Stage stage, int[] bridges){
+    public void makeBridges(Stage stage, Integer[] bridges){
         // Figure out the width and height from the HQ1
         int bridgelen = 8; //TODO: change this
         int hqWidth = textureHash.get("HQ1.png").getWidth();
         int width = textureHash.get("HQ1.png").getWidth()+bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 8; //TODO: Find the optimal lengths
+        int wOffset = 4; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;

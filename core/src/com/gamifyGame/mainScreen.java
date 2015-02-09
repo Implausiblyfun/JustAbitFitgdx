@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.Calendar;
 
@@ -121,13 +122,29 @@ public class mainScreen implements Screen {
             renderHelper.getRenderHelper().imageSetup(timeOfDay(), layer0, 0, 0);
             renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
+            // Create now for put/get
+            Json json = new Json();
+
             // TODO: Change to in prefs
-            String[] imgs = {"Armory1.png","HQ1.png", "Computer1.png", "Costume1.png", "Forgery1.png",
-                    "Garage1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+            if(pref.getString("undergroundBuildings") == null){
+                String[] imgs = {"Empty1.png","HQ1.png", "Empty1.png", "Empty1.png", "Empty1.png",
+                        "Empty1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+                pref.putString("undergroundBuildings", json.toJson(imgs));
+                pref.flush();
+            }
 
-            int[] bridges = {1, 1, 1, 1, 2, 2};
+            if(pref.getString("undergroundBridges") == null || json.fromJson(Integer[].class, pref.getString("undergroundBridges")) == null ){
+                Integer[] tmpBridges = {1, 1, 1, 1, 2, 2};
+                pref.putString("undergroundBridges", json.toJson(tmpBridges));
+                pref.flush();
+            }
 
-            renderHelper.getRenderHelper().makeUnderground(layer0, imgs);
+
+
+            String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+            Integer[] bridges        = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
+
+            renderHelper.getRenderHelper().makeUnderground(layer0, underground);
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
 

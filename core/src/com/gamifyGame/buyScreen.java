@@ -1,5 +1,6 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.EventListener;
 
@@ -21,9 +23,11 @@ import java.util.EventListener;
 public class buyScreen extends GamifyScreen implements Screen
 {
     DragListener dragHandle;
+    Preferences pref;
 
     public buyScreen(gamifyGame game) {
        super(game);
+       this.pref = game.getPrefs() ;
     }
 
     @Override
@@ -47,12 +51,11 @@ public class buyScreen extends GamifyScreen implements Screen
         buyBar.addListener(dragHandle);
 
         // Make a new instance of the buildings that is interactable
-        String[] imgs = {"Armory1.png","HQ1.png", "Computer1.png", "Costume1.png", "Forgery1.png",
-                "Garage1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+        Json json = new Json();
+        String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+        Integer[] bridges        = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
 
-        int[] bridges = {1, 1, 2, 2};
-
-        ChangingImage[] undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), imgs);
+        ChangingImage[] undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), underground);
         renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
         game.getListener().buildingListeners(undergroundBuild);
     }
