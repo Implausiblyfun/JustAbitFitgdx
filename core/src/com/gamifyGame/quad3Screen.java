@@ -14,50 +14,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 /**
  * Created by Stephen on 2/1/2015.
  */
-public class quad3Screen implements Screen {
+public class quad3Screen extends GamifyScreen implements Screen
+{
+    private ChangingImage[][] Week;
+    private boolean shown = false;
+    private SpriteBatch batch;
 
-    ActionResolver actionResolver;
-    SpriteBatch batch;
-    BitmapFont font;
-    Preferences pref;
-    ShapeRenderer shapes;
-    gamifyGame game;
-    listenerHelper listenerH;
-    int frameCount;
-    ChangingImage[][] Week;
-    boolean shown = false;
-
-    Image retBox, border;
+    private Image border;
 
     public quad3Screen(gamifyGame game, ActionResolver actionResolver,
                        listenerHelper listenerHPassed, Preferences pref) {
-        this.game = game;
-        this.actionResolver = actionResolver;
-        this.pref = pref;
-        listenerH = listenerHPassed;
-
-        shapes = renderHelper.getRenderHelper().getShapeRenderer();
-        font = renderHelper.getRenderHelper().getFont();
+        super(game, actionResolver, listenerHPassed, pref);
         batch = renderHelper.getRenderHelper().getBatch();
     }
 
     @Override
-    public void render(float delta) {
-        Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
-        Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
-        Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
-
-        // Undraw the last screen
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        layer0.draw();
-        layer1.draw();
-        layer2.draw();
-
+    public void render(float delta)
+    {
+        super.render(delta);
         renderHelper.getRenderHelper().moveCorner(retBox,Corner.UPPER_RIGHT,30);
         boolean showChallengeHours = pref.getBoolean("showChallengeHours",false);
 
+        ShapeRenderer shapes=renderHelper.getRenderHelper().getShapeRenderer();
 
         String showText;
         if (!showChallengeHours){
@@ -141,11 +119,6 @@ public class quad3Screen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
     public void show() {
 
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
@@ -182,8 +155,7 @@ public class quad3Screen implements Screen {
 
     @Override
     public void hide() {
-        renderHelper.getRenderHelper().getLayer(1).clear();
-        renderHelper.getRenderHelper().getLayer(2).clear();
+        super.hide();
         border.moveBy(-300,0);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
@@ -192,18 +164,4 @@ public class quad3Screen implements Screen {
         }
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }
