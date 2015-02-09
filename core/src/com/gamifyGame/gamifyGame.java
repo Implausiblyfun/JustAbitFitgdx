@@ -56,7 +56,7 @@ public class gamifyGame extends Game{
         quad2S = new quad2Screen(this, actionResolver);
         quad3S = new quad3Screen(this, actionResolver);
         quad4S = new quad4Screen(this, actionResolver);
-        buyS = new buyScreen(this, actionResolver, helper, pref);
+        buyS = new buyScreen(this, actionResolver);
 
 
         setScreen(mainS);
