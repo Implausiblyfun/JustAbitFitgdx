@@ -52,11 +52,11 @@ public class gamifyGame extends Game{
         helper = new listenerHelper(this);
         mainS = new mainScreen(this, actionResolver, helper, pref);
         testS = new testScreen(this, actionResolver, helper, pref);
-        quad1S = new quad1Screen(this, actionResolver);
-        quad2S = new quad2Screen(this, actionResolver);
-        quad3S = new quad3Screen(this, actionResolver);
-        quad4S = new quad4Screen(this, actionResolver);
-        buyS = new buyScreen(this, actionResolver);
+        quad1S = new quad1Screen(this);
+        quad2S = new quad2Screen(this);
+        quad3S = new quad3Screen(this);
+        quad4S = new quad4Screen(this);
+        buyS = new buyScreen(this);
 
 
         setScreen(mainS);

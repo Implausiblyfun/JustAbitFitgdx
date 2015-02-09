@@ -22,8 +22,8 @@ public class quad3Screen extends GamifyScreen implements Screen
 
     private Image border;
 
-    public quad3Screen(gamifyGame game, ActionResolver actionResolver) {
-        super(game, actionResolver);
+    public quad3Screen(gamifyGame game) {
+        super(game);
         batch = renderHelper.getRenderHelper().getBatch();
     }
 

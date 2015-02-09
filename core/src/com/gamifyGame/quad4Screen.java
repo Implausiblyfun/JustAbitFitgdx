@@ -16,9 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class quad4Screen extends GamifyScreen implements Screen
 {
 
-    public quad4Screen(gamifyGame game, ActionResolver actionResolver) {
+    public quad4Screen(gamifyGame game) {
 
-        super( game,  actionResolver);
+        super( game);
     }
 
     @Override

@@ -22,8 +22,8 @@ public class buyScreen extends GamifyScreen implements Screen
 {
     DragListener dragHandle;
 
-    public buyScreen(gamifyGame game, ActionResolver actionResolver) {
-       super(game, actionResolver);
+    public buyScreen(gamifyGame game) {
+       super(game);
     }
 
     @Override
