@@ -28,6 +28,7 @@ public class renderHelper {
     public static final float RENDERED_SCREEN_WIDTH=180;
 
     HashMap<String,Texture> textureHash;
+    HashMap<String,TextureRegionDrawable> drawableHash;
     Texture boxBottomFace, boxBottomLeft, boxBottomLeftFace, boxBottomRight,
             boxBottomRightFace, boxRightFace, boxTopLeft, boxTopRight, boxLeftFace;
 
@@ -63,9 +64,9 @@ public class renderHelper {
         topLayer = new Stage(view);
         batch = new SpriteBatch();
 
-
         // Load all image files
         textureHash = new HashMap<String,Texture>();
+        drawableHash = new HashMap<String,TextureRegionDrawable>();
 
         // Box Parts
         boxBottomFace = imageLoad("boxBottomFace.png");
@@ -166,7 +167,7 @@ public class renderHelper {
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
         font2.draw(batch, text, (textLoc.x),
-                                (textLoc.y));
+                (textLoc.y));
     }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
@@ -270,6 +271,7 @@ public class renderHelper {
         toMove.moveBy(distances.x, distances.y);
     }
 
+    // Getters
     public int getWidth(){return scrWidth;}
     public int getHeight(){return scrHeight;}
     public ShapeRenderer getShapeRenderer(){return shapes;}
@@ -282,6 +284,17 @@ public class renderHelper {
         else if (level == 1){return activeLayer;}
         else return topLayer;
     }
+    public TextureRegionDrawable getTextureRegionDrawable(String file){
+        if (drawableHash.containsKey(file)){
+            return drawableHash.get(file);
+        }
+        else {
+            TextureRegionDrawable toReturn = new TextureRegionDrawable(new TextureRegion(textureHash.get(file)));
+            drawableHash.put(file,toReturn);
+            return toReturn;
+        }
+    }
+
 
 
     //TODO: Change to scale down to appropriate size.

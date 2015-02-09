@@ -137,7 +137,7 @@ public class quad3Screen extends GamifyScreen implements Screen
             int newX = borderX + 2 + (i * 20);
             for (int j = 0; j < 24; j++) {
                 int newY = borderY + 232 - (j * 10);
-                ChangingImage tempImage = new ChangingImage("InactiveHour.png", "ActiveHour.png", layer1, newX+300, newY);
+                ChangingImage tempImage = new ChangingImage("inactiveHour.png", "activeHour.png", layer1, newX+300, newY);
                 String representation = String.valueOf(day) + ',' + String.valueOf(hour);
                 tempImage.putExtra("time", representation);
                 if (game.getPrefs().getBoolean(representation,true)){tempImage.swapTexture();}

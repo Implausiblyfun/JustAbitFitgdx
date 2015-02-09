@@ -97,12 +97,6 @@ public class mainScreen implements Screen {
             }
             else font.draw(batch, "Neithering",50,260);
 
-            font.draw(batch, String.valueOf(Math.abs(A5x - Ax)), 50, 180);
-            font.draw(batch, String.valueOf(Math.abs(A5y - Ay)), 50, 160);
-            font.draw(batch, String.valueOf(Math.abs(A5z - Az)), 50, 140);
-            font.draw(batch, String.valueOf(Ax), 50, 60);
-            font.draw(batch, String.valueOf(Ay), 50, 40);
-            font.draw(batch, String.valueOf(Az), 50, 20);
             font.draw(batch, String.valueOf(frameCount),50,200);
             batch.end();
             // If we want to do more things with frame counting in groups of 30

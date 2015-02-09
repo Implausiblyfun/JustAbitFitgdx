@@ -24,9 +24,9 @@ public class ChangingImage extends Image {
         public ChangingImage(String file, String file2, Stage stage, int hOrigin, int vOrigin){
             name1 = file;
             name2 = file2;
-            Texture text1 = new Texture(file);
-            textured1 = new TextureRegionDrawable(new TextureRegion(text1));
-            textured2 = new TextureRegionDrawable(new TextureRegion(new Texture(file2)));
+            Texture text1 = renderHelper.getRenderHelper().textureHash.get(file);
+            textured1 = renderHelper.getRenderHelper().getTextureRegionDrawable(file);
+            textured2 = renderHelper.getRenderHelper().getTextureRegionDrawable(file2);
             this.setDrawable(textured1);
             this.setPosition(hOrigin, vOrigin);
             this.setSize(text1.getWidth(), text1.getHeight());
