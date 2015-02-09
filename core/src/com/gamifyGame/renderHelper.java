@@ -354,6 +354,12 @@ public class renderHelper {
         return imageList;
     }
 
+    public void colorUnderground(Stage stage, ChangingImage[] undergroundHandles){
+        for(int i=0; i <undergroundHandles.length; i++){
+            undergroundHandles[i].setColor(Color.GREEN);
+        }
+    }
+
     public void makeBridges(Stage stage, Integer[] bridges){
         // Figure out the width and height from the HQ1
         int bridgelen = 8; //TODO: change this

@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -92,14 +93,19 @@ public class listenerHelper {
     public DragListener scroll(final Image[] imgHandles, final boolean isLongBar){
         return new DragListener(){
             float startX, startY, sY;
+            Color startColor;
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 startX = x; startY = y; sY = event.getListenerActor().getY();
-
+                startColor = new Color(event.getListenerActor().getColor()); //Deep copy
+                if(isLongBar == false){event.getListenerActor().setColor(Color.GREEN);}
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 Image eventImage = (Image) event.getListenerActor();
-                if(isLongBar == false){eventImage.moveBy(0, sY-event.getListenerActor().getY());}
+                if(isLongBar == false){
+                    eventImage.moveBy(0, sY-event.getListenerActor().getY());
+                    eventImage.setColor(startColor);
+                }
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {
