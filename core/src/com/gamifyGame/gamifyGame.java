@@ -34,11 +34,6 @@ public class gamifyGame extends Game{
 
     //http://www.gamefromscratch.com/post/2013/11/27/LibGDX-Tutorial-9-Scene2D-Part-1.aspx
 
-
-    public gamifyGame(){
-        System.exit(0);
-    }
-
     public gamifyGame(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
@@ -58,8 +53,7 @@ public class gamifyGame extends Game{
         quad4S = new quad4Screen(this);
         buyS = new buyScreen(this);
 
-
-        setScreen(mainS);
+        setScreen(testS);
     }
 
     public Preferences getPrefs()

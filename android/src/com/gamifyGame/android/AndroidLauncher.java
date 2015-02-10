@@ -34,9 +34,6 @@ public class AndroidLauncher extends AndroidApplication {
         File directory = getFilesDir();
         // Start Accel tracking in background
         pref = this.getPreferences("Bitfitpref");
-        if (extras == null){
-            Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
-        }
         if (extras != null && extras.getString("curActivity") != null) {
             Toast.makeText(this, extras.getString("curActivity"), Toast.LENGTH_SHORT).show();
             pref.putString("curActivity", extras.getString("curActivity"));

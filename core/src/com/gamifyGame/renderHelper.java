@@ -167,19 +167,23 @@ public class renderHelper {
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
-        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         font2.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
-        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
+        Point textCoorsLoc=scaleToScreen(new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2));
         font2.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y );
     }
 
     public Point convertImageCoorsToTextCoors(Point point)
     {
         return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
+    }
+
+    public Point scaleToScreen(Point point){
+        return convertImageCoorsToTextCoors(point);
     }
 
 
