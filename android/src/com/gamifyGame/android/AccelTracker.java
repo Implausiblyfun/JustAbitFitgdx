@@ -85,7 +85,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             output = result.getInt("id");
 
             String strOut = Integer.toString(output);
-            sendNotification("x="+String.valueOf(output));
+            //sendNotification("x="+String.valueOf(output));
 
 
 
@@ -118,14 +118,14 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
 
 
-        JSONObject result = new JSONObject();
+        /*JSONObject result = new JSONObject();
         try {
             result.put("userID", 1234);
             result.put("startTime", "1421812247091");
             result.put("endTime", "1421812252091");
-            getBackendResponse(result);
+            //getBackendResponse(result);
         }catch(Exception e){e.printStackTrace();}
-
+        */
         SystemClock.sleep(32000);
         long t = System.currentTimeMillis();
         String completeData = writeData.substring(0);
