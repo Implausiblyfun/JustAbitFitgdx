@@ -26,7 +26,7 @@ public class Quad2Screen extends GamifyScreen implements Screen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 30);
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 31);
     }
 
     @Override

@@ -62,160 +62,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         writeData = "";
     }
 
-    protected void connectTry(String[][] coord, String[] actId){
-
-        for(int i=0; i< coord.length; i++) {
-            JSONObject toSend = new JSONObject();
-            try {
-                String tmpStr = coord[i][0]+","+coord[i][1]+","+coord[i][2]+","+coord[i][3];
-
-                toSend.put("userID", 1234);
-                toSend.put("xyz", tmpStr);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                sendNotification(e.getMessage());
-            }
-            sendNotification("Gonna send it: " + String.valueOf(i));
-            doJSONReq(toSend);
-        }
-        try {
-
-
-            JSONObject toSend = new JSONObject();
-            toSend.put("userID", 1234);
-            toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
-            doJSONACT(toSend);
-        }catch(JSONException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        }
-    }
-
-    protected void doJSONReq(JSONObject jsonObject1){
-        HttpURLConnection connection = null;
-        String output = "";
-
-        //Make web request to fetch new data
-        try{
-            HttpClient client = new DefaultHttpClient();
-            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
-            request.setHeader("Content-Type", "application/json");
-
-            request.setEntity(new StringEntity(jsonObject1.toString()));
-            sendNotification("Waiting on response ... !");
-            HttpResponse response = client.execute(request);
-            sendNotification("Response received!");
-
-        } catch (MalformedURLException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        }
-        finally {
-            if (connection != null){
-                connection.disconnect();
-                sendNotification("Connection not available");
-            }
-        }
-    }
-
-    protected void doJSONACT(JSONObject jsonObject1){
-        HttpURLConnection connection = null;
-        String output = "";
-
-        //Make web request to fetch new data
-        try{
-            HttpClient client = new DefaultHttpClient();
-            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeACT");
-            request.setHeader("Content-Type", "application/json");
-
-            request.setEntity(new StringEntity(jsonObject1.toString()));
-
-            HttpResponse response = client.execute(request);
-
-
-
-        } catch (MalformedURLException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        }
-        finally {
-            if (connection != null){
-                sendNotification("Connection not found");
-                connection.disconnect();
-            }
-        }
-    }
-
-    protected  void getBackendResponse(JSONObject jsonObject1){
-        HttpURLConnection connection = null;
-        int output = -999999;
-
-        //Make web request to fetch new data
-        try{
-            HttpClient client = new DefaultHttpClient();
-            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/getData");
-            request.setHeader("Content-Type", "application/json");
-
-            request.setEntity(new StringEntity(jsonObject1.toString()));
-
-            HttpResponse response = client.execute(request);
-
-
-            String res = EntityUtils.toString(response.getEntity());
-
-            JSONObject result = new JSONObject(res);
-
-
-            output = result.getInt("id");
-
-            String strOut = Integer.toString(output);
-            sendNotification("x="+String.valueOf(output));
-
-
-
-        } catch (MalformedURLException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        }catch(JSONException e){
-            e.printStackTrace();
-            sendNotification(e.getMessage());
-        }
-        finally {
-            if (connection != null){
-                sendNotification("No connection");
-                connection.disconnect();
-            }
-        }
-
-
-
-    }
-
     @Override
     protected void onHandleIntent(Intent intent) {
         GAMIFY_VERSION = intent.getStringExtra("VERSION");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
-
-
-        JSONObject result = new JSONObject();
-        try {
-            result.put("userID", 1234);
-            result.put("startTime", "1421812247091");
-            result.put("endTime", "1421812252091");
-            getBackendResponse(result);
-        }catch(Exception e){e.printStackTrace();}
 
         SystemClock.sleep(32000);
         long t = System.currentTimeMillis();
@@ -233,10 +85,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[2] = GAMIFY_VERSION;
         linecount = 0;
         writeData = "";
-        //Intent newIntent = new Intent(this, AccelSender.class);
-        //newIntent.putExtra("writeData", writeData);
-        //newIntent.putExtra("activity", actThing);
-        //ComponentName c = this.startService(newIntent); //TODO: STOP THIS FROM LEAKING MEMORY
+        Intent newIntent = new Intent(this, AccelSender.class);
+        newIntent.putExtra("writeData", writeData);
+        newIntent.putExtra("activity", actThing);
+        ComponentName c = this.startService(newIntent); //TODO: STOP THIS FROM LEAKING MEMORY
 
         /*JSONObject toSend = new JSONObject();
         try {
