@@ -2,14 +2,8 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Preferences;
-import com.gamifyGame.screens.MainScreen;
-import com.gamifyGame.screens.BuyScreen;
-import com.gamifyGame.screens.Quad1Screen;
-import com.gamifyGame.screens.Quad2Screen;
-import com.gamifyGame.screens.Quad3Screen;
-import com.gamifyGame.screens.Quad4Screen;
 
-public class gamifyGame extends Game{
+public class gamifyGame extends Game {
     private Preferences pref;
     private ActionResolver actionResolver;
     public MainScreen mainS;
@@ -32,18 +26,16 @@ public class gamifyGame extends Game{
     //http://www.gamefromscratch.com/post/2013/11/27/LibGDX-Tutorial-9-Scene2D-Part-1.aspx
 
 
-    public static gamifyGame getGamifyGame(ActionResolver actionResolver)
-    {
-        if(gamifyGame==null)
-            gamifyGame=new gamifyGame(actionResolver);
+    public static gamifyGame getGamifyGame(ActionResolver actionResolver) {
+        if (gamifyGame == null)
+            gamifyGame = new gamifyGame(actionResolver);
         else
             gamifyGame.setActionResolver(actionResolver);
         return gamifyGame;
     }
 
-    public void setActionResolver(ActionResolver actionResolver)
-    {
-       this.actionResolver=actionResolver;
+    public void setActionResolver(ActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
     }
 
     private gamifyGame(ActionResolver actionResolver) {
@@ -53,7 +45,7 @@ public class gamifyGame extends Game{
     public void create() {
 
         //Define session variables
-        pref.putBoolean("showChallengeHours",false);
+        pref.putBoolean("showChallengeHours", false);
         pref.flush();
         renderHelper.forceRemake();
 
@@ -70,22 +62,21 @@ public class gamifyGame extends Game{
         setScreen(mainS);
     }
 
-    public Preferences getPrefs()
-    {
+    public Preferences getPrefs() {
         return pref;
     }
-    public listenerHelper getListener()
-    {
+
+    public listenerHelper getListener() {
         return helper;
     }
 
-    public void sendInt(String key, int val){
+    public void sendInt(String key, int val) {
         serverHelper.sendTestConfirm(val); //TODO: different application of this function,
-                                           // might not need this function later.
+        // might not need this function later.
     }
 
     // Setter(s)
-    public void setPref(Preferences preferences){
+    public void setPref(Preferences preferences) {
         pref = preferences;
     }
 }

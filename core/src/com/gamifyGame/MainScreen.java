@@ -1,4 +1,4 @@
-package com.gamifyGame.screens;
+package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
