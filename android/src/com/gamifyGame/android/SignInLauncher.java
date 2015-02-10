@@ -11,6 +11,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.widget.Toast.*;
+import static android.widget.Toast.makeText;
+
 
 /**
  * Created by Folly on 1/26/2015.
@@ -73,8 +76,6 @@ public class SignInLauncher extends Activity{
             Intent change = new Intent(getApplicationContext(), AndroidLauncher.class);
             //thisBundle.putSerializable("Player", player);
             startActivity(change);
-            String tmpMessage = "";
-            Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
         }
 
     };
@@ -88,8 +89,6 @@ public class SignInLauncher extends Activity{
                 Intent change = new Intent(getApplicationContext(), SignUpLauncher.class);
                 //thisBundle.putSerializable("Player", player);
                 startActivity(change);
-                String tmpMessage = "";
-                Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
             }
 
         };
@@ -98,7 +97,7 @@ public class SignInLauncher extends Activity{
     class signingIn extends PostJsonTask<String> {
         JSONObject tempRes = new JSONObject();
         String username;
-        int userID;
+        String userID;
 
         public signingIn(String serverAddress, String endpoint) {
             super(serverAddress, endpoint);
@@ -114,7 +113,7 @@ public class SignInLauncher extends Activity{
                 this.tempRes = new JSONObject(output);
                 System.out.println(signInStatus);
                 this.username = tempRes.getString("name");
-                this.userID = tempRes.getInt("id");
+                this.userID = tempRes.getString("id");
             } catch (JSONException e){
                 e.printStackTrace();
             }
@@ -129,13 +128,9 @@ public class SignInLauncher extends Activity{
                 Intent change = new Intent(getApplicationContext(), AndroidLauncher.class);
                 Bundle newBundle = new Bundle();
                 //thisBundle.putSerializable("Player", tempRes);
-                newBundle.putInt("ID", userID);
-                if (newBundle != null) {
-                    change.putExtras(newBundle);
-                }
+                newBundle.putString("ID", userID);
+                change.putExtras(newBundle);
                 startActivity(change);
-                String tmpMessage = "hiiiii";
-                Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
             }
 
             else if (signInStatus.equals("false")) {

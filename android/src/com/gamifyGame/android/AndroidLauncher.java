@@ -2,6 +2,7 @@ package com.gamifyGame.android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class AndroidLauncher extends AndroidApplication {
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
 
         Bundle extras = this.getIntent().getExtras();
+        String userID = (String) extras.get("ID");
 
         File directory = getFilesDir();
         // Start Accel tracking in background
@@ -50,8 +52,6 @@ public class AndroidLauncher extends AndroidApplication {
         alarm.setAlarm(this);
 
         setContentView(R.layout.loginscreenres);
-
-
 
         // Preferences file stores data for later running of app
         gameProcess.setPref(pref);
