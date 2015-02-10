@@ -17,9 +17,9 @@ import com.gamifyGame.renderHelper;
 /**
  * Created by Stephen on 2/1/2015.
  */
-public class Quad4Screen extends GamifyScreen implements Screen {
+public class StatScreen extends GamifyScreen implements Screen {
 
-    public Quad4Screen(gamifyGame game) {
+    public StatScreen(gamifyGame game) {
 
         super(game);
     }

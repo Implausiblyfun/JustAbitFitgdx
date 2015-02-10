@@ -16,7 +16,6 @@ import java.io.File;
 
 public class AndroidLauncher extends AndroidApplication {
 
-    private final String GAMIFY_VERSION = "0.0.02a";
     //Sprivate gamifyGame gameProcess;
     //ActionResolverAndroid actionResolverAndroid;
     private Preferences pref;
@@ -25,18 +24,23 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
     {
-        Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
+        String GAMIFY_VERSION = "0.0.02a";
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         ActionResolverAndroid actionResolverAndroid = new ActionResolverAndroid(this);
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
 
         Bundle extras = this.getIntent().getExtras();
-        String userID = (String) extras.get("ID");
+        try {String userID = (String) extras.get("ID");}
+        catch (NullPointerException e){};
+
 
         File directory = getFilesDir();
         // Start Accel tracking in background
         pref = this.getPreferences("Bitfitpref");
+        pref.putString("VERSION",GAMIFY_VERSION);
+        pref.flush();
+
         if (extras == null){
             Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
         }
@@ -48,7 +52,7 @@ public class AndroidLauncher extends AndroidApplication {
         }
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
-        alarm.setVersion(GAMIFY_VERSION);
+        //Toast.makeText(this,GAMIFY_VERSION,Toast.LENGTH_SHORT).show();
         alarm.setAlarm(this);
 
         setContentView(R.layout.loginscreenres);

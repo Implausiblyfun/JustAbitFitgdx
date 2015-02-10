@@ -17,21 +17,21 @@ import com.gamifyGame.renderHelper;
 /**
  * Created by Stephen on 2/1/2015.
  */
-public class Quad1Screen extends GamifyScreen implements Screen {
+public class StreakScreen extends GamifyScreen implements Screen {
 
-    public Quad1Screen(gamifyGame game) {
+    public StreakScreen(gamifyGame game) {
         super(game);
     }
 
+    @Override
     public void render(float delta) {
         super.render(delta);
-        renderHelper.getRenderHelper().moveCorner(this.retBox, Corner.LOWER_LEFT, 30);
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 30);
     }
 
+    @Override
     public void show() {
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", renderHelper.getRenderHelper().getLayer(1), 37, 50);
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(game.getListener().goScreen(0));
     }
-
-
 }

@@ -19,14 +19,14 @@ import com.gamifyGame.renderHelper;
 /**
  * Created by Stephen on 2/1/2015.
  */
-public class Quad3Screen extends GamifyScreen implements Screen {
+public class ChallengeScreen extends GamifyScreen implements Screen {
     private ChangingImage[][] Week;
     private boolean shown = false;
     private SpriteBatch batch;
 
     private Image border;
 
-    public Quad3Screen(gamifyGame game) {
+    public ChallengeScreen(gamifyGame game) {
         super(game);
         batch = renderHelper.getRenderHelper().getBatch();
     }

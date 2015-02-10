@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import com.badlogic.gdx.Preferences;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
+import java.util.Scanner;
 
 /**
  * Created by Stephen on 11/21/2014.
@@ -19,17 +22,17 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
     String GAMIFY_VERSION;
 
     Preferences pref;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context,"Starting new Tracker!",Toast.LENGTH_SHORT).show();
         Intent service = new Intent(context, AccelTracker.class);
         service.putExtra("VERSION", GAMIFY_VERSION);
-        //startWakefulService(context, service);
+        Toast.makeText(context,GAMIFY_VERSION,Toast.LENGTH_SHORT).show();
+        startWakefulService(context, service);
 }
 
     public void setAlarm(Context context){
         AlarmManager alrmMngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        // Bundle into this intent linecount for file writing
         Intent intent = new Intent(context, AccelAlarm.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         Calendar calendar = Calendar.getInstance();

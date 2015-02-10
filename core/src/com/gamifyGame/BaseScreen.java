@@ -24,11 +24,11 @@ import java.util.EventListener;
 /**
  * Created by Stephen on 2/1/2015.
  */
-public class BuyScreen extends GamifyScreen implements Screen {
+public class BaseScreen extends GamifyScreen implements Screen {
     DragListener dragHandle;
 
 
-    public BuyScreen(gamifyGame game) {
+    public BaseScreen(gamifyGame game) {
         super(game);
     }
 
