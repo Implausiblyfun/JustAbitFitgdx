@@ -28,7 +28,6 @@ public class testScreen implements Screen {
     int frameCount;
     int resetCount;
     String activity = "dummyvalue";
-    Image Yes, No;
 
     public testScreen(gamifyGame game, ActionResolver actionResolver,
                       listenerHelper listenerHPassed, Preferences pref) {
@@ -76,18 +75,18 @@ public class testScreen implements Screen {
         int confirmed = pref.getInteger("confirmed", 0);
 
         batch.begin();
-        renderHelper.getRenderHelper().drawTextOnImage("Yes",Yes,0,0);
-        renderHelper.getRenderHelper().drawTextOnImage("No",No,0,0);
-        renderHelper.getRenderHelper().textSet("Have you been " + activity + " recently?", 5, 60);
+        renderHelper.getRenderHelper().textSetCenter("Yes", -40, 6);
+        renderHelper.getRenderHelper().textSetCenter("No", 26, 6);
+        renderHelper.getRenderHelper().textSetCenter("Have you been " + activity + " recently?", -80, -40);
         renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),10,20);
         renderHelper.getRenderHelper().textSet(String.valueOf(resetCount),10,40);
         boolean textOnScreen = false;
         if (confirmed == 1){
-            renderHelper.getRenderHelper().textSet("Confirmation sent!",10,80);
+            renderHelper.getRenderHelper().textSetCenter("Confirmation sent!",0,-100);
             frameCount--;
         }
         else if (confirmed == -1) {
-            renderHelper.getRenderHelper().textSet("Denial sent!",10,80);
+            renderHelper.getRenderHelper().textSetCenter("Denial sent!",0,-100);
             frameCount--;
         }
         if (frameCount < 0){
@@ -118,9 +117,10 @@ public class testScreen implements Screen {
         renderHelper.getRenderHelper().imageSetup("day.png", layer0, 0, 0);
         renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
-        Yes = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, -32,0);
-        No = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 32,0);
+        Image Yes = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, -32,0);
+        Image No = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 32,0);
 
+        // MAKE SOME LISTENERS THAT SEND DATA TO THE SERVER?!?!?!?
         Yes.addListener(listenerH.testYes);
         No.addListener(listenerH.testNo);
 
