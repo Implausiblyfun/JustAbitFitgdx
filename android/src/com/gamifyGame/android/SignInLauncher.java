@@ -38,8 +38,8 @@ public class SignInLauncher extends Activity{
             Intent change = new Intent(context, AndroidLauncher.class);
             if(thisBundle != null){change.putExtras(thisBundle);}
             startActivity(change);
-            String tmpMessage = "hiiiii";
-            Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
+            //String tmpMessage = "hiiiii";
+            //Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
         }
     };
 }

@@ -403,8 +403,8 @@ public class renderHelper {
 
 //            if(bridges[i] == 1){imageSetup("Bridge1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
 //            if(bridges[i] == 2){imageSetup("Elevator1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
-            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
-            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
+            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)((wOffset + hqWidth+(column)*width)-1), hOffset - row*height);}
+            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)((wOffset+hqWidth+(column)*width)-1), hOffset - row*height);}
         }
     }
 
