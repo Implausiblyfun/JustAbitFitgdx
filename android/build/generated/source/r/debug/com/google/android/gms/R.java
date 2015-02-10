@@ -110,6 +110,7 @@ public final class R {
 		public static final int buy_now = 0x7f05000f;
 		public static final int buy_with_google = 0x7f05000e;
 		public static final int classic = 0x7f050011;
+		public static final int email = 0x7f05002c;
 		public static final int grayscale = 0x7f050012;
 		public static final int holo_dark = 0x7f050005;
 		public static final int holo_light = 0x7f050006;

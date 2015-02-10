@@ -109,4 +109,4 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-</RelativeLayout><!-- From: file:/Users/jiatao/AndroidStudioProjects/JustAbitFitgdx/android/res/layout/signupscreenres.xml -->
+</RelativeLayout>

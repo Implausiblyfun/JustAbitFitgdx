@@ -99,9 +99,7 @@ int id buyButton 0x7f05000a
 int id buy_now 0x7f05000f
 int id buy_with_google 0x7f05000e
 int id classic 0x7f050011
-int id editText 0x7f050028
-int id editText2 0x7f05002a
-int id editText3 0x7f05002c
+int id email 0x7f05002c
 int id encode_bad_data 0x7f050037
 int id encode_contact 0x7f050034
 int id encode_email 0x7f050031
@@ -121,6 +119,7 @@ int id monochrome 0x7f050013
 int id none 0x7f050000
 int id normal 0x7f050001
 int id password 0x7f05001e
+int id password1 0x7f05002a
 int id production 0x7f050007
 int id quit 0x7f050016
 int id restart_app 0x7f050025
@@ -146,8 +145,9 @@ int id textView2 0x7f05001c
 int id textView3 0x7f05001d
 int id textView4 0x7f050026
 int id textView5 0x7f050027
-int id textView6 0x7f050029
-int id textView7 0x7f05002b
+int id textView6 0x7f050028
+int id textView7 0x7f050029
+int id textView8 0x7f05002b
 int id username 0x7f05001f
 int id wrap_content 0x7f05000d
 int integer google_play_services_version 0x7f060000
