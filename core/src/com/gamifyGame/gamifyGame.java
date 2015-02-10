@@ -28,18 +28,28 @@ public class gamifyGame extends Game{
     private ChangingImage[] rooms;
     private int[] bridges;
 
-
+    private static gamifyGame gamifyGame;
     //READ THIS
     //READDDD
 
     //http://www.gamefromscratch.com/post/2013/11/27/LibGDX-Tutorial-9-Scene2D-Part-1.aspx
 
 
-    public gamifyGame(){
-        System.exit(0);
+    public static gamifyGame getGamifyGame(ActionResolver actionResolver)
+    {
+        if(gamifyGame==null)
+            gamifyGame=new gamifyGame(actionResolver);
+        else
+            gamifyGame.setActionResolver(actionResolver);
+        return gamifyGame;
     }
 
-    public gamifyGame(ActionResolver actionResolver) {
+    public void setActionResolver(ActionResolver actionResolver)
+    {
+       this.actionResolver=actionResolver;
+    }
+
+    private gamifyGame(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
 
