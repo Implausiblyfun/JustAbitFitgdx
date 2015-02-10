@@ -38,8 +38,23 @@ public class SignInLauncher extends Activity{
             Intent change = new Intent(context, AndroidLauncher.class);
             if(thisBundle != null){change.putExtras(thisBundle);}
             startActivity(change);
+<<<<<<< Updated upstream
             //String tmpMessage = "hiiiii";
             //Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+            String tmpMessage = "";
+            Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
+=======
+            //String tmpMessage = "hiiiii";
+            //Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
+>>>>>>> ff4e7fd19e7269cf049ea09e77b179cabdbda5d9
+=======
+            //String tmpMessage = "hiiiii";
+            //Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_LONG).show();
+>>>>>>> ff4e7fd19e7269cf049ea09e77b179cabdbda5d9
+>>>>>>> Stashed changes
         }
     };
 }
