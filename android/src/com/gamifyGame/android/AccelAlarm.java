@@ -22,24 +22,26 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String version = intent.getStringExtra("VERSION");
-        Toast.makeText(context,"Starting new Tracker! " + version ,Toast.LENGTH_SHORT).show();
+        String userID = intent.getStringExtra("userID");
         Intent service = new Intent(context, AccelTracker.class);
         service.putExtra("VERSION", version);
+        service.putExtra("userID", userID);
         startWakefulService(context, service);
 }
 
-    public void setAlarm(Context context, String version){
+    public void setAlarm(Context context, String version, String userID){
         this.GAMIFY_VERSION = version;
 
         AlarmManager alrmMngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        // Bundle into this intent linecount for file writing
         Intent intent = new Intent(context, AccelAlarm.class);
         intent.putExtra("VERSION", version);
+        intent.putExtra("userID", userID);
+        Toast.makeText(context,userID,Toast.LENGTH_SHORT).show();
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()-1,
-                              1000 * 16, alarmIntent);
+                              1000 * 32, alarmIntent);
 
     }
 

@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 public class AccelSender extends IntentService {
 
     int activity;
+    String userID;
 
     public AccelSender() {
         super("Tracker");
@@ -37,7 +38,7 @@ public class AccelSender extends IntentService {
             try {
                 String tmpStr = coord[i][0]+","+coord[i][1]+","+coord[i][2]+","+coord[i][3];
 
-                toSend.put("userID", 1234);
+                toSend.put("userID", userID);
                 toSend.put("xyz", tmpStr);
 
             } catch (JSONException e) {
@@ -51,7 +52,7 @@ public class AccelSender extends IntentService {
 
 
             JSONObject toSend = new JSONObject();
-            toSend.put("userID", 1234);
+            toSend.put("userID", userID);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
             doJSONACT(toSend);
         }catch(JSONException e){
@@ -71,9 +72,9 @@ public class AccelSender extends IntentService {
             request.setHeader("Content-Type", "application/json");
 
             request.setEntity(new StringEntity(jsonObject1.toString()));
-            sendNotification("Waiting on response ... !");
+            //sendNotification("Waiting on response ... !");
             HttpResponse response = client.execute(request);
-            sendNotification("Response received!");
+            //sendNotification("Response received!");
 
         } catch (MalformedURLException e){
             e.printStackTrace();
@@ -120,6 +121,7 @@ public class AccelSender extends IntentService {
 
     protected void onHandleIntent(Intent intent) {
         sendNotification("Sending!");
+        userID = intent.getStringExtra("userID");
         String writeData = intent.getStringExtra("writeData");
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
         String[][] Coords = new String[preCoords.length][4];

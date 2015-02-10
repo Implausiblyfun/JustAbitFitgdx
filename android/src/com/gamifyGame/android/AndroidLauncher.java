@@ -25,7 +25,7 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
     {
-        Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         ActionResolverAndroid actionResolverAndroid = new ActionResolverAndroid(this);
@@ -35,22 +35,28 @@ public class AndroidLauncher extends AndroidApplication {
         try{String userID = (String) extras.get("ID");}
         catch(Exception e){String userID = "4321";}
 
-        File directory = getFilesDir();
-        // Start Accel tracking in background
+        // Make a fake ID, Replace when userID is implemented
         pref = this.getPreferences("Bitfitpref");
+        double ID = Math.random()*(Math.pow(10d,15d))%Math.pow(10d,15d)+Math.pow(10d,16d);
+        String fakeID = pref.getString("userID",String.valueOf(ID));
+
+        // Replace fakeID with userID when userID is implemented
+        pref.putString("userID",fakeID);
+        pref.flush();
+
         if (extras == null){
-            Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
         }
         if (extras != null && extras.getString("curActivity") != null) {
-            Toast.makeText(this, extras.getString("curActivity"), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, extras.getString("curActivity"), Toast.LENGTH_SHORT).show();
             pref.putString("curActivity", extras.getString("curActivity"));
             pref.flush();
-            Toast.makeText(this, pref.getString("curActivity"), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, pref.getString("curActivity"), Toast.LENGTH_LONG).show();
         }
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
-        alarm.setAlarm(this, GAMIFY_VERSION);
+        alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
         setContentView(R.layout.loginscreenres);
 

@@ -65,6 +65,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     @Override
     protected void onHandleIntent(Intent intent) {
         GAMIFY_VERSION = intent.getStringExtra("VERSION");
+        String userID = intent.getStringExtra("userID");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
@@ -83,12 +84,16 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
-        linecount = 0;
-        writeData = "";
         Intent newIntent = new Intent(this, AccelSender.class);
         newIntent.putExtra("writeData", writeData);
         newIntent.putExtra("activity", actThing);
+        newIntent.putExtra("userID", userID);
         ComponentName c = this.startService(newIntent); //TODO: STOP THIS FROM LEAKING MEMORY
+        if (Math.random() < .025){
+            sendNotification("What activity have you been doing recently?");
+        }
+        linecount = 0;
+        writeData = "";
 
         /*JSONObject toSend = new JSONObject();
         try {
@@ -216,8 +221,6 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(this, AndroidLauncher.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String curActivity = "inactive";
         switch (activity){
             case 0: curActivity = "inactive";
@@ -239,7 +242,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("Hello World")
+                        .setContentTitle("Hello Tester!")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
                         .setContentText(msg);

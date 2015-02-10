@@ -9,17 +9,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import java.util.HashMap;
-import java.util.prefs.Preferences;
 
 /**
  * Created by Stephen on 11/2/2014.
@@ -172,21 +167,20 @@ public class renderHelper {
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
-        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
+        Point textLoc= renderToScreenRatio(new Point(RENDERED_SCREEN_WIDTH / 2 + offsetx, RENDERED_SCREEN_HEIGHT / 2 + offsety));
         font2.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
-        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
+        Point textCoorsLoc = renderToScreenRatio(new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2));
         font2.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y );
     }
 
-    public Point convertImageCoorsToTextCoors(Point point)
+    public Point renderToScreenRatio(Point point)
     {
         return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
     }
-
 
     public static Texture imageLoad(String file){ return new Texture(file);}
 
