@@ -46,11 +46,16 @@ public class renderHelper {
 
 
     private static renderHelper renderer;
+
     public static renderHelper getRenderHelper()
     {
         if(renderer==null)
            renderer=new renderHelper();
         return renderer;
+    }
+    public static void forceRemake()
+    {
+        renderer=new renderHelper();
     }
 
 
