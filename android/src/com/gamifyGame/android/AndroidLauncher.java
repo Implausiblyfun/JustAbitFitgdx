@@ -15,19 +15,20 @@ import java.io.File;
 
 public class AndroidLauncher extends AndroidApplication {
 
-    final String GAMIFY_VERSION = "0.0.02a";
-    private gamifyGame gameProcess;
-    ActionResolverAndroid actionResolverAndroid;
-    Preferences pref;
+    private final String GAMIFY_VERSION = "0.0.02a";
+    //Sprivate gamifyGame gameProcess;
+    //ActionResolverAndroid actionResolverAndroid;
+    private Preferences pref;
 
 
 	@Override
-	protected void onCreate (Bundle savedInstanceState) {
+	protected void onCreate (Bundle savedInstanceState)
+    {
         Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        actionResolverAndroid = new ActionResolverAndroid(this);
-        gameProcess = new gamifyGame(actionResolverAndroid);
+        ActionResolverAndroid actionResolverAndroid = new ActionResolverAndroid(this);
+        gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
 
         Bundle extras = this.getIntent().getExtras();
 
