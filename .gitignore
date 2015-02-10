@@ -28,6 +28,10 @@ android/gen/
 *.iml
 out/
 com_crashlytics_export_strings.xml
+core/build/classes/main/com/gamifyGame/gamifyGame.class
+core/build/libs/core-1.0.jar
+core/src/com/gamifyGame/gamifyGame.java
+
 
 ## Eclipse
 .classpath
