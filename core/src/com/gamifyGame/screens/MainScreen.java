@@ -1,4 +1,4 @@
-package com.gamifyGame;
+package com.gamifyGame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -13,18 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
+import com.gamifyGame.GamifyScreen;
+import com.gamifyGame.gamifyGame;
+import com.gamifyGame.renderHelper;
 
 import java.util.Calendar;
 
 /**
  * Created by Patrick Stephen on 2/1/2015.
  */
-public class mainScreen extends GamifyScreen implements Screen
+public class MainScreen extends GamifyScreen implements Screen
 {
     private Image quad3;
     private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
 
-    public mainScreen(gamifyGame game) {
+    public MainScreen(gamifyGame game) {
          super(game);
     }
 

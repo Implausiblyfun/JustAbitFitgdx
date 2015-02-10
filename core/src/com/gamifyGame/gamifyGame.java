@@ -1,27 +1,24 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.util.Map;
+import com.gamifyGame.screens.MainScreen;
+import com.gamifyGame.screens.BuyScreen;
+import com.gamifyGame.screens.Quad1Screen;
+import com.gamifyGame.screens.Quad2Screen;
+import com.gamifyGame.screens.Quad3Screen;
+import com.gamifyGame.screens.Quad4Screen;
 
 public class gamifyGame extends Game{
     private Preferences pref;
     private ActionResolver actionResolver;
-    public mainScreen mainS;
+    public MainScreen mainS;
     public testScreen testS;
-    public quad1Screen quad1S;
-    public quad2Screen quad2S;
-    public quad3Screen quad3S;
-    public quad4Screen quad4S;
-    public buyScreen buyS;
+    public Quad1Screen quad1S;
+    public Quad2Screen quad2S;
+    public Quad3Screen quad3S;
+    public Quad4Screen quad4S;
+    public BuyScreen buyS;
     private listenerHelper helper;
 
 
@@ -61,13 +58,13 @@ public class gamifyGame extends Game{
         renderHelper.forceRemake();
 
         helper = new listenerHelper(this);
-        mainS = new mainScreen(this);
+        mainS = new MainScreen(this);
         testS = new testScreen(this, actionResolver, helper, pref);
-        quad1S = new quad1Screen(this);
-        quad2S = new quad2Screen(this);
-        quad3S = new quad3Screen(this);
-        quad4S = new quad4Screen(this);
-        buyS = new buyScreen(this);
+        quad1S = new Quad1Screen(this);
+        quad2S = new Quad2Screen(this);
+        quad3S = new Quad3Screen(this);
+        quad4S = new Quad4Screen(this);
+        buyS = new BuyScreen(this);
 
 
         setScreen(mainS);

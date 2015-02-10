@@ -74,6 +74,10 @@ public class listenerHelper {
         };
     }
 
+    public ClickListener getChallengeListener(){return challengeListener;}
+    public ClickListener getTestYes(){return testYes;}
+    public ClickListener getTestNo(){return testNo;}
+
     public ClickListener goScreen(int val){
         switch (val){
             case 0: return returnS;
