@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,6 +30,14 @@ public abstract class GamifyScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            // Do something
+            System.exit(0);
+        }
+
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
         Stage layer2 = renderHelper.getRenderHelper().getLayer(2);

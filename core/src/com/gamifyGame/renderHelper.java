@@ -361,21 +361,27 @@ public class renderHelper {
         return imageList;
     }
 
-    public void buildCheck(ChangingImage[] possibleBuildingSites,Image toBuy ){
+    public int buildCheck(ChangingImage[] possibleBuildingSites,Image toBuy ){
+        int foundIndex = -1;
         float minX = toBuy.getX();
-        float maxX = toBuy.getWidth();
+        float maxX = toBuy.getRight();
         float minY = toBuy.getY();
         float maxY = toBuy.getTop();
         for(int i=0; i<possibleBuildingSites.length; i ++){
             ChangingImage tmp = possibleBuildingSites[i];
             if (rectangleCollided(minX, maxX, minY, maxY, tmp.getX(), tmp.getRight(), tmp.getY(), tmp.getTop())){
                 //Here we change the value!
-                possibleBuildingSites[i].nameChange(toBuy.getName());
+                if(foundIndex == -1){
+                    possibleBuildingSites[i].nameChange(toBuy.getName());
+                    foundIndex = i;
+                    return i;
+                }
             }
             else{
-                possibleBuildingSites[i].setColor(Color.BLUE);
+                //possibleBuildingSites[i].setColor(Color.BLUE);
             }
         }
+        return -1;
     }
 
 

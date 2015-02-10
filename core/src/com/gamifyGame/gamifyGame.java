@@ -6,13 +6,13 @@ import com.badlogic.gdx.Preferences;
 public class gamifyGame extends Game {
     private Preferences pref;
     private ActionResolver actionResolver;
-    public CoreScreen mainS;
+    public MainScreen mainS;
     public testScreen testS;
-    public StepScreen quad1S;
-    public StreakScreen quad2S;
-    public ChallengeScreen quad3S;
-    public StatScreen quad4S;
-    public BaseScreen buyS;
+    public Quad1Screen quad1S;
+    public Quad2Screen quad2S;
+    public Quad3Screen quad3S;
+    public Quad4Screen quad4S;
+    public BuyScreen buyS;
     private listenerHelper helper;
 
 
@@ -50,13 +50,13 @@ public class gamifyGame extends Game {
         renderHelper.forceRemake();
 
         helper = new listenerHelper(this);
-        mainS = new CoreScreen(this);
+        mainS = new MainScreen(this);
         testS = new testScreen(this, actionResolver, helper, pref);
-        quad1S = new StepScreen(this);
-        quad2S = new StreakScreen(this);
-        quad3S = new ChallengeScreen(this);
-        quad4S = new StatScreen(this);
-        buyS = new BaseScreen(this);
+        quad1S = new Quad1Screen(this);
+        quad2S = new Quad2Screen(this);
+        quad3S = new Quad3Screen(this);
+        quad4S = new Quad4Screen(this);
+        buyS = new BuyScreen(this);
 
 
         setScreen(mainS);
