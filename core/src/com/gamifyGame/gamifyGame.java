@@ -5,7 +5,7 @@ import com.badlogic.gdx.Preferences;
 
 public class gamifyGame extends Game {
     private Preferences pref;
-    private ActionResolver actionResolver;
+    public ActionResolver actionResolver;
     public MainScreen mainS;
     public testScreen testS;
     public Quad1Screen quad1S;
@@ -15,16 +15,12 @@ public class gamifyGame extends Game {
     public BuyScreen buyS;
     private listenerHelper helper;
 
+    String fakeID;
 
     private ChangingImage[] rooms;
     private int[] bridges;
 
     private static gamifyGame gamifyGame;
-    //READ THIS
-    //READDDD
-
-    //http://www.gamefromscratch.com/post/2013/11/27/LibGDX-Tutorial-9-Scene2D-Part-1.aspx
-
 
     public static gamifyGame getGamifyGame(ActionResolver actionResolver) {
         if (gamifyGame == null)
@@ -58,6 +54,7 @@ public class gamifyGame extends Game {
         quad4S = new Quad4Screen(this);
         buyS = new BuyScreen(this);
 
+        this.fakeID = pref.getString("userID");
 
         setScreen(testS);
     }
@@ -71,7 +68,7 @@ public class gamifyGame extends Game {
     }
 
     public void sendInt(String key, int val) {
-        serverHelper.sendTestConfirm(val); //TODO: different application of this function,
+        serverHelper.sendTestConfirm(val, fakeID); //TODO: different application of this function,
         // might not need this function later.
     }
 
