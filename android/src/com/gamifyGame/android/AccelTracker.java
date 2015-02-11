@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,64 +13,33 @@ import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
-
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-
 
 /**
  * Created by Stephen on 11/21/2014.
  */
 public class AccelTracker extends IntentService implements SensorEventListener {
 
-    float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
-    long timestamp;
     String writeData;
     int linecount;
-    FileOutputStream accelData;
-    SharedPreferences pref;
-    private SensorManager mSensorManager;
-    private Sensor mSensor;
-
-    private AndroidApplicationConfiguration config;
-
-    private String GAMIFY_VERSION;
-
     int activity;
-
-
 
     public AccelTracker() {
         super("Tracker");
-        linecount = 0;
-        writeData = "";
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        GAMIFY_VERSION = intent.getStringExtra("VERSION");
+        linecount = 0;
+        writeData = "";
+        String GAMIFY_VERSION = intent.getStringExtra("VERSION");
         String userID = intent.getStringExtra("userID");
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
 
         SystemClock.sleep(32000);
-        long t = System.currentTimeMillis();
         String completeData = writeData.substring(0);
         activity = Classify(completeData);
 
@@ -84,6 +52,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         actThing[0] = Integer.toString(activity);
         actThing[1] = Coords[0][3];
         actThing[2] = GAMIFY_VERSION;
+
         Intent newIntent = new Intent(this, AccelSender.class);
         newIntent.putExtra("writeData", writeData);
         newIntent.putExtra("activity", actThing);
@@ -143,13 +112,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         int xthresholdTotal = 0;
         int ythresholdTotal = 0;
         int zthresholdTotal = 0;
-        int xbypass = 1;
-        int ybypass = 1;
-        int zbypass = 1;
+        int xbypass;
+        int ybypass;
+        int zbypass;
         int timer = 3000;
         long timestamp = 0;
         int inactiveTime = 0;
-        int length;
         String[] coords;
         String line;
         String[] lines = completeData.split(System.getProperty("line.separator"));
@@ -274,9 +242,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         float axisX = event.values[0];
         float axisY = event.values[1];
         float axisZ = event.values[2];
-        timestamp = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         writeData = writeData + String.valueOf(axisX) + ',' + String.valueOf(axisY) + ',' +
-                String.valueOf(axisZ) + ',' + String.valueOf(timestamp) + "\n";
+                String.valueOf(axisZ) + ',' + String.valueOf(time) + "\n";
     }
 
     @Override
