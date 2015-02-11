@@ -43,9 +43,9 @@ public class AccelSender extends IntentService {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                sendNotification(e.getMessage());
+                //sendNotification(e.getMessage());
             }
-            sendNotification("Gonna send it: " + String.valueOf(i));
+            //sendNotification("Gonna send it: " + String.valueOf(i));
             doJSONReq(toSend);
         }
         try {
@@ -57,7 +57,7 @@ public class AccelSender extends IntentService {
             doJSONACT(toSend);
         }catch(JSONException e){
             e.printStackTrace();
-            sendNotification(e.getMessage());
+            //sendNotification(e.getMessage());
         }
     }
 
@@ -78,15 +78,15 @@ public class AccelSender extends IntentService {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
-            sendNotification(e.getMessage());
+            //sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            sendNotification(e.getMessage());
+            //sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
                 connection.disconnect();
-                sendNotification("Connection not available");
+                //sendNotification("Connection not available");
             }
         }
     }
@@ -109,18 +109,18 @@ public class AccelSender extends IntentService {
 
         } catch (Exception e){
             e.printStackTrace();
-            sendNotification(e.getMessage());
+            //sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
-                sendNotification("Connection not found");
+                //sendNotification("Connection not found");
                 connection.disconnect();
             }
         }
     }
 
     protected void onHandleIntent(Intent intent) {
-        sendNotification("Sending!");
+        //sendNotification("Sending!");
         userID = intent.getStringExtra("userID");
         String writeData = intent.getStringExtra("writeData");
         String[] preCoords = writeData.split(System.getProperty("line.separator"));

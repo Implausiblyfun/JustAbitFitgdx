@@ -36,7 +36,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         Intent intent = new Intent(context, AccelAlarm.class);
         intent.putExtra("VERSION", version);
         intent.putExtra("userID", userID);
-        Toast.makeText(context,userID,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,userID,Toast.LENGTH_SHORT).show();
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

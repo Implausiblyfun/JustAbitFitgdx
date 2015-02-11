@@ -198,10 +198,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     protected int activityAnalysis(float x, float y, float z, int t){
         if ((x < 0) && (y < -10) && (z < -5) && t < 5000){
             // "active", or walking
-            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            //sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
             return 1;
         }
-        sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
+        //sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
         // 0 currently means in-active
         return 0;
     }
