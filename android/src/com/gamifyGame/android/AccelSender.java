@@ -130,7 +130,7 @@ public class AccelSender extends IntentService {
         }
         String[] actThing = intent.getStringArrayExtra("activity");
         connectTry(Coords, actThing);
-        this.onDestroy();
+        //this.onDestroy();
     }
 
     private void sendNotification(String msg) {
