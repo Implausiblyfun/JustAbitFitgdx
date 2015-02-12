@@ -27,6 +27,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     public AccelTracker() {
         super("Tracker");
+        setIntentRedelivery(true);
     }
 
     @Override
@@ -37,9 +38,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         String userID = intent.getStringExtra("userID");
         SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
-
-        SystemClock.sleep(32000);
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        SystemClock.sleep(30000);
+        mSensorManager.unregisterListener(this);
         String completeData = writeData.substring(0);
         activity = Classify(completeData);
 
@@ -57,52 +58,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         newIntent.putExtra("writeData", writeData);
         newIntent.putExtra("activity", actThing);
         newIntent.putExtra("userID", userID);
-        ComponentName c = this.startService(newIntent); //TODO: STOP THIS FROM LEAKING MEMORY
-        if (Math.random() < .025){
+        ComponentName c = this.startService(newIntent);
+        if (Math.random() < .025) {
             sendNotification("What activity have you been doing recently?");
         }
-        linecount = 0;
-        writeData = "";
-
-        /*JSONObject toSend = new JSONObject();
-        try {
-            toSend.put("userID", 1234);
-        } catch (JSONException e) {
-            sendNotification("JSON!");
-            e.printStackTrace();
-        }
-        */
-        //sendNotification("Finished! Took " + String.valueOf(System.currentTimeMillis()- t));
-        //getBackendResponse(toSend);
-        /*
-        System.exit(0);
-        try {
-            if (isExternalStorageWritable()) {
-                File f = getAlbumStorageDir("Gamify2/accelData");
-                String dir = f.getAbsolutePath();
-                String newfile = dir + File.pathSeparator + String.valueOf(timestamp) + ".txt";
-                accelData = new FileOutputStream(newfile);
-                accelData.write(writeData.getBytes());
-                accelData.close();
-                f = getAlbumStorageDir("GamifyActivity/accelData");
-                dir = f.getAbsolutePath();
-                newfile = dir + File.pathSeparator + String.valueOf(timestamp) + ".txt";
-                accelData = new FileOutputStream(newfile);
-                accelData.write(String.valueOf(activity).getBytes());
-                //sendNotification("WE WROTE OUR DATA");
-                accelData.close();
-                writeData = "";
-                linecount = 0;
-            }
-            else {
-                sendNotification("Storage not available!");
-            }
-        } catch (Exception e) {
-            sendNotification(e.getMessage());
-            e.printStackTrace();
-        }
-        System.exit(0);
-        */
     }
 
     protected int Classify(String completeData){
@@ -239,12 +198,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float axisX = event.values[0];
-        float axisY = event.values[1];
-        float axisZ = event.values[2];
-        long time = System.currentTimeMillis();
-        writeData = writeData + String.valueOf(axisX) + ',' + String.valueOf(axisY) + ',' +
-                String.valueOf(axisZ) + ',' + String.valueOf(time) + "\n";
+        writeData = writeData + String.valueOf(event.values[0]) + ',' + String.valueOf(event.values[1]) + ',' +
+                String.valueOf(event.values[2]) + ',' + String.valueOf(System.currentTimeMillis()) + "\n";
     }
 
     @Override

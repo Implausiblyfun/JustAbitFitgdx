@@ -16,7 +16,7 @@ import java.io.File;
 
 public class AndroidLauncher extends AndroidApplication {
 
-    private final String GAMIFY_VERSION = "0.0.02a";
+    private final String GAMIFY_VERSION = "0.1.0a";
     //Sprivate gamifyGame gameProcess;
     //ActionResolverAndroid actionResolverAndroid;
     private Preferences pref;

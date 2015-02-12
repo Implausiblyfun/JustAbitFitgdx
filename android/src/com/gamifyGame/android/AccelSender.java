@@ -29,10 +29,13 @@ public class AccelSender extends IntentService {
 
     public AccelSender() {
         super("Tracker");
+        setIntentRedelivery(true);
     }
 
     protected void connectTry(String[][] coord, String[] actId){
 
+        HttpPost request1 = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
+        request1.setHeader("Content-Type", "application/json");
         for(int i=0; i< coord.length; i++) {
             JSONObject toSend = new JSONObject();
             try {
@@ -46,11 +49,9 @@ public class AccelSender extends IntentService {
                 //sendNotification(e.getMessage());
             }
             //sendNotification("Gonna send it: " + String.valueOf(i));
-            doJSONReq(toSend);
+            doJSONReq(toSend, request1);
         }
         try {
-
-
             JSONObject toSend = new JSONObject();
             toSend.put("userID", userID);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
@@ -59,39 +60,33 @@ public class AccelSender extends IntentService {
             e.printStackTrace();
             //sendNotification(e.getMessage());
         }
+
     }
 
-    protected void doJSONReq(JSONObject jsonObject1){
+    protected void doJSONReq(JSONObject jsonObject1, HttpPost request){
         HttpURLConnection connection = null;
         String output = "";
-
         //Make web request to fetch new data
         try{
             HttpClient client = new DefaultHttpClient();
-            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
-            request.setHeader("Content-Type", "application/json");
-
             request.setEntity(new StringEntity(jsonObject1.toString()));
-            //sendNotification("Waiting on response ... !");
             HttpResponse response = client.execute(request);
-            //sendNotification("Response received!");
 
         } catch (MalformedURLException e){
             e.printStackTrace();
-            //sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            //sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
+                //sendNotification("Connection not found");
                 connection.disconnect();
-                //sendNotification("Connection not available");
             }
         }
     }
 
     protected void doJSONACT(JSONObject jsonObject1){
+        // I know it looks like this doesn't do anything. It does. Don't get rid of it.
         HttpURLConnection connection = null;
         String output = "";
 
@@ -131,7 +126,8 @@ public class AccelSender extends IntentService {
         String[] actThing = intent.getStringArrayExtra("activity");
         activity = Integer.valueOf(actThing[0]);
         connectTry(Coords, actThing);
-        //this.onDestroy();
+        System.gc();
+
     }
 
     private void sendNotification(String msg) {

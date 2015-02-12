@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()-1,
-                              1000 * 32, alarmIntent);
+                              1000 * 30, alarmIntent);
 
     }
 
