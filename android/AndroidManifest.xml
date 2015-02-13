@@ -52,6 +52,9 @@
         <service
             android:name=".AccelSender"
             android:exported="false"/>
+        <service
+            android:name=".GameUpdater"
+            android:exported="false"/>
         <receiver
             android:name=".AccelAlarm"/>
         <activity android:name="ZXingTestActivity"

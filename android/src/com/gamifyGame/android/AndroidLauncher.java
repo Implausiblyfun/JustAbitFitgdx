@@ -44,15 +44,6 @@ public class AndroidLauncher extends AndroidApplication {
         pref.putString("userID",fakeID);
         pref.flush();
 
-        if (extras == null){
-            //Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
-        }
-        if (extras != null && extras.getString("curActivity") != null) {
-            //Toast.makeText(this, extras.getString("curActivity"), Toast.LENGTH_SHORT).show();
-            pref.putString("curActivity", extras.getString("curActivity"));
-            pref.flush();
-            //Toast.makeText(this, pref.getString("curActivity"), Toast.LENGTH_LONG).show();
-        }
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);

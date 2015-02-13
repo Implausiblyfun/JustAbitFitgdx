@@ -22,7 +22,6 @@ public class testScreen implements Screen {
     ShapeRenderer shapes;
     gamifyGame game;
     listenerHelper listenerH;
-    float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     int frameCount;
     int resetCount;
     String activity = "dummyvalue";
@@ -34,7 +33,7 @@ public class testScreen implements Screen {
         this.pref = pref;
         listenerH = listenerHPassed;
 
-        frameCount = 60;
+        frameCount = 90;
         resetCount = 60*30;
 
         shapes = renderHelper.getRenderHelper().getShapeRenderer();
@@ -69,15 +68,13 @@ public class testScreen implements Screen {
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
 
-        activity = pref.getString("curActivity");
+        activity = pref.getString("curActivity", "hmmm");
         int confirmed = pref.getInteger("confirmed", 0);
 
         batch.begin();
         renderHelper.getRenderHelper().textSetCenter("Yes", -40, 6);
         renderHelper.getRenderHelper().textSetCenter("No", 26, 6);
         renderHelper.getRenderHelper().textSetCenter("Have you been " + activity + " recently?", -80, -40);
-        //renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),10,20);
-        //renderHelper.getRenderHelper().textSet(String.valueOf(resetCount),10,40);
         boolean textOnScreen = false;
         if (confirmed == 1){
             renderHelper.getRenderHelper().textSetCenter("Confirmation sent!",0,-100);
@@ -88,10 +85,9 @@ public class testScreen implements Screen {
             frameCount--;
         }
         if (frameCount < 0){
-            textOnScreen = false;
             pref.putInteger("confirmed",0);
             pref.flush();
-            frameCount = 60;
+            frameCount = 90;
         }
         batch.end();
 

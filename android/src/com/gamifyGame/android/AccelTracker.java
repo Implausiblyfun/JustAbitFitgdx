@@ -59,6 +59,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         newIntent.putExtra("activity", actThing);
         newIntent.putExtra("userID", userID);
         ComponentName c = this.startService(newIntent);
+        Intent updateIntent = new Intent(this, GameUpdater.class);
+        updateIntent.putExtra("curActivity",intToStringActivity(activity));
+        ComponentName d = this.startService(updateIntent);
         if (Math.random() < .025) {
             sendNotification("What activity have you been doing recently?");
         }
@@ -149,18 +152,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(this, AndroidLauncher.class);
         String curActivity = "inactive";
-        switch (activity){
-            case 0: curActivity = "inactive";
-                break;
-            case 1: curActivity = "active";
-                break;
-            case 2: curActivity = "running";
-                break;
-            case 3: curActivity = "cycling";
-                break;
-            case 4: curActivity = "dancing";
-                break;
-        }
+        curActivity = intToStringActivity(activity);
         intent.putExtra("curActivity", curActivity);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -205,5 +197,16 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    private String intToStringActivity(int activity){ // TODO: Replace this with enum
+        switch (activity){
+            case 0: return "inactive";
+            case 1: return "active";
+            case 2: return "running";
+            case 3: return "cycling";
+            case 4: return "dancing";
+            default: return "nothing";
+        }
     }
 }
