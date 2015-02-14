@@ -59,7 +59,7 @@ public class gamifyGame extends Game {
         buyS = new BuyScreen(this);
 
 
-        setScreen(testS);
+        setScreen(mainS);
     }
 
     public Preferences getPrefs() {
