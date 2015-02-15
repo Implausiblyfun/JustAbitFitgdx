@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Json;
 public class listenerHelper {
     final gamifyGame game;
     ClickListener challengeListener, buildingListener;
-    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo;
+    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction;
 
     public listenerHelper(gamifyGame gamify){
         this.game = gamify;
@@ -44,6 +44,11 @@ public class listenerHelper {
         testNo = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {pref.putInteger("confirmed",-1); pref.flush(); game.sendInt("userConfirm",0); return true;}};
+
+        scanAction = new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            { game.getActionResolver().scanAct("ScanScreen"); return true;}};
+
         challengeListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ChangingImage eventImage = (ChangingImage) event.getListenerActor();
@@ -77,6 +82,7 @@ public class listenerHelper {
     public ClickListener getChallengeListener(){return challengeListener;}
     public ClickListener getTestYes(){return testYes;}
     public ClickListener getTestNo(){return testNo;}
+    public ClickListener scanningAction(){return scanAction;}
 
     public ClickListener goScreen(int val){
         switch (val){
@@ -98,10 +104,15 @@ public class listenerHelper {
 
     public DragListener scroll(final Image[] imgHandles, final ChangingImage[] underground, final boolean isLongBar){
         return new DragListener(){
-            float startX, startY, sY;
+            float startX, startY, sY, sX;
             Color startColor;
+            boolean notScroll = false;
+            boolean isDown = false;
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                if(isDown){return true;}
+                isDown = true;
                 startX = x; startY = y; sY = event.getListenerActor().getY();
+                //sX = event.getListenerActor().getX();
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
@@ -112,20 +123,38 @@ public class listenerHelper {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 Image eventImage = (Image) event.getListenerActor();
                 if(isLongBar == false){
-
                     eventImage.setColor(startColor);
                     for(int i=0; i <underground.length; i++){underground[i].setColor(startColor);}
-                    renderHelper.getRenderHelper().buildCheck(underground,eventImage);
-                    eventImage.moveBy(0, sY-event.getListenerActor().getY());
+                    int index = renderHelper.getRenderHelper().buildCheck(underground,eventImage);
+                    eventImage.moveBy(sX-eventImage.getX(), sY-eventImage.getY());
+                    if(index != -1){
+                        //Store the change in prefs.
+                        Json json = new Json();
+                        Preferences pref = game.getPrefs();
+                        String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+                        underground[index] = eventImage.getName();
+                        pref.putString("undergroundBuildings", json.toJson(underground));
+                        pref.flush();
+                    }
                 }
+                isDown = false;
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {
                 Image eventImage = (Image) event.getListenerActor();
-                renderHelper.getRenderHelper().moveScroll(imgHandles, (x-startX)/2, 0);
-                if(isLongBar==false){eventImage.moveBy(0, y-startY);}
+                if(sY-eventImage.getY() > eventImage.getHeight()/3 || notScroll ){
+                    notScroll = true;
+                    eventImage.setColor(Color.RED);
+                    eventImage.moveBy(x-startX/2, y-startY);
+                }
+                else {
+                    sX = eventImage.getX();
+                    renderHelper.getRenderHelper().moveScroll(imgHandles, (x - startX) / 2, 0);
+                    if (isLongBar == false) {eventImage.moveBy(0, y - startY);}
+                }
             }};
     }
+
 
     public void buildingListeners(ChangingImage[] imageHandles){
         for(int i=0; i <= imageHandles.length-1; i++){

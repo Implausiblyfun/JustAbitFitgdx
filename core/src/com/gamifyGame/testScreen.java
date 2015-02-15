@@ -76,8 +76,8 @@ public class testScreen implements Screen {
         renderHelper.getRenderHelper().textSetCenter("Yes", -40, 6);
         renderHelper.getRenderHelper().textSetCenter("No", 26, 6);
         renderHelper.getRenderHelper().textSetCenter("Have you been " + activity + " recently?", -80, -40);
-        //renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),10,20);
-        //renderHelper.getRenderHelper().textSet(String.valueOf(resetCount),10,40);
+        renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),10,20);
+        renderHelper.getRenderHelper().textSet(String.valueOf(resetCount),10,40);
         boolean textOnScreen = false;
         if (confirmed == 1){
             renderHelper.getRenderHelper().textSetCenter("Confirmation sent!",0,-100);
