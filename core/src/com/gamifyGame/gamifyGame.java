@@ -1,9 +1,11 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public class gamifyGame extends Game {
+public class gamifyGame extends Game implements ApplicationListener {
     private Preferences pref;
     private ActionResolver actionResolver;
     public MainScreen mainS;
@@ -44,6 +46,8 @@ public class gamifyGame extends Game {
 
     public void create() {
 
+        Gdx.input.setCatchBackKey(true);
+
         //Define session variables
         pref.putBoolean("showChallengeHours", false);
         pref.flush();
@@ -59,13 +63,13 @@ public class gamifyGame extends Game {
         buyS = new BuyScreen(this);
 
 
-        setScreen(testS);
+        setScreen(mainS);
     }
 
     public Preferences getPrefs() {
         return pref;
     }
-
+    public ActionResolver getActionResolver() { return actionResolver;}
     public listenerHelper getListener() {
         return helper;
     }

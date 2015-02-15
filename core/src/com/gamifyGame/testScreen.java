@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,7 +44,9 @@ public class testScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            actionResolver.toHomeScreen("Back Pressed");
+        }
         resetCount--;
         if (resetCount == 0){
             this.hide();
@@ -68,7 +71,7 @@ public class testScreen implements Screen {
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.end();
 
-        activity = pref.getString("curActivity", "hmmm");
+        activity = pref.getString("curActivity", "");
         int confirmed = pref.getInteger("confirmed", 0);
 
         batch.begin();

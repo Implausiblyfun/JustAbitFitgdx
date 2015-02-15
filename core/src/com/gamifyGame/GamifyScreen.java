@@ -2,6 +2,7 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,11 +32,8 @@ public abstract class GamifyScreen implements Screen {
     @Override
     public void render(float delta) {
 
-
-
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            // Do something
-            System.exit(0);
+            game.getActionResolver().toHomeScreen("Back Pressed");
         }
 
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
@@ -88,6 +86,13 @@ public abstract class GamifyScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+
+        }
+        return false;
     }
 
 }

@@ -18,8 +18,9 @@ public class GameUpdater extends IntentService {
     protected void onHandleIntent(Intent intent) {
         ActionResolverAndroid actionResolverAndroid = new ActionResolverAndroid(this);
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
-        gameProcess.getPrefs().putString("curActivity",intent.getStringExtra("curActivity"));
+        String activity = intent.getStringExtra("curActivity");
+        gameProcess.getPrefs().putString("curActivity",activity);
+        gameProcess.getPrefs().putInteger("updaterRunning",gameProcess.getPrefs().getInteger("updaterRunning",0)+1);
         gameProcess.getPrefs().flush();
-        System.gc();
     }
 }

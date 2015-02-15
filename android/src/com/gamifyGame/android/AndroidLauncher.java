@@ -9,9 +9,14 @@ import android.widget.Toast;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.utils.Array;
 import com.gamifyGame.gamifyGame;
 
 import java.io.File;
+import java.security.Key;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class AndroidLauncher extends AndroidApplication {
@@ -20,7 +25,9 @@ public class AndroidLauncher extends AndroidApplication {
     //Sprivate gamifyGame gameProcess;
     //ActionResolverAndroid actionResolverAndroid;
     private Preferences pref;
-
+    HashMap<String,String> stringPref;
+    HashMap<String,Integer> intPref;
+    HashMap<String,Boolean> boolPref;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
@@ -54,10 +61,45 @@ public class AndroidLauncher extends AndroidApplication {
         // Preferences file stores data for later running of app
         gameProcess.setPref(pref);
         initialize(gameProcess, config);
+        /*
+        if (stringPref == null){
+            stringPref = new HashMap<String, String>();
+            intPref = new HashMap<String, Integer>();
+            boolPref = new HashMap<String, Boolean>();
+        }
+        else {
+            Set<String> keysS = stringPref.keySet();
+            for(Iterator i = keysS.iterator(); i.hasNext();){
+                pref.putString((String)i.next(),stringPref.get(i.next()));
+            }
+            stringPref.clear();
+            Set<String> keysI = intPref.keySet();
+            for(Iterator i = keysI.iterator(); i.hasNext();){
+                pref.putInteger((String)i.next(),intPref.get(i.next()));
+            }
+            intPref.clear();
+            Set<String> keysB = boolPref.keySet();
+            for(Iterator i = keysB.iterator(); i.hasNext();){
+                pref.putBoolean((String)i.next(),boolPref.get(i.next()));
+            }
+            boolPref.clear();
+            pref.flush();
+        }*/
 
 	}
 
     public Preferences getPref(){
         return pref;
     }
+
+    public HashMap<String, String> getStringPref(){
+        return stringPref;
+    }
+    public HashMap<String, Integer> getIntPref(){
+        return intPref;
+    }
+    public HashMap<String, Boolean> getBoolPref(){
+        return boolPref;
+    }
+
 }

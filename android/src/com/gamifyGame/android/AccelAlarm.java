@@ -4,9 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.widget.Toast;
 
 import com.badlogic.gdx.Preferences;
 
@@ -35,19 +33,24 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
         AlarmManager alrmMngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent accelIntent = new Intent(context, AccelAlarm.class);
-        //Intent challengeIntent = new Intent(context, challengeAlarm.class);
+        Intent challengeIntent = new Intent(context, ChallengeAlarm.class);
         accelIntent.putExtra("VERSION", version);
         accelIntent.putExtra("userID", userID);
 
-        //PendingIntent challengeAlarmIntent = PendingIntent.getBroadcast(context, 0, challengeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent challengeAlarmIntent = PendingIntent.getBroadcast(context, 0, challengeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, accelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Calendar calendar = Calendar.getInstance();
 
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()-1,
+        // Set up a Calendar which represents now, and have an intent be sent now + 30 seconds, repeating.
+        Calendar accelCalendar = Calendar.getInstance();
+        accelCalendar.setTimeInMillis(System.currentTimeMillis());
+        alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, accelCalendar.getTimeInMillis()-1,
                               1000 * 30, alarmIntent);
-        //alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()-1,
-        //        1000 * 60 * 60, challengeAlarmIntent);
+
+        // Set up a Calendar which represents this hour, and send an intent then + 60 minutes, repeating.
+        Calendar challengeCalendar = Calendar.getInstance();
+        challengeCalendar.set(Calendar.YEAR,Calendar.MONTH,Calendar.HOUR_OF_DAY);
+        alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, challengeCalendar.getTimeInMillis()-1,
+                1000 * 60 * 60, challengeAlarmIntent);
 
     }
 

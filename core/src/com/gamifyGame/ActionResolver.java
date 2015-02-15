@@ -7,4 +7,5 @@ package com.gamifyGame;
 
 public interface ActionResolver {
     public void scanAct(CharSequence text);
+    public void toHomeScreen(CharSequence text);
 }
