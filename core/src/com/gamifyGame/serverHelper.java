@@ -20,9 +20,9 @@ public class serverHelper {
 
     static String status;
 
-    protected static void sendTestConfirm(int confirm, String userID){
+    protected static void sendTestConfirm(int confirm){
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("userID", userID);
+        parameters.put("userID", "1234"); //TODO: USERID INPUT
         parameters.put("confirm", String.valueOf(confirm));
         parameters.put("timestamp", String.valueOf(System.currentTimeMillis()));
 

@@ -1,6 +1,7 @@
 package com.gamifyGame.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.IntegerRes;
@@ -25,12 +26,12 @@ import java.util.Set;
 
 public class AndroidLauncher extends AndroidApplication {
 
-    private final String GAMIFY_VERSION = "0.1.0a";
+    private final String GAMIFY_VERSION = "0.1.1a";
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
     {
-        //Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
@@ -73,7 +74,7 @@ public class AndroidLauncher extends AndroidApplication {
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
-        alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
+        alarm.setAlarm(this, GAMIFY_VERSION);
 
 
         setContentView(R.layout.loginscreenres);
@@ -83,5 +84,21 @@ public class AndroidLauncher extends AndroidApplication {
         initialize(gameProcess,config);
 
 	}
+
+    protected void onResume(){
+        Bundle extras = this.getIntent().getExtras();
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
+
+        if(sharedPref.getString("currentFood", null) != null){
+            Toast.makeText(this, "Hello Here We Are", Toast.LENGTH_SHORT).show();
+            pref.putString("latestFood", sharedPref.getString("currentFood", null));
+            pref.flush();
+        }
+
+        Toast.makeText(this, "PRINNTTTT" + sharedPref.getString("currentFood", null), Toast.LENGTH_SHORT).show();
+        super.onResume();
+
+    }
 
 }

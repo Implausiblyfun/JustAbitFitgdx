@@ -9,12 +9,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import java.util.HashMap;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Stephen on 11/2/2014.
@@ -80,6 +85,7 @@ public class renderHelper {
         boxRightFace = imageLoad("boxRightFace.png");
         boxTopLeft = imageLoad("boxTopLeft.png");
         boxTopRight = imageLoad("boxTopRight.png");
+
         /* //These likely don't need to be in the HashMap
         textureHash.put("boxBottomFace.png",imageLoad("boxBottomFace.png"));
         textureHash.put("boxBottomLeft.png",imageLoad("boxBottomLeft.png"));
@@ -103,6 +109,8 @@ public class renderHelper {
         textureHash.put("trophyBox.png",imageLoad("Trophybox.png"));
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
+
+        textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("placeholder128x24.png",imageLoad("placeholder128x24.png"));
@@ -167,20 +175,21 @@ public class renderHelper {
     }
     public void textSetCenter(String text, int offsetx, int offsety){
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
-        Point textLoc= renderToScreenRatio(new Point(RENDERED_SCREEN_WIDTH / 2 + offsetx, RENDERED_SCREEN_HEIGHT / 2 + offsety));
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
         font2.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
-        Point textCoorsLoc = renderToScreenRatio(new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2));
+        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
         font2.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y );
     }
 
-    public Point renderToScreenRatio(Point point)
+    public Point convertImageCoorsToTextCoors(Point point)
     {
         return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
     }
+
 
     public static Texture imageLoad(String file){ return new Texture(file);}
 
@@ -298,7 +307,6 @@ public class renderHelper {
 
 
 
-    //TODO: Change to scale down to appropriate size.
     public Image[] makeScroll(Stage stage, String[] images, float hOrigin, float vOrigin){
         // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
         int width  = (int)(.8 *textureHash.get("HQ1.png").getWidth());

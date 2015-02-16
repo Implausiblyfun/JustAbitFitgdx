@@ -25,68 +25,72 @@ import java.net.MalformedURLException;
 public class AccelSender extends IntentService {
 
     int activity;
-    String userID;
 
     public AccelSender() {
         super("Tracker");
-        setIntentRedelivery(true);
     }
 
     protected void connectTry(String[][] coord, String[] actId){
 
-        HttpPost request1 = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
-        request1.setHeader("Content-Type", "application/json");
         for(int i=0; i< coord.length; i++) {
             JSONObject toSend = new JSONObject();
             try {
                 String tmpStr = coord[i][0]+","+coord[i][1]+","+coord[i][2]+","+coord[i][3];
 
-                toSend.put("userID", userID);
+                toSend.put("userID", 1234);
                 toSend.put("xyz", tmpStr);
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                //sendNotification(e.getMessage());
+                sendNotification(e.getMessage());
             }
-            //sendNotification("Gonna send it: " + String.valueOf(i));
-            doJSONReq(toSend, request1);
+            sendNotification("Gonna send it: " + String.valueOf(i));
+            doJSONReq(toSend);
         }
         try {
+
+
             JSONObject toSend = new JSONObject();
-            toSend.put("userID", userID);
+            toSend.put("userID", 1234);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
             doJSONACT(toSend);
         }catch(JSONException e){
             e.printStackTrace();
-            //sendNotification(e.getMessage());
+            sendNotification(e.getMessage());
         }
-
     }
 
-    protected void doJSONReq(JSONObject jsonObject1, HttpPost request){
+    protected void doJSONReq(JSONObject jsonObject1){
         HttpURLConnection connection = null;
         String output = "";
+
         //Make web request to fetch new data
         try{
             HttpClient client = new DefaultHttpClient();
+            HttpPost request = new HttpPost("http://104.131.171.125:3000/api/storeXYZ");
+            request.setHeader("Content-Type", "application/json");
+
             request.setEntity(new StringEntity(jsonObject1.toString()));
+            sendNotification("Waiting on response ... !");
             HttpResponse response = client.execute(request);
+            sendNotification("Response received!");
 
         } catch (MalformedURLException e){
             e.printStackTrace();
+            sendNotification(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
-                //sendNotification("Connection not found");
                 connection.disconnect();
+                sendNotification("Connection not available");
             }
         }
     }
 
     protected void doJSONACT(JSONObject jsonObject1){
-        // I know it looks like this doesn't do anything. It does. Don't get rid of it.
         HttpURLConnection connection = null;
         String output = "";
 
@@ -104,19 +108,18 @@ public class AccelSender extends IntentService {
 
         } catch (Exception e){
             e.printStackTrace();
-            //sendNotification(e.getMessage());
+            sendNotification(e.getMessage());
         }
         finally {
             if (connection != null){
-                //sendNotification("Connection not found");
+                sendNotification("Connection not found");
                 connection.disconnect();
             }
         }
     }
 
     protected void onHandleIntent(Intent intent) {
-        //sendNotification("Sending!");
-        userID = intent.getStringExtra("userID");
+        sendNotification("Sending!");
         String writeData = intent.getStringExtra("writeData");
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
         String[][] Coords = new String[preCoords.length][4];
@@ -124,7 +127,6 @@ public class AccelSender extends IntentService {
             Coords[i] = preCoords[i].split(",");
         }
         String[] actThing = intent.getStringArrayExtra("activity");
-        activity = Integer.valueOf(actThing[0]);
         connectTry(Coords, actThing);
         //System.gc();
 

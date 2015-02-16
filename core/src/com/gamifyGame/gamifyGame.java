@@ -40,6 +40,13 @@ public class gamifyGame extends Game {
         return gamifyGame;
     }
 
+    public void setActionResolver(ActionResolver actionResolver) {
+        this.actionResolver = actionResolver;
+    }
+    public ActionResolver getActionResolver(){
+        return this.actionResolver;
+    }
+
     private gamifyGame(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
@@ -108,7 +115,7 @@ public class gamifyGame extends Game {
     }
 
     public void sendInt(String key, int val) {
-        serverHelper.sendTestConfirm(val, pref.getString("userID","12345")); //TODO: different application of this function,
+        serverHelper.sendTestConfirm(val); //TODO: different application of this function,
         // might not need this function later.
     }
 

@@ -33,7 +33,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
                 startWakefulService(context, service);
             }
         }).start();
-}
+    }
 
     public void setAlarm(Context context, String version, String userID){
         this.GAMIFY_VERSION = version;
@@ -51,7 +51,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         Calendar accelCalendar = Calendar.getInstance();
         accelCalendar.setTimeInMillis(System.currentTimeMillis());
         alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, accelCalendar.getTimeInMillis()-1,
-                              1000 * 30, alarmIntent);
+                1000 * 30, alarmIntent);
 
         // Set up a Calendar which represents this hour, and send an intent then + 60 minutes, repeating.
         Calendar challengeCalendar = Calendar.getInstance();
