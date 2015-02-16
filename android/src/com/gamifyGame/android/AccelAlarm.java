@@ -5,9 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Preferences;
 
+import java.lang.ref.Reference;
 import java.util.Calendar;
 
 /**
@@ -19,13 +21,18 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
     Preferences pref;
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context,final Intent intent) {
+
         String version = intent.getStringExtra("VERSION");
         String userID = intent.getStringExtra("userID");
-        Intent service = new Intent(context, AccelTracker.class);
-        service.putExtra("VERSION", version);
-        service.putExtra("userID", userID);
-        startWakefulService(context, service);
+        final Intent service = new Intent(context, AccelTracker.class);
+        service.putExtra("VERSION",version);
+        service.putExtra("userID",userID);
+        new Thread(new Runnable() {
+            public void run() {
+                startWakefulService(context, service);
+            }
+        }).start();
 }
 
     public void setAlarm(Context context, String version, String userID){
@@ -33,7 +40,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
         AlarmManager alrmMngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent accelIntent = new Intent(context, AccelAlarm.class);
-        Intent challengeIntent = new Intent(context, ChallengeAlarm.class);
+        Intent challengeIntent = new Intent(context, challengeAlarm.class);
         accelIntent.putExtra("VERSION", version);
         accelIntent.putExtra("userID", userID);
 
