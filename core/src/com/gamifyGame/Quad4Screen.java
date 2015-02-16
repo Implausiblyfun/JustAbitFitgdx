@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Json;
 import com.gamifyGame.Corner;
 import com.gamifyGame.GamifyScreen;
 import com.gamifyGame.gamifyGame;
@@ -36,8 +37,15 @@ public class Quad4Screen extends GamifyScreen implements Screen {
            latestFood = game.getPrefs().getString("latestFood");
         }
 
+        Json json = new Json();
+        String food = json.fromJson(String.class, latestFood);
+
+        //food = new Json(latestFood);
+        //String brand = out.getString("brand_name");
+
         renderHelper.getRenderHelper().getBatch().begin();
-        renderHelper.getRenderHelper().textSetCenter("HI", 20, 20);
+        renderHelper.getRenderHelper().textSet(latestFood, 20, 20);
+        renderHelper.getRenderHelper().textSet("HI", 20, 80);
         renderHelper.getRenderHelper().getBatch().end();
     }
 

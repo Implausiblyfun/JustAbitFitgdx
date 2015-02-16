@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.widget.Toast;
+
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
+import com.badlogic.gdx.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -31,7 +34,7 @@ public final class Zxing extends Activity {
         super.onCreate(icicle);
 
         this.thisBundle = icicle;
-        this.context = context;
+        this.context = getApplicationContext();
         IntentIntegrator integrator;
         integrator = new IntentIntegrator(Zxing.this);
 
@@ -56,9 +59,10 @@ public final class Zxing extends Activity {
         final CharSequence tmpMessage = tmp;
         Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_SHORT).show();
         Intent intent2 = new Intent(getApplicationContext(), AndroidLauncher.class);
+
         intent2.putExtra("Message", tmpMessage);
         new checkFood("http://www.opennutritiondatabase.com/foods/", tmp +".json").execute(tmpM);
-        startActivity(intent2);
+
 
     }
     class checkFood extends FoodRequestTask<String> {
@@ -78,6 +82,9 @@ public final class Zxing extends Activity {
 
             Intent change = new Intent(getApplicationContext(), AndroidLauncher.class);
 
+            SharedPreferences prefs = context.getSharedPreferences("bitPref", 1);
+            SharedPreferences.Editor edit = prefs.edit();
+
 
             JSONObject out = null;
 
@@ -85,10 +92,13 @@ public final class Zxing extends Activity {
                 out = new JSONObject(output);
                 String brand = out.getString("brand_name");
                 Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
-                change.putExtra("currentFood", brand);
+                edit.putString("currentFood", output);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            edit.commit();
 
 
             startActivity(change);

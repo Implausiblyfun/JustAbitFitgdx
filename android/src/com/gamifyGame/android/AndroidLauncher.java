@@ -1,7 +1,9 @@
 package com.gamifyGame.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.IntegerRes;
 import android.view.View;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class AndroidLauncher extends AndroidApplication {
         File directory = getFilesDir();
         // Start Accel tracking in background
         pref = this.getPreferences("Bitfitpref");
+        prefHelper prefH = new prefHelper();
+        prefH.setPref(pref);
         if (extras == null){
             Toast.makeText(this, "NULL!!", Toast.LENGTH_SHORT).show();
         }
@@ -47,12 +51,9 @@ public class AndroidLauncher extends AndroidApplication {
             pref.flush();
             Toast.makeText(this, pref.getString("curActivity"), Toast.LENGTH_LONG).show();
         }
-        if(extras !=null && extras.getString("currentFood") != null){
-            pref.putString("latestFood", extras.getString("currentFood"));
-            pref.flush();
-        }
+
         AccelAlarm alarm = new AccelAlarm();
-        alarm.setPref(pref);
+        alarm.setPref(prefH);
         alarm.setVersion(GAMIFY_VERSION);
         alarm.setAlarm(this, GAMIFY_VERSION);
 
@@ -63,6 +64,22 @@ public class AndroidLauncher extends AndroidApplication {
         initialize(gameProcess, config);
 
 	}
+
+    protected void onResume(){
+        Bundle extras = this.getIntent().getExtras();
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
+
+        if(sharedPref.getString("currentFood", null) != null){
+            Toast.makeText(this, "Hello Here We Are", Toast.LENGTH_SHORT).show();
+            pref.putString("latestFood", sharedPref.getString("currentFood", null));
+            pref.flush();
+        }
+
+        Toast.makeText(this, "PRINNTTTT" + sharedPref.getString("currentFood", null), Toast.LENGTH_SHORT).show();
+        super.onResume();
+
+    }
 
     public Preferences getPref(){
         return pref;

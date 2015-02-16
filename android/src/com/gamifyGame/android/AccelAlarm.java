@@ -43,6 +43,6 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
     }
 
-    public void setPref(Preferences pref){this.pref = pref;}
+    public void setPref(prefHelper prefH){this.pref = prefH.getPref();}
     public void setVersion(String version){this.GAMIFY_VERSION = version;}
 }
