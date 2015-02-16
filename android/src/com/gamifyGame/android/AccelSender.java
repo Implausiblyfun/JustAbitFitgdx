@@ -126,7 +126,7 @@ public class AccelSender extends IntentService {
         String[] actThing = intent.getStringArrayExtra("activity");
         activity = Integer.valueOf(actThing[0]);
         connectTry(Coords, actThing);
-        System.gc();
+        //System.gc();
 
     }
 

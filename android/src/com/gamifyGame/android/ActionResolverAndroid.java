@@ -10,12 +10,25 @@ import com.gamifyGame.ActionResolver;
 
 public class ActionResolverAndroid implements ActionResolver {
     Handler handler;
-    Context context;
+    private Context context;
+    private static ActionResolverAndroid actionResolverAndroid;
 
-    public ActionResolverAndroid(Context context) {
+    private ActionResolverAndroid(Context context){
         handler = new Handler();
         this.context = context;
     }
+
+    public static ActionResolverAndroid getActionResolverAndroid(Context context, boolean authority){
+        if (actionResolverAndroid == null){
+            actionResolverAndroid = new ActionResolverAndroid(context);
+        }
+        if (authority){
+            actionResolverAndroid.setContext(context);
+        }
+        return actionResolverAndroid;
+    }
+
+    private void setContext(Context context){this.context = context;}
 
     public void scanAct(final CharSequence text) {
         handler.post(new Runnable() {
