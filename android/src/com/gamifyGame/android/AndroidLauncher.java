@@ -27,6 +27,7 @@ import java.util.Set;
 public class AndroidLauncher extends AndroidApplication {
 
     private final String GAMIFY_VERSION = "0.1.1a";
+    Preferences pref;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
@@ -42,7 +43,7 @@ public class AndroidLauncher extends AndroidApplication {
         catch(Exception e){String userID = "4321";}
 
         // Make a fake ID, Replace when userID is implemented
-        Preferences pref = this.getPreferences("Bitfitpref");
+        pref = this.getPreferences("Bitfitpref");
         Preferences updatePref = this.getPreferences("Update");
         Preferences graphPref = this.getPreferences("Graphpref");
         double ID = Math.random()*(Math.pow(10d,15d))%Math.pow(10d,15d)+Math.pow(10d,16d);
@@ -74,7 +75,7 @@ public class AndroidLauncher extends AndroidApplication {
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
-        alarm.setAlarm(this, GAMIFY_VERSION);
+        alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
 
         setContentView(R.layout.loginscreenres);

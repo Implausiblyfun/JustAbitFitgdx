@@ -43,10 +43,6 @@ public class gamifyGame extends Game {
     public void setActionResolver(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
-    public ActionResolver getActionResolver(){
-        return this.actionResolver;
-    }
-
     private gamifyGame(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
@@ -56,9 +52,6 @@ public class gamifyGame extends Game {
         Gdx.input.setCatchBackKey(true);
         paused = false;
 
-        //Define session variables
-        pref.putBoolean("showChallengeHours", false);
-        pref.flush();
         renderHelper.forceRemake();
 
         helper = new listenerHelper(this);

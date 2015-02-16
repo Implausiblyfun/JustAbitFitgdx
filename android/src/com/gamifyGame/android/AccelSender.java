@@ -28,6 +28,7 @@ public class AccelSender extends IntentService {
 
     public AccelSender() {
         super("Tracker");
+        setIntentRedelivery(true);
     }
 
     protected void connectTry(String[][] coord, String[] actId){
@@ -44,7 +45,6 @@ public class AccelSender extends IntentService {
                 e.printStackTrace();
                 sendNotification(e.getMessage());
             }
-            sendNotification("Gonna send it: " + String.valueOf(i));
             doJSONReq(toSend);
         }
         try {
@@ -71,9 +71,7 @@ public class AccelSender extends IntentService {
             request.setHeader("Content-Type", "application/json");
 
             request.setEntity(new StringEntity(jsonObject1.toString()));
-            sendNotification("Waiting on response ... !");
             HttpResponse response = client.execute(request);
-            sendNotification("Response received!");
 
         } catch (MalformedURLException e){
             e.printStackTrace();
@@ -119,7 +117,6 @@ public class AccelSender extends IntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
-        sendNotification("Sending!");
         String writeData = intent.getStringExtra("writeData");
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
         String[][] Coords = new String[preCoords.length][4];
