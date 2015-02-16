@@ -5,8 +5,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public class gamifyGame extends Game implements ApplicationListener {
-    private Preferences pref;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class gamifyGame extends Game {
+    private Preferences pref, graphPref;
     private ActionResolver actionResolver;
     public MainScreen mainS;
     public testScreen testS;
@@ -16,7 +20,7 @@ public class gamifyGame extends Game implements ApplicationListener {
     public Quad4Screen quad4S;
     public BuyScreen buyS;
     private listenerHelper helper;
-
+    boolean paused;
 
     private ChangingImage[] rooms;
     private int[] bridges;
@@ -32,12 +36,8 @@ public class gamifyGame extends Game implements ApplicationListener {
         if (gamifyGame == null)
             gamifyGame = new gamifyGame(actionResolver);
         else
-            gamifyGame.setActionResolver(actionResolver);
+            gamifyGame.actionResolver = actionResolver;
         return gamifyGame;
-    }
-
-    public void setActionResolver(ActionResolver actionResolver) {
-        this.actionResolver = actionResolver;
     }
 
     private gamifyGame(ActionResolver actionResolver) {
@@ -47,6 +47,7 @@ public class gamifyGame extends Game implements ApplicationListener {
     public void create() {
 
         Gdx.input.setCatchBackKey(true);
+        paused = false;
 
         //Define session variables
         pref.putBoolean("showChallengeHours", false);
@@ -66,6 +67,38 @@ public class gamifyGame extends Game implements ApplicationListener {
         setScreen(mainS);
     }
 
+    public void pause(){
+        paused = true;
+    }
+
+    public void resume(){
+        paused = false;
+    }
+
+    public void storeUpdatePrefs(Preferences updatePref){
+        Map<String,?> kvPairs = updatePref.get();
+        Set<String> keySet = kvPairs.keySet();
+        for(Iterator i = keySet.iterator(); i.hasNext();){
+            String key = String.valueOf(i.next());
+            String val = String.valueOf(kvPairs.get(key));
+            graphUpdate(key,val);
+        }
+    }
+
+    public void graphUpdate(String key, String val){
+        graphPref.putString("activity"+key,val);
+        if (val == "running"){
+            pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)+1);
+        } else if (val == "walking"){
+            pref.putInteger("minutesWalked",pref.getInteger("minutesWalked",0)+1);
+        } else if (val == "dancing"){
+            pref.putInteger("minutesDanced",pref.getInteger("minutesDanced",0)+1);
+        } else if (val == "cycling"){
+            pref.putInteger("minutesBiked",pref.getInteger("minutesBiked",0)+1);
+        }
+    }
+
+    public boolean isActive(){return !paused;}
     public Preferences getPrefs() {
         return pref;
     }
@@ -83,5 +116,6 @@ public class gamifyGame extends Game implements ApplicationListener {
     public void setPref(Preferences preferences) {
         pref = preferences;
     }
+    public void setGraphPref(Preferences preferences) { graphPref = preferences;}
 }
 
